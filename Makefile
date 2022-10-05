@@ -6,7 +6,7 @@
 #    By: ogonzale <ogonzale@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2022/10/03 16:31:32 by ogonzale         ###   ########.fr        #
+#    Updated: 2022/10/05 17:07:32 by ogonzale         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ WHITE 		:= \033[0;97m
 #Sources
 
 MAND_DIR	:= mand/
-MAND_FILES	:= 
+MAND_FILES	:= minishell utils 
 
 BONUS_DIR	:= bonus/
 BONUS_FILES	:= 
@@ -63,7 +63,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile
 all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJ) 
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
 	@echo "$(GREEN)$(NAME) compiled!$(DEF_COLOR)"
 
 $(LIBFT):
