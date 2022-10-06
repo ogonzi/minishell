@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/06 17:33:07 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:11:18 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
 
 void	init_shell(void)
 {
@@ -70,25 +71,42 @@ int	handle_input(char **line)
 		if (*line == NULL)
 			terminate(ERR_MEM, 1);
 		ft_strlcpy(*line, buf, len_buf + 1);
+		printf("Input: %s\n", *line);
+		free(*line);
 		return (0);
 	}
-	return (1);
+	return (0);
+}
+
+void	handle_sig(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		rl_on_new_line();
+		print_dir();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 int	main(int argc, char *argv[])
 {
-	char	*line;
+	char				*line;
+	struct sigaction	sa;
 
 	if (argc != 1)
 		terminate(ERR_ARGS, 0);
+	sa.sa_handler = &handle_sig;
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		terminate(ERR_SIG, 1);
 	init_shell();
 	while (1)
 	{
 		print_dir();
 		if (handle_input(&line) == 1)
 			break ;
-		printf("Input: %s\n", line);
-		free(line);
 	}
 	(void)argv;
 	return (0);
