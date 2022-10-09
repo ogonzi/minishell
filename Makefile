@@ -6,7 +6,7 @@
 #    By: ogonzale <ogonzale@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2022/10/05 17:07:32 by ogonzale         ###   ########.fr        #
+#    Updated: 2022/10/07 16:35:15 by ogonzale         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ WHITE 		:= \033[0;97m
 #Sources
 
 MAND_DIR	:= mand/
-MAND_FILES	:= minishell utils 
+MAND_FILES	:= minishell signals utils 
 
 BONUS_DIR	:= bonus/
 BONUS_FILES	:= 
