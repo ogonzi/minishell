@@ -42,7 +42,7 @@ TODO
 TODO
 
 ## Resources
-
+- [The Bourne-Again Shell](https://www.aosabook.org/en/bash.html#:~:text=Bash%20reads%20input%20from%20the,Unix%20emacs%20and%20vi%20editors.)
 
 ## Known bugs
 

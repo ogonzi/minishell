@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/09 18:48:37 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/09 18:55:30 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	handle_input(char **line)
 	char	*buf;
 	int		len_buf;
 
-	buf = readline("> ");
+	buf = readline("msh> ");
 	if (buf == NULL)
 	{
 		printf("exit\n");
