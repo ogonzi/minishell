@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/09 18:55:30 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/09 20:24:52 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,28 @@
 #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <signal.h>
+
+void	fork_process(char **line)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+		terminate(ERR_FORK, 1);
+	else if (pid == 0)
+	{
+		signal(SIGINT, SIG_IGN);
+		printf("input: %s\n", *line);
+	}
+	else
+	{
+		wait(NULL);
+	}
+
+}
 
 int	handle_input(char **line)
 {
@@ -39,7 +60,7 @@ int	handle_input(char **line)
 		if (*line == NULL)
 			terminate(ERR_MEM, 1);
 		ft_strlcpy(*line, buf, len_buf + 1);
-		printf("Input: %s\n", *line);
+		fork_process(line);
 		free(*line);
 		return (0);
 	}

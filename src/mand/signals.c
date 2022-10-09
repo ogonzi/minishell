@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:33:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/09 18:48:24 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/09 20:20:56 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <termios.h>
 #include <term.h>
 #include <unistd.h>
+#include <wait.h>
+#include <stdlib.h>
 #include "utils.h"
 #include "ft_printf.h"
 
@@ -33,6 +35,8 @@ void	handle_sig(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	if (sig == SIGCHLD)
+		exit(EXIT_SUCCESS);
 }
 
 void	handle_signals(void)
@@ -43,7 +47,10 @@ void	handle_signals(void)
 	sa.sa_handler = &handle_sig;
 	sa_ign.sa_handler = SIG_IGN;
 	sa.sa_flags = SA_RESTART;
+	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
+		terminate(ERR_SIG, 1);
+	if (sigaction(SIGCHLD, &sa, NULL) == -1)
 		terminate(ERR_SIG, 1);
 	if (sigaction(SIGQUIT, &sa_ign, NULL) == -1)
 		terminate(ERR_SIG, 1);

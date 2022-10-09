@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/07 17:25:03 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/09 19:32:36 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define ERR_SIG			"Function error -> signal"
 # define ERR_TC_GET_ATTR	"Function error -> tcgetattr"
 # define ERR_SIGADDSET		"Function error -> sigaddset"
+# define ERR_FORK			"Function error -> fork"
 
 /* utils.c */
 
