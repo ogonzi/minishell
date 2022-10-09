@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:33:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/09 18:34:50 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/09 18:48:24 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	handle_sig(int sig)
 	{
 		ft_printf("\n");
 		rl_on_new_line();
-		print_dir();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}

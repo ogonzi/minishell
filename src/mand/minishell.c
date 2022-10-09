@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/07 16:38:24 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/09 18:48:37 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	handle_input(char **line)
 	char	*buf;
 	int		len_buf;
 
-	buf = readline("$ ");
+	buf = readline("> ");
 	if (buf == NULL)
 	{
 		printf("exit\n");
@@ -56,7 +56,6 @@ int	main(int argc, char *argv[])
 	init_shell();
 	while (1)
 	{
-		print_dir();
 		if (handle_input(&line) == 1)
 			break ;
 	}

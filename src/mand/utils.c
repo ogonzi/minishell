@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:53:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/09 13:38:50 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/09 18:48:11 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,3 @@ void	init_shell(void)
 	printf("\n\nUser is: %s\n", getenv("USER"));
 	printf("\n");
 }
-
-/*
- * En principi el limit de longitud d'un path en MAC es 1024, hi ha una
- * constant que es diu PATH_MAX que ho hauria d'especificar, pero caldria
- * utilizar limits.h i el mateix getcwd diu que no es gaire bona idea
- * utilitzar-ho.
- */
-
-void	print_dir(void)
-{
-	char	buf[1024];
-	char	*err;
-
-	err = getcwd(buf, sizeof(buf));
-	if (err == NULL)
-		terminate(ERR_GETPWD, 1);
-	ft_printf("\033[0;32m");
-	ft_printf("%s@%s", getenv("USER"), getenv("NAME"));
-	ft_printf("\033[0m");
-	ft_printf(":");
-	ft_printf("\033[0;34m");
-	ft_printf("%s", buf);
-	ft_printf("\033[0m");
-}
-
