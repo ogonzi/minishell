@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/10 21:00:10 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/11 17:59:38 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,9 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-void	handler(int signum)
-{
-	//rl_replace_line("", 0);
-	(void)signum;
-}
-
 void	fork_process(char **line)
 {
 	pid_t				pid;
-//	struct sigaction	sa;
 	int					child_exit_status;
 	int					wstatus;
 
@@ -40,11 +33,7 @@ void	fork_process(char **line)
 		terminate(ERR_FORK, 1);
 	else if (pid == 0)
 	{
-//		sa.sa_handler = &handler;
-//		sa.sa_flags = SA_RESTART;
-//		if (sigaction(SIGINT, &sa, 0) == -1)
-//			terminate(ERR_SIG, 1);
-		signal(SIGINT, SIG_DFL);
+		set_child_sigaction();
 		sleep(5);
 		if (*line)
 			printf("%s\n", *line);
@@ -52,20 +41,16 @@ void	fork_process(char **line)
 	}
 	else
 	{
+		do_sigign(SIGINT);
 		if (wait(&wstatus) == -1)
 			terminate(ERR_WAIT, 1);
 		if (WIFEXITED(wstatus))
 		{
+			set_sigint_action();
 			child_exit_status = WEXITSTATUS(wstatus);
-			printf("child exit status = %d\n", child_exit_status);
-		}
-		if (WIFSIGNALED(wstatus))
-		{
-			if (WTERMSIG(wstatus) == SIGINT)
-				printf("Child terminated with sigint\n");
+			(void)child_exit_status;
 		}
 	}
-
 }
 
 int	handle_input(char **line)
@@ -102,7 +87,8 @@ int	main(int argc, char *argv[])
 
 	if (argc != 1)
 		terminate(ERR_ARGS, 0);
-	handle_signals();
+	set_sigint_action();
+	do_sigign(SIGQUIT);
 	init_shell();
 	while (1)
 	{
