@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:53:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/09 18:48:11 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/12 10:59:31 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,17 @@ void	init_shell(void)
 	printf("\n\n*******************************");
 	printf("\n\nUser is: %s\n", getenv("USER"));
 	printf("\n");
+}
+
+void	ft_free_twod_memory(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i] != NULL)
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
