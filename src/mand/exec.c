@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/12 13:03:42 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:33:10 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 void	print_tokens(char **tokens)
 {
@@ -50,10 +52,25 @@ void	do_parent(void)
 		terminate(ERR_WAIT, 1);
 	if (WIFEXITED(wstatus))
 	{
-		set_sigint_action();
 		child_exit_status = WEXITSTATUS(wstatus);
-		(void)child_exit_status;
+		set_sigint_action();
 	}
+	if (WIFSIGNALED(wstatus))
+	{
+		if (WTERMSIG(wstatus) == SIGINT)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			set_sigint_action();
+			child_exit_status = 130;
+		}
+		if (WTERMSIG(wstatus) == SIGQUIT)
+		{
+			write(STDOUT_FILENO, "Quit\n", 5);
+			rl_on_new_line();
+			child_exit_status = 131;
+		}
+	}
+	(void)child_exit_status;
 }
 
 void	exec(char ***tokens)
