@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/12 13:05:36 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/15 17:03:48 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-int	handle_input(char **line)
+int	handle_input(t_cmd_line cmd_line)
 {
 	char	*buf;
 	int		len_buf;
@@ -37,10 +37,10 @@ int	handle_input(char **line)
 	if (len_buf != 0)
 	{
 		add_history(buf);
-		*line = malloc(sizeof(char) * (len_buf + 1));
-		if (*line == NULL)
+		cmd_line.cmd = malloc(sizeof(char) * (len_buf + 1));
+		if (cmd_line.cmd == NULL)
 			terminate(ERR_MEM, 1);
-		ft_strlcpy(*line, buf, len_buf + 1);
+		ft_strlcpy(cmd_line.cmd, buf, len_buf + 1);
 		free(buf);
 		buf = NULL;
 		return (0);
@@ -50,8 +50,8 @@ int	handle_input(char **line)
 
 int	main(int argc, char *argv[])
 {
-	char	*line;
-	char	**tokens;
+	t_cmd_line	cmd_line;
+	//t_token		token;
 
 	if (argc != 1)
 		terminate(ERR_ARGS, 0);
@@ -60,13 +60,8 @@ int	main(int argc, char *argv[])
 	init_shell();
 	while (1)
 	{
-		if (handle_input(&line) == 1)
+		if (handle_input(cmd_line) == 1)
 			break ;
-		tokens = ft_split_mod(line, " \f\n\r\t\v");
-		free(line);
-		if (tokens[0] != NULL)
-			exec(&tokens);
-		free(tokens);
 	}
 	(void)argv;
 	return (0);

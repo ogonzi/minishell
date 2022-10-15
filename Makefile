@@ -6,7 +6,7 @@
 #    By: ogonzale <ogonzale@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2022/10/12 12:44:18 by ogonzale         ###   ########.fr        #
+#    Updated: 2022/10/15 16:47:24 by ogonzale         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ WHITE 		:= \033[0;97m
 #Sources
 
 MAND_DIR	:= mand/
-MAND_FILES	:= minishell signals split remove_char exec get_exec_path \
+MAND_FILES	:= minishell signals exec get_exec_path \
 			   utils 
 
 BONUS_DIR	:= bonus/
