@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/17 18:27:43 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/18 20:00:06 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-int	handle_input(t_list *cmd_line)
+int	handle_input(t_list **cmd_line)
 {
 	char	*buf;
 	int		len_buf;
@@ -38,12 +38,6 @@ int	handle_input(t_list *cmd_line)
 	{
 		add_history(buf);
 		split_cmd_line(cmd_line, buf);
-		/*
-		cmd_line.cmd = malloc(sizeof(char) * (len_buf + 1));
-		if (cmd_line.cmd == NULL)
-			terminate(ERR_MEM, 1);
-		ft_strlcpy(cmd_line.cmd, buf, len_buf + 1);
-		*/
 		free(buf);
 		buf = NULL;
 		return (0);
@@ -54,7 +48,6 @@ int	handle_input(t_list *cmd_line)
 int	main(int argc, char *argv[])
 {
 	t_list	*cmd_line;
-	//t_token		token;
 
 	if (argc != 1)
 		terminate(ERR_ARGS, 0);
@@ -64,8 +57,10 @@ int	main(int argc, char *argv[])
 	cmd_line = NULL;
 	while (1)
 	{
-		if (handle_input(cmd_line) == 1)
+		if (handle_input(&cmd_line) == 1)
 			break ;
+		free_cmd_line(cmd_line);
+		cmd_line = NULL;
 	}
 	(void)argv;
 	return (0);

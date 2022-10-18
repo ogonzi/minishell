@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:33:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/12 17:17:12 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/18 19:25:53 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void	do_sigign(int signum)
 	struct sigaction	sa;
 
 	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = SA_RESTART;
+	sigemptyset(&sa.sa_mask);
 	if (sigaction(signum, &sa, NULL) == -1)
 		terminate(ERR_SIG, 1);
 }

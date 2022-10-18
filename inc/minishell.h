@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/17 18:26:50 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/17 19:23:44 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 typedef struct s_cmd_line_content
 {
 	char	*cmd;
-	//t_list	*word;
+	t_list	*word;
 }			t_cmd_line_content;
 
 enum	e_type
@@ -49,7 +49,11 @@ void	do_sigign(int signum);
 
 /* split_cmd_line.c */
 
-void	split_cmd_line(t_list *cmd_line, char *line); 
+void	split_cmd_line(t_list **cmd_line, char *line); 
+
+/* free.c */
+
+void	free_cmd_line(t_list *cmd_line);
 
 /* exec.c */
 
