@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/18 20:00:06 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:58:06 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ int	main(int argc, char *argv[])
 	{
 		if (handle_input(&cmd_line) == 1)
 			break ;
-		free_cmd_line(cmd_line);
-		cmd_line = NULL;
+		if (cmd_line != NULL)
+			free_cmd_line(&cmd_line);
 	}
 	(void)argv;
 	return (0);

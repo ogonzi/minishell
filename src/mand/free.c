@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 18:33:12 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/19 12:22:10 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/19 12:36:06 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,24 +36,22 @@ void	ft_free(void *content)
 	t_cmd_line_content	*cmd_line_content;
 
 	cmd_line_content = content;
-	printf("Freeing cmd_line_content->cmd %p\n", cmd_line_content->cmd);
 	free(cmd_line_content->cmd);
 	cmd_line_content->cmd = NULL;
-	printf("Freeing cmd_line_content %p\n", cmd_line_content);
 	free(cmd_line_content);
+	cmd_line_content = NULL;
 }
 
-void	free_cmd_line(t_list *cmd_line)
+void	free_cmd_line(t_list **cmd_line)
 {
 	t_list	*tmp;
 
-	ft_lstiter(cmd_line, &ft_free);
-	while(cmd_line)
+	ft_lstiter(*cmd_line, &ft_free);
+	while(*cmd_line)
 	{
-		tmp = cmd_line->next;
-		printf("Freeing node %p\n", cmd_line);
-		free(cmd_line);
-		cmd_line = tmp;
+		tmp = (*cmd_line)->next;
+		free(*cmd_line);
+		*cmd_line = tmp;
 	}
-	cmd_line = NULL;
+	*cmd_line = NULL;
 }

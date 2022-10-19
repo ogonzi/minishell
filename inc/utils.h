@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/12 11:04:41 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:55:58 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 
 void	terminate(char *s, int system_error_flag);
 void	init_shell(void);
-void	print_dir(void);
 void	ft_free_twod_memory(char **arr);
 
 #endif
