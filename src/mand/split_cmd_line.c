@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 18:11:15 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/19 14:04:54 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/19 14:35:14 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "utils.h"
 #include <stdio.h>
 #include <readline/readline.h>
-/*
+
 void	print_list(t_list *lst)
 {
 	t_list				*lst_cpy;
@@ -27,7 +27,7 @@ void	print_list(t_list *lst)
 	}
 	lst_cpy = 0;
 }
-*/
+
 int	count_splits(char **split_line)
 {
 	int	i;
@@ -116,4 +116,5 @@ void	split_cmd_line(t_list **cmd_line, char *line)
 	}
 	free(split_line);
 	split_line = NULL;
+	print_list(*cmd_line);
 }
