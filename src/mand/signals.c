@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:33:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/18 19:25:53 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/19 11:57:13 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <termios.h>
 #include <term.h>
 #include <unistd.h>
-#include <wait.h>
+#include <sys/wait.h>
 #include <stdlib.h>
 #include "utils.h"
 #include "ft_printf.h"

@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:39:10 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/12 17:00:41 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/19 12:14:38 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	get_exec_path(char ***tokens, char **exec_path)
 	int		i;
 
 	path_line = getenv("PATH");
+	paths = NULL;
 	if (path_line != NULL)
 	{
 		ft_get_paths(&paths, path_line);
