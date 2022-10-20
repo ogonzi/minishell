@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:02:25 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/20 17:14:54 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:26:59 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,13 @@ int	get_splits(char *line, char sep, char ***split_line)
 	while (line[i] != '\0')
 	{
 		if (i == 0 && line[i] == sep)
+		{
+			if (line[i + 1] == sep)
+				printf("%s %s\n", ERR_SYNTAX, "`||'"); 
+			else
+				printf("%s %s\n", ERR_SYNTAX, "`|'"); 
 			return (1);
+		}
 		if (line[i] == '\'')
 			find_closing_quote(line, &i, &quote_flag, '\'');
 		if (line[i] == '\"')
@@ -76,7 +82,7 @@ int	get_splits(char *line, char sep, char ***split_line)
 	return (0);
 }
 
-void	ft_split_mod(char ***split_line, char *line, char sep)
+int	ft_split_mod(char ***split_line, char *line, char sep)
 {
 	int		num_splits;
 
@@ -85,5 +91,10 @@ void	ft_split_mod(char ***split_line, char *line, char sep)
 	if (*split_line == NULL)
 		terminate(ERR_MEM, 1);
 	if (get_splits(line, sep, split_line) == 1)
-		printf("error parsing\n");
+	{
+		free(*split_line);
+		*split_line = NULL;
+		return (1);
+	}
+	return (0);
 }

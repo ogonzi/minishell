@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/20 16:11:32 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:24:58 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define ERR_ARGS			"Incorrect number of arguments, expected 0"
 # define ERR_QUOTES			"Opening quotes aren't properly closed"
+# define ERR_SYNTAX			"-msh: Syntax error near unexpected token"
 # define ERR_GETPWD			"Function error -> getpwd"
 # define ERR_MEM			"Fuction error -> malloc"
 # define ERR_SIG			"Function error -> sigaction"
