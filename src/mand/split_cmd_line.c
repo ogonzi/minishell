@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 18:11:15 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/20 17:19:10 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/20 19:11:50 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_list(t_list *lst)
 
 void	set_node(char **split_line, t_list **cmd_line_node)
 {
-	int	cmd_len;
+	int					cmd_len;
 	t_cmd_line_content	*cmd_line_content;
 
 	cmd_len = ft_strlen(*split_line);
@@ -41,12 +41,9 @@ void	set_node(char **split_line, t_list **cmd_line_node)
 	if (cmd_line_content->cmd == NULL)
 		terminate(ERR_MEM, 1);
 	ft_strlcpy(cmd_line_content->cmd, *split_line, cmd_len + 1);
-	//free(*split_line);
-	//*split_line = NULL;
 	*cmd_line_node = ft_lstnew(cmd_line_content);
 	if (*cmd_line_node == NULL)
 		terminate(ERR_MEM, 1);
-
 }
 
 int	check_quotes(char *line)
@@ -91,11 +88,11 @@ void	split_cmd_line(t_list **cmd_line, char *line)
 	i = 0;
 	while (split_line[i] != NULL)
 	{
-		set_node(&split_line[i], &cmd_line_node); 
+		set_node(&split_line[i], &cmd_line_node);
 		ft_lstadd_back(cmd_line, cmd_line_node);
 		i++;
 	}
 	ft_free_twod_memory(split_line);
 	split_line = NULL;
-	//print_list(*cmd_line);
+	print_list(*cmd_line);
 }

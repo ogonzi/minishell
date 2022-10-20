@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 18:33:12 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/19 12:36:06 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/20 19:12:15 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	del(void *content)
 		i++;
 	}
 	free(cmd_line_content);
-
 }
 
 void	ft_free(void *content)
@@ -47,7 +46,7 @@ void	free_cmd_line(t_list **cmd_line)
 	t_list	*tmp;
 
 	ft_lstiter(*cmd_line, &ft_free);
-	while(*cmd_line)
+	while (*cmd_line)
 	{
 		tmp = (*cmd_line)->next;
 		free(*cmd_line);

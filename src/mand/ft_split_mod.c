@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:02:25 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/20 17:26:59 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/20 19:10:09 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,49 +36,50 @@ int	count_num_splits(char *line, char sep)
 	return (num_splits);
 }
 
+int	no_command_between_pipes(char *str, t_split_data split, char ***split_line)
+{
+	int	i;
+
+	i = 1;
+	while (ft_isspace(str[i]) && str[i] != '\0')
+		i++;
+	if (str[i] == '\0' || str[i] == '|')
+	{
+		while (--split.num >= 0)
+			free((*split_line)[split.num]);
+		return (1);
+	}
+	return (0);
+}
+
+/*
+ * TODO: Syntax error code is 2
+ */
+
 int	get_splits(char *line, char sep, char ***split_line)
 {
-	int	start_split;
-	int	i;
-	int	quote_flag;
-	int	split_num;
+	t_split_data	split;
+	int				i;
 
+	split.start = 0;
+	split.num = 0;
 	i = 0;
-	start_split = 0;
-	quote_flag = 0;
-	split_num = 0;
 	while (line[i] != '\0')
 	{
 		if (i == 0 && line[i] == sep)
-		{
-			if (line[i + 1] == sep)
-				printf("%s %s\n", ERR_SYNTAX, "`||'"); 
-			else
-				printf("%s %s\n", ERR_SYNTAX, "`|'"); 
-			return (1);
-		}
-		if (line[i] == '\'')
-			find_closing_quote(line, &i, &quote_flag, '\'');
-		if (line[i] == '\"')
-			find_closing_quote(line, &i, &quote_flag, '\"');
+			return (print_error_syntax());
+		move_to_end_of_quote(line, &i);
 		if (line[i] == sep)
 		{
-			(*split_line)[split_num] = ft_substr(line, start_split, i - start_split);
-			if ((*split_line)[split_num] == NULL)
-				terminate(ERR_MEM, 1);
-			split_num++;
-			start_split = i + 1;
+			if (no_command_between_pipes(&line[i], split, split_line) == 1)
+				return (print_error_syntax());
+			set_split(split_line, &split, line, i);
 		}
 		if (line[i + 1] == '\0')
-		{
-			(*split_line)[split_num] = ft_substr(line, start_split, i + 1 - start_split);
-			if ((*split_line)[split_num] == NULL)
-				terminate(ERR_MEM, 1);
-			split_num++;
-		}
+			set_split(split_line, &split, line, i + 1);
 		i++;
 	}
-	(*split_line)[split_num] = NULL;
+	(*split_line)[split.num] = NULL;
 	return (0);
 }
 
