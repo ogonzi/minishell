@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 18:11:15 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/19 14:35:14 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:15:55 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,6 @@ void	print_list(t_list *lst)
 	lst_cpy = 0;
 }
 
-int	count_splits(char **split_line)
-{
-	int	i;
-
-	i = 0;
-	while (split_line[i] != NULL)
-		i++;
-	return (i);
-}
-
 void	set_node(char **split_line, t_list **cmd_line_node)
 {
 	int	cmd_len;
@@ -51,22 +41,12 @@ void	set_node(char **split_line, t_list **cmd_line_node)
 	if (cmd_line_content->cmd == NULL)
 		terminate(ERR_MEM, 1);
 	ft_strlcpy(cmd_line_content->cmd, *split_line, cmd_len + 1);
-	free(*split_line);
-	split_line = NULL;
+	//free(*split_line);
+	//*split_line = NULL;
 	*cmd_line_node = ft_lstnew(cmd_line_content);
 	if (*cmd_line_node == NULL)
 		terminate(ERR_MEM, 1);
 
-}
-
-void	find_closing_quote(char *line, int *i, int *quote_flag, char quote)
-{
-	*quote_flag = 1;
-	(*i)++;
-	while (line[*i] != quote && line[*i] != '\0')
-		(*i)++;
-	if (line[*i] == quote)
-		*quote_flag = 0;
 }
 
 int	check_quotes(char *line)
@@ -94,9 +74,9 @@ int	check_quotes(char *line)
 
 void	split_cmd_line(t_list **cmd_line, char *line)
 {
-	char				**split_line;
 	int					i;
 	t_list				*cmd_line_node;
+	char				**split_line;
 
 	if (check_quotes(line) == 1)
 	{
@@ -104,7 +84,7 @@ void	split_cmd_line(t_list **cmd_line, char *line)
 		printf("%s\n", ERR_QUOTES);
 		return ;
 	}
-	split_line = ft_split(line, '|');
+	ft_split_mod(&split_line, line, '|');
 	if (split_line == NULL)
 		terminate(ERR_MEM, 1);
 	i = 0;
@@ -114,7 +94,7 @@ void	split_cmd_line(t_list **cmd_line, char *line)
 		ft_lstadd_back(cmd_line, cmd_line_node);
 		i++;
 	}
-	free(split_line);
+	ft_free_twod_memory(split_line);
 	split_line = NULL;
-	print_list(*cmd_line);
+	//print_list(*cmd_line);
 }

@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/19 13:55:58 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/20 16:11:32 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,10 @@
 void	terminate(char *s, int system_error_flag);
 void	init_shell(void);
 void	ft_free_twod_memory(char **arr);
+
+/* split_utils.c */
+
+void	find_closing_quote(char *line, int *i, int *quote_flag, char quote);
+int		count_splits(char **split_line);
 
 #endif
