@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/19 13:58:06 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/21 16:12:18 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	handle_input(t_list **cmd_line)
 	{
 		add_history(buf);
 		split_cmd_line(cmd_line, buf);
+		split_words(cmd_line);
 		free(buf);
 		buf = NULL;
 		return (0);

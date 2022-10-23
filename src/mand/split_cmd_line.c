@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 18:11:15 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/20 19:11:50 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/23 11:52:08 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,6 @@
 #include "utils.h"
 #include <stdio.h>
 #include <readline/readline.h>
-
-void	print_list(t_list *lst)
-{
-	t_list				*lst_cpy;
-
-	lst_cpy = lst;
-	while (lst_cpy)
-	{
-		printf("%s\n", ((t_cmd_line_content *)lst_cpy->content)->cmd);
-		lst_cpy = lst_cpy->next;
-	}
-	lst_cpy = 0;
-}
 
 void	set_node(char **split_line, t_list **cmd_line_node)
 {
@@ -94,5 +81,5 @@ void	split_cmd_line(t_list **cmd_line, char *line)
 	}
 	ft_free_twod_memory(split_line);
 	split_line = NULL;
-	print_list(*cmd_line);
+	//print_list(*cmd_line);
 }

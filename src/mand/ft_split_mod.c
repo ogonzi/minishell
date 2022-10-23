@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:02:25 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/20 19:10:09 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/23 11:44:13 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,20 @@ int	get_splits(char *line, char sep, char ***split_line)
 	i = 0;
 	while (line[i] != '\0')
 	{
-		if (i == 0 && line[i] == sep)
+		if (i == 0 && line[i] == sep && sep == '|')
 			return (print_error_syntax());
 		move_to_end_of_quote(line, &i);
 		if (line[i] == sep)
 		{
-			if (no_command_between_pipes(&line[i], split, split_line) == 1)
-				return (print_error_syntax());
-			set_split(split_line, &split, line, i);
+			if (sep == '|')
+				if (no_command_between_pipes(&line[i], split, split_line) == 1)
+					return (print_error_syntax());
+			if (split.start != i)
+				set_split(split_line, &split, line, i);
+			else
+				split.start++;
 		}
-		if (line[i + 1] == '\0')
+		if (line[i + 1] == '\0' && split.start != i + 1)
 			set_split(split_line, &split, line, i + 1);
 		i++;
 	}
