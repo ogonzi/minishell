@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:12:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/23 12:59:08 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/25 18:35:35 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	print_list(t_list *lst)
 	lst_cpy = lst;
 	while (lst_cpy)
 	{
-		printf("%s\n", ((t_token_content *)lst_cpy->content)->word);
-		printf("%d\n", ((t_token_content *)lst_cpy->content)->type);
+		printf("%s (%d)\n", ((t_token_content *)lst_cpy->content)->word,
+			((t_token_content *)lst_cpy->content)->type);
 		lst_cpy = lst_cpy->next;
 	}
 	lst_cpy = 0;
@@ -37,13 +37,13 @@ int	set_word_type(char *word, int word_len, enum e_type *last_word_type)
 	}
 	if (*last_word_type == FILE_IN)
 	{
-		printf("success\n");
 		*last_word_type = NONE;
 	}
 	return (0);
 }
 
-void	set_token_node(char *word, t_list **token_node, enum e_type *last_word_type)
+void	set_token_node(char *word, t_list **token_node,
+			enum e_type *last_word_type)
 {
 	t_token_content		*token_content;
 	int					word_len;
@@ -59,10 +59,18 @@ void	set_token_node(char *word, t_list **token_node, enum e_type *last_word_type
 		terminate(ERR_MEM, 1);
 	token_content->type = *last_word_type;
 	ft_strlcpy(token_content->word, word, word_len + 1);
-	*token_node = ft_lstnew(token_content);	
+	*token_node = ft_lstnew(token_content);
 	if (*token_node == NULL)
 		terminate(ERR_MEM, 1);
 }
+
+/*
+ * This function first splits the command line into words, then goes
+ * through each word, checking if a redirection is present in the word.
+ * For example a>b (without spaces would be counted as 1 word). If the
+ * case is given, a>b is split into a, >, b. Each added to the end of the
+ * list. If not, the token node is set and added to the end of the list.
+ */
 
 void	split_and_classify(void *content)
 {
@@ -79,12 +87,18 @@ void	split_and_classify(void *content)
 	last_word_type = NONE;
 	while (split_cmd[i] != NULL)
 	{
-		set_token_node(split_cmd[i], &token_node, &last_word_type);
-		ft_lstadd_back(&(cmd_line->word), token_node);
+		if (redirection_conditions(split_cmd[i]) == 1)
+			handle_redirection_split(split_cmd[i], &token_node,
+				&last_word_type, cmd_line);
+		else
+		{
+			set_token_node(split_cmd[i], &token_node, &last_word_type);
+			ft_lstadd_back(&(cmd_line->word), token_node);
+		}
 		i++;
 	}
 	ft_free_twod_memory(split_cmd);
-	//print_list(cmd_line->word);
+	print_list(cmd_line->word);
 }
 
 void	split_words(t_list **cmd_line)

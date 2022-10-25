@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 18:11:15 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/23 11:52:08 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/25 18:19:13 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,4 @@ void	split_cmd_line(t_list **cmd_line, char *line)
 	}
 	ft_free_twod_memory(split_line);
 	split_line = NULL;
-	//print_list(*cmd_line);
 }

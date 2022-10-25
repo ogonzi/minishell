@@ -6,13 +6,24 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:02:25 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/23 11:44:13 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/25 18:19:42 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "utils.h"
 #include <stdio.h>
+
+int	all_sep(char *line, int i, char sep)
+{
+	while (line[i] != '\0')
+	{
+		if (line[i] != sep)
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 int	count_num_splits(char *line, char sep)
 {
@@ -29,7 +40,7 @@ int	count_num_splits(char *line, char sep)
 			find_closing_quote(line, &i, &quote_flag, '\'');
 		if (line[i] == '\"')
 			find_closing_quote(line, &i, &quote_flag, '\"');
-		if (line[i] == sep)
+		if (line[i] == sep && all_sep(line, i, sep) != 1)
 			num_splits++;
 		i++;
 	}
