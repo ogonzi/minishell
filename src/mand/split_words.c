@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:12:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/25 18:35:35 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/25 19:22:46 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,68 @@ void	print_list(t_list *lst)
 	lst_cpy = 0;
 }
 
-int	set_word_type(char *word, int word_len, enum e_type *last_word_type)
+int	syntax_error(char *word, int word_len)
 {
-	if (*last_word_type == NONE)
+	if (word_len == 1)
 	{
-		if (ft_strncmp("<", word, word_len) == 0)
-			*last_word_type = FILE_IN;
+		if (ft_is_in_set('<', word) == 1)
+			return (print_error_syntax("`<'"));
+		else if (ft_is_in_set('>', word) == 1)
+			return (print_error_syntax("`>'"));
 	}
-	if (*last_word_type == FILE_IN)
+	else
 	{
-		*last_word_type = NONE;
+		if (ft_is_in_set('<', word) == 1)
+			return (print_error_syntax("`<<'"));
+		else if (ft_is_in_set('>', word) == 1)
+			return (print_error_syntax("`>>'"));
 	}
 	return (0);
 }
 
-void	set_token_node(char *word, t_list **token_node,
+int	set_word_type(char *word, int word_len, enum e_type *last_word_type)
+{
+	if (*last_word_type == NONE || *last_word_type == ARG)
+	{
+		if (ft_strncmp("<", word, word_len) == 0)
+			*last_word_type = FILE_IN;
+		else if (ft_strncmp("<<", word, word_len) == 0)
+			*last_word_type = HERE_DOC;
+		else if (ft_strncmp(">", word, word_len) == 0)
+			*last_word_type = FILE_OUT;
+		else if (ft_strncmp(">>", word, word_len) == 0)
+			*last_word_type = FILE_OUT_APP;
+		else
+			*last_word_type = ARG;
+	}
+	else if (*last_word_type == FILE_IN)
+	{
+		if (syntax_error(word, word_len) == 1)
+			return (1);
+		*last_word_type = OPEN_FILE;
+	}
+	else if (*last_word_type == HERE_DOC)
+	{
+		if (syntax_error(word, word_len) == 1)
+			return (1);
+		*last_word_type = LIMITOR;
+	}
+	else if (*last_word_type == FILE_OUT)
+	{
+		if (syntax_error(word, word_len) == 1)
+			return (1);
+		*last_word_type = EXIT_FILE;
+	}
+	else if (*last_word_type == FILE_OUT_APP)
+	{
+		if (syntax_error(word, word_len) == 1)
+			return (1);
+		*last_word_type = EXIT_FILE_RET;
+	}
+	return (0);
+}
+
+int	set_token_node(char *word, t_list **token_node,
 			enum e_type *last_word_type)
 {
 	t_token_content		*token_content;
@@ -50,7 +97,7 @@ void	set_token_node(char *word, t_list **token_node,
 
 	word_len = ft_strlen(word);
 	if (set_word_type(word, word_len, last_word_type) == 1)
-		return ;
+		return (1);
 	token_content = malloc(sizeof(t_token_content));
 	if (token_content == NULL)
 		terminate(ERR_MEM, 1);
@@ -62,6 +109,7 @@ void	set_token_node(char *word, t_list **token_node,
 	*token_node = ft_lstnew(token_content);
 	if (*token_node == NULL)
 		terminate(ERR_MEM, 1);
+	return (0);
 }
 
 /*
@@ -88,11 +136,15 @@ void	split_and_classify(void *content)
 	while (split_cmd[i] != NULL)
 	{
 		if (redirection_conditions(split_cmd[i]) == 1)
-			handle_redirection_split(split_cmd[i], &token_node,
-				&last_word_type, cmd_line);
+		{
+			if (handle_redirection_split(split_cmd[i], &token_node,
+				&last_word_type, cmd_line) == 1)
+				break ;
+		}
 		else
 		{
-			set_token_node(split_cmd[i], &token_node, &last_word_type);
+			if (set_token_node(split_cmd[i], &token_node, &last_word_type) == 1)
+				break ;
 			ft_lstadd_back(&(cmd_line->word), token_node);
 		}
 		i++;

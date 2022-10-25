@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:07:20 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/23 11:36:35 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/25 18:48:22 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int	count_splits(char **split_line)
 	return (i);
 }
 
-int	print_error_syntax(void)
+int	print_error_syntax(const char *token)
 {
-	printf("%s %s\n", ERR_SYNTAX, "`|'");
+	printf("%s %s\n", ERR_SYNTAX, token);
 	return (1);
 }
 
