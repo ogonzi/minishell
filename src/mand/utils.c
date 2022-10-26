@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:53:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/20 18:29:30 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/26 17:31:59 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ void	init_shell(void)
 	printf("\n");
 }
 
+int	free_and_return_error_code(char **str, int err)
+{
+	free(*str);
+	*str = NULL;
+	return (err);
+}
+
 void	ft_free_twod_memory(char **arr)
 {
 	int	i;
@@ -44,4 +51,5 @@ void	ft_free_twod_memory(char **arr)
 		i++;
 	}
 	free(arr);
+	arr = NULL;
 }

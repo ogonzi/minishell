@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/21 16:12:18 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/26 18:53:47 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,24 @@ int	handle_input(t_list **cmd_line)
 {
 	char	*buf;
 	int		len_buf;
+	int		err;
 
 	buf = readline("msh> ");
 	if (buf == NULL)
 	{
 		write(STDOUT_FILENO, "exit\n", 5);
-		return (1);
+		return (-1);
 	}
 	len_buf = ft_strlen(buf);
 	if (len_buf != 0)
 	{
 		add_history(buf);
-		split_cmd_line(cmd_line, buf);
-		split_words(cmd_line);
+		err = split_cmd_line(cmd_line, buf);
+		if (err != 0)
+			return (free_and_return_error_code(&buf, err));
+		err = split_words(cmd_line);
+		if (err != 0)
+			return (free_and_return_error_code(&buf, err));
 		free(buf);
 		buf = NULL;
 		return (0);
@@ -58,7 +63,7 @@ int	main(int argc, char *argv[])
 	cmd_line = NULL;
 	while (1)
 	{
-		if (handle_input(&cmd_line) == 1)
+		if (handle_input(&cmd_line) == -1)
 			break ;
 		if (cmd_line != NULL)
 			free_cmd_line(&cmd_line);

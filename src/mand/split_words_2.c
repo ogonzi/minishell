@@ -6,28 +6,26 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:13:38 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/25 19:19:35 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/26 18:55:18 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include "minishell.h"
 
-int	add_new_word(char *split_cmd, t_word *word, t_list **token_node,
+void	add_new_word(char *split_cmd, t_word *word, t_list **token_node,
 			t_cmd_line_content *cmd_line)
 {
 	word->str = ft_substr(split_cmd, word->start, word->end - word->start);
 	if (word->str == NULL)
 		terminate(ERR_MEM, 1);
-	if (set_token_node(word->str, token_node, word->last_type) == 1)
-		return (1);
+	set_token_node(word->str, token_node, word->last_type);
 	ft_lstadd_back(&(cmd_line->word), *token_node);
 	free(word->str);
 	word->start = word->end;
-	return (0);
 }
 
-int	handle_redirection_split(char *split_cmd, t_list **token_node,
+void	handle_redirection_split(char *split_cmd, t_list **token_node,
 		enum e_type *last_word_type, t_cmd_line_content *cmd_line)
 {
 	t_word	word;
@@ -41,26 +39,20 @@ int	handle_redirection_split(char *split_cmd, t_list **token_node,
 			&& split_cmd[word.end] != '\0')
 			word.end++;
 		if (word.end != word.start)
-		{
-			if (add_new_word(split_cmd, &word, token_node, cmd_line) == 1)
-				return (1);
-		}
+			add_new_word(split_cmd, &word, token_node, cmd_line);
 		if ((split_cmd[word.end] == '<' && split_cmd[word.end + 1] != '<')
 			|| (split_cmd[word.end] == '>' && split_cmd[word.end + 1] != '>'))
 		{
 			word.end++;
-			if (add_new_word(split_cmd, &word, token_node, cmd_line) == 1)
-				return (1);
+			add_new_word(split_cmd, &word, token_node, cmd_line);
 		}
 		else if ((split_cmd[word.end] == '<' && split_cmd[word.end + 1] == '<')
 			|| (split_cmd[word.end] == '>' && split_cmd[word.end + 1] == '>'))
 		{
 			word.end += 2;
-			if (add_new_word(split_cmd, &word, token_node, cmd_line) == 1)
-				return (1);
+			add_new_word(split_cmd, &word, token_node, cmd_line);
 		}
 	}
-	return (0);
 }
 
 int	redirection_conditions(char *split_cmd)
@@ -69,5 +61,26 @@ int	redirection_conditions(char *split_cmd)
 		&& (ft_strchr(split_cmd, '<') != NULL
 			|| ft_strchr(split_cmd, '>') != NULL))
 		return (1);
+	return (0);
+}
+
+int	check_syntax_error(t_list **cmd_line)
+{
+	t_cmd_line_content	*cmd_line_content;
+	t_list				*cmd_line_cpy;
+
+	cmd_line_cpy = *cmd_line;
+	while (cmd_line_cpy)
+	{
+		cmd_line_content = cmd_line_cpy->content;
+		while (cmd_line_content->word)
+		{
+			if (((t_token_content *)cmd_line_content->word->content)->type
+				== SYN_ERROR)
+				return (2);
+			cmd_line_content->word = cmd_line_content->word->next;
+		}
+		cmd_line_cpy = cmd_line_cpy->next;
+	}
 	return (0);
 }

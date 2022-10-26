@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:07:20 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/25 18:48:22 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/26 19:08:30 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,6 @@ int	count_splits(char **split_line)
 	return (i);
 }
 
-int	print_error_syntax(const char *token)
-{
-	printf("%s %s\n", ERR_SYNTAX, token);
-	return (1);
-}
-
 void	move_to_end_of_quote(char *line, int *i)
 {
 	int	quote_flag;
@@ -54,9 +48,15 @@ void	move_to_end_of_quote(char *line, int *i)
 
 void	set_split(char ***split_line, t_split_data *split, char *line, int i)
 {
-	(*split_line)[split->num] = ft_substr(line, split->start, i - split->start);
-	if ((*split_line)[split->num] == NULL)
-		terminate(ERR_MEM, 1);
-	(split->num)++;
-	split->start = i + 1;
+	if (split->start != i)
+	{
+		(*split_line)[split->num]
+			= ft_substr(line, split->start, i - split->start);
+		if ((*split_line)[split->num] == NULL)
+			terminate(ERR_MEM, 1);
+		(split->num)++;
+		split->start = i + 1;
+	}
+	else
+		split->start++;
 }

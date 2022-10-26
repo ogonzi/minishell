@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 18:11:15 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/25 18:19:13 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/26 17:31:50 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,20 @@ int	check_quotes(char *line)
 	return (1);
 }
 
-void	split_cmd_line(t_list **cmd_line, char *line)
+int	split_cmd_line(t_list **cmd_line, char *line)
 {
 	int					i;
 	t_list				*cmd_line_node;
 	char				**split_line;
 
-	if (check_quotes(line) == 1)
+	if (check_quotes(line) != 0)
 	{
 		rl_on_new_line();
 		printf("%s\n", ERR_QUOTES);
-		return ;
+		return (1);
 	}
-	if (ft_split_mod(&split_line, line, '|') == 1)
-		return ;
-	if (split_line == NULL)
-		terminate(ERR_MEM, 1);
+	if (ft_split_mod(&split_line, line, '|') != 0)
+		return (2);
 	i = 0;
 	while (split_line[i] != NULL)
 	{
@@ -80,5 +78,5 @@ void	split_cmd_line(t_list **cmd_line, char *line)
 		i++;
 	}
 	ft_free_twod_memory(split_line);
-	split_line = NULL;
+	return (0);
 }

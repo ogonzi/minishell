@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:12:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/25 19:22:46 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/10/26 19:08:07 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,23 @@ void	print_list(t_list *lst)
 	lst_cpy = 0;
 }
 
-int	syntax_error(char *word, int word_len)
+void	set_type_after_redir(enum e_type *last_word_type)
 {
-	if (word_len == 1)
-	{
-		if (ft_is_in_set('<', word) == 1)
-			return (print_error_syntax("`<'"));
-		else if (ft_is_in_set('>', word) == 1)
-			return (print_error_syntax("`>'"));
-	}
-	else
-	{
-		if (ft_is_in_set('<', word) == 1)
-			return (print_error_syntax("`<<'"));
-		else if (ft_is_in_set('>', word) == 1)
-			return (print_error_syntax("`>>'"));
-	}
-	return (0);
+	if (*last_word_type == FILE_IN)
+		*last_word_type = OPEN_FILE;
+	else if (*last_word_type == HERE_DOC)
+		*last_word_type = LIMITOR;
+	else if (*last_word_type == FILE_OUT)
+		*last_word_type = EXIT_FILE;
+	else if (*last_word_type == FILE_OUT_APP)
+		*last_word_type = EXIT_FILE_RET;
 }
 
-int	set_word_type(char *word, int word_len, enum e_type *last_word_type)
+void	set_word_type(char *word, int word_len, enum e_type *last_word_type)
 {
-	if (*last_word_type == NONE || *last_word_type == ARG)
+	if (*last_word_type == NONE || *last_word_type == ARG
+		|| *last_word_type == OPEN_FILE || *last_word_type == LIMITOR
+		|| *last_word_type == EXIT_FILE || *last_word_type == EXIT_FILE_RET)
 	{
 		if (ft_strncmp("<", word, word_len) == 0)
 			*last_word_type = FILE_IN;
@@ -62,42 +57,24 @@ int	set_word_type(char *word, int word_len, enum e_type *last_word_type)
 		else
 			*last_word_type = ARG;
 	}
-	else if (*last_word_type == FILE_IN)
+	else if (*last_word_type == FILE_IN || *last_word_type == HERE_DOC
+		|| *last_word_type == FILE_OUT || *last_word_type == FILE_OUT_APP)
 	{
 		if (syntax_error(word, word_len) == 1)
-			return (1);
-		*last_word_type = OPEN_FILE;
+			*last_word_type = SYN_ERROR;
+		else
+			set_type_after_redir(last_word_type);
 	}
-	else if (*last_word_type == HERE_DOC)
-	{
-		if (syntax_error(word, word_len) == 1)
-			return (1);
-		*last_word_type = LIMITOR;
-	}
-	else if (*last_word_type == FILE_OUT)
-	{
-		if (syntax_error(word, word_len) == 1)
-			return (1);
-		*last_word_type = EXIT_FILE;
-	}
-	else if (*last_word_type == FILE_OUT_APP)
-	{
-		if (syntax_error(word, word_len) == 1)
-			return (1);
-		*last_word_type = EXIT_FILE_RET;
-	}
-	return (0);
 }
 
-int	set_token_node(char *word, t_list **token_node,
+void	set_token_node(char *word, t_list **token_node,
 			enum e_type *last_word_type)
 {
 	t_token_content		*token_content;
 	int					word_len;
 
 	word_len = ft_strlen(word);
-	if (set_word_type(word, word_len, last_word_type) == 1)
-		return (1);
+	set_word_type(word, word_len, last_word_type);
 	token_content = malloc(sizeof(t_token_content));
 	if (token_content == NULL)
 		terminate(ERR_MEM, 1);
@@ -109,7 +86,6 @@ int	set_token_node(char *word, t_list **token_node,
 	*token_node = ft_lstnew(token_content);
 	if (*token_node == NULL)
 		terminate(ERR_MEM, 1);
-	return (0);
 }
 
 /*
@@ -136,15 +112,11 @@ void	split_and_classify(void *content)
 	while (split_cmd[i] != NULL)
 	{
 		if (redirection_conditions(split_cmd[i]) == 1)
-		{
-			if (handle_redirection_split(split_cmd[i], &token_node,
-				&last_word_type, cmd_line) == 1)
-				break ;
-		}
+			handle_redirection_split(split_cmd[i], &token_node,
+				&last_word_type, cmd_line);
 		else
 		{
-			if (set_token_node(split_cmd[i], &token_node, &last_word_type) == 1)
-				break ;
+			set_token_node(split_cmd[i], &token_node, &last_word_type);
 			ft_lstadd_back(&(cmd_line->word), token_node);
 		}
 		i++;
@@ -153,10 +125,11 @@ void	split_and_classify(void *content)
 	print_list(cmd_line->word);
 }
 
-void	split_words(t_list **cmd_line)
+int	split_words(t_list **cmd_line)
 {
-	t_list	*cmd_line_cpy;
+	t_list				*cmd_line_cpy;
 
 	cmd_line_cpy = *cmd_line;
 	ft_lstiter(cmd_line_cpy, &split_and_classify);
+	return (check_syntax_error(&cmd_line_cpy));
 }
