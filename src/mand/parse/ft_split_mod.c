@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:02:25 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/29 12:40:27 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/09 18:14:17 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,6 @@ int	no_command_between_pipes(char *str, t_split_data split, char ***split_line)
 	}
 	return (0);
 }
-
-/**
- * TODO: get_splits should also split quoted words if the separator is not |.
- * For example right now '"'a'"' is split into one word: '"'a'"' when it should
- * be split into three following quoting rules: '"', a, '"'. 
- */
 
 int	get_splits(char *line, char sep, char ***split_line)
 {

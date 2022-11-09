@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/26 19:08:48 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/09 18:45:08 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ void	set_split(char ***split_line, t_split_data *split, char *line, int i);
 /* split_utils_2.c */
 
 int		print_error_syntax(const char *token);
-int		syntax_error(char *word, int word_len);
+int		syntax_error(char *word);
 
 #endif

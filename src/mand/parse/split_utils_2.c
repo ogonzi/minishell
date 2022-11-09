@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 19:04:01 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/26 19:09:21 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/09 18:53:01 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,22 @@ int	print_error_syntax(const char *token)
 	return (1);
 }
 
-int	syntax_error(char *word, int word_len)
+int	syntax_error(char *word)
 {
-	if (word_len == 1)
+	int	i;
+
+	i = 0;
+	while (word[i] != '\0')
 	{
-		if (ft_is_in_set('<', word) == 1)
+		while (word[i] != '<' && word[i] != '>' && word[i] != '\0')
+		{
+			move_to_end_of_quote(word, &i);
+			i++;
+		}
+		if (word[i] == '<')
 			return (print_error_syntax("`<'"));
-		else if (ft_is_in_set('>', word) == 1)
+		if (word[i] == '>')
 			return (print_error_syntax("`>'"));
-	}
-	else
-	{
-		if (ft_is_in_set('<', word) == 1)
-			return (print_error_syntax("`<<'"));
-		else if (ft_is_in_set('>', word) == 1)
-			return (print_error_syntax("`>>'"));
 	}
 	return (0);
 }

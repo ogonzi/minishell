@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:12:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/26 19:08:07 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/09 18:45:22 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	set_word_type(char *word, int word_len, enum e_type *last_word_type)
 	else if (*last_word_type == FILE_IN || *last_word_type == HERE_DOC
 		|| *last_word_type == FILE_OUT || *last_word_type == FILE_OUT_APP)
 	{
-		if (syntax_error(word, word_len) == 1)
+		if (syntax_error(word) == 1)
 			*last_word_type = SYN_ERROR;
 		else
 			set_type_after_redir(last_word_type);

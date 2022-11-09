@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:13:38 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/26 18:55:18 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/09 18:51:22 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ void	handle_redirection_split(char *split_cmd, t_list **token_node,
 	{
 		while (split_cmd[word.end] != '<' && split_cmd[word.end] != '>'
 			&& split_cmd[word.end] != '\0')
+		{
+			move_to_end_of_quote(split_cmd, &word.end);
 			word.end++;
+		}
 		if (word.end != word.start)
 			add_new_word(split_cmd, &word, token_node, cmd_line);
 		if ((split_cmd[word.end] == '<' && split_cmd[word.end + 1] != '<')
@@ -57,7 +60,7 @@ void	handle_redirection_split(char *split_cmd, t_list **token_node,
 
 int	redirection_conditions(char *split_cmd)
 {
-	if (ft_strlen(split_cmd) > 1 && ft_is_in_set(split_cmd[0], "\'\"") == 0
+	if (ft_strlen(split_cmd) > 1
 		&& (ft_strchr(split_cmd, '<') != NULL
 			|| ft_strchr(split_cmd, '>') != NULL))
 		return (1);
