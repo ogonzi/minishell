@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:02:25 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/09 18:14:17 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/10 17:13:43 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 #include "utils.h"
 #include <stdio.h>
 
-int	all_sep(char *line, int i, char sep)
+int	all_sep(char *line, int i, char *sep)
 {
 	while (line[i] != '\0')
 	{
-		if (line[i] != sep)
+		if (ft_is_in_set(line[i], sep) == 0)
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-int	count_num_splits(char *line, char sep)
+int	count_num_splits(char *line, char *sep)
 {
 	int	i;
 	int	num_splits;
@@ -40,7 +40,7 @@ int	count_num_splits(char *line, char sep)
 			find_closing_quote(line, &i, &quote_flag, '\'');
 		if (line[i] == '\"')
 			find_closing_quote(line, &i, &quote_flag, '\"');
-		if (line[i] == sep && all_sep(line, i, sep) != 1)
+		if (ft_is_in_set(line[i], sep) && all_sep(line, i, sep) != 1)
 			num_splits++;
 		i++;
 	}
@@ -63,7 +63,7 @@ int	no_command_between_pipes(char *str, t_split_data split, char ***split_line)
 	return (0);
 }
 
-int	get_splits(char *line, char sep, char ***split_line)
+int	get_splits(char *line, char *sep, char ***split_line)
 {
 	t_split_data	split;
 	int				i;
@@ -73,12 +73,12 @@ int	get_splits(char *line, char sep, char ***split_line)
 	i = 0;
 	while (line[i] != '\0')
 	{
-		if (i == 0 && line[i] == sep && sep == '|')
+		if (i == 0 && ft_is_in_set(line[i], sep) && sep[0] == '|')
 			return (print_error_syntax("`|'"));
 		move_to_end_of_quote(line, &i);
-		if (line[i] == sep)
+		if (ft_is_in_set(line[i], sep))
 		{
-			if (sep == '|')
+			if (sep[0] == '|')
 				if (no_command_between_pipes(&line[i], split, split_line) == 1)
 					return (print_error_syntax("`|'"));
 			set_split(split_line, &split, line, i);
@@ -91,7 +91,7 @@ int	get_splits(char *line, char sep, char ***split_line)
 	return (0);
 }
 
-int	ft_split_mod(char ***split_line, char *line, char sep)
+int	ft_split_mod(char ***split_line, char *line, char *sep)
 {
 	int		num_splits;
 

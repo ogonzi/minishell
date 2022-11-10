@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:12:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/09 18:45:22 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/10 17:13:05 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	split_and_classify(void *content)
 	enum e_type			last_word_type;
 
 	cmd_line = content;
-	ft_split_mod(&split_cmd, cmd_line->cmd, ' ');
+	ft_split_mod(&split_cmd, cmd_line->cmd, " \t\n");
 	cmd_line->word = NULL;
 	i = 0;
 	last_word_type = NONE;

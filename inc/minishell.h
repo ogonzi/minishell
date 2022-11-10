@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/26 18:53:08 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/10 17:11:41 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		split_cmd_line(t_list **cmd_line, char *line);
 
 /* split.c */
 
-int		ft_split_mod(char ***split_line, char *line, char sep);
+int		ft_split_mod(char ***split_line, char *line, char *sep);
 
 /* split_words.c */
 

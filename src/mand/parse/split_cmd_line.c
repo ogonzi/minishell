@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 18:11:15 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/26 17:31:50 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/10 17:12:30 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	split_cmd_line(t_list **cmd_line, char *line)
 		printf("%s\n", ERR_QUOTES);
 		return (1);
 	}
-	if (ft_split_mod(&split_line, line, '|') != 0)
+	if (ft_split_mod(&split_line, line, "|") != 0)
 		return (2);
 	i = 0;
 	while (split_line[i] != NULL)
