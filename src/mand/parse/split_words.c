@@ -6,27 +6,13 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:12:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/10 17:13:05 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/15 16:57:06 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "utils.h"
 #include <stdio.h>
-
-void	print_list(t_list *lst)
-{
-	t_list				*lst_cpy;
-
-	lst_cpy = lst;
-	while (lst_cpy)
-	{
-		printf("%s (%d)\n", ((t_token_content *)lst_cpy->content)->word,
-			((t_token_content *)lst_cpy->content)->type);
-		lst_cpy = lst_cpy->next;
-	}
-	lst_cpy = 0;
-}
 
 void	set_type_after_redir(enum e_type *last_word_type)
 {
@@ -122,14 +108,10 @@ void	split_and_classify(void *content)
 		i++;
 	}
 	ft_free_twod_memory(split_cmd);
-	print_list(cmd_line->word);
 }
 
 int	split_words(t_list **cmd_line)
 {
-	t_list				*cmd_line_cpy;
-
-	cmd_line_cpy = *cmd_line;
-	ft_lstiter(cmd_line_cpy, &split_and_classify);
-	return (check_syntax_error(&cmd_line_cpy));
+	ft_lstiter(*cmd_line, &split_and_classify);
+	return (check_syntax_error(cmd_line));
 }

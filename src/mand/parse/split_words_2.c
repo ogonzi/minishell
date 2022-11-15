@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:13:38 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/09 18:51:22 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/15 16:56:24 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,19 @@ int	check_syntax_error(t_list **cmd_line)
 {
 	t_cmd_line_content	*cmd_line_content;
 	t_list				*cmd_line_cpy;
+	t_list				*word_cpy;
 
 	cmd_line_cpy = *cmd_line;
 	while (cmd_line_cpy)
 	{
 		cmd_line_content = cmd_line_cpy->content;
-		while (cmd_line_content->word)
+		word_cpy = cmd_line_content->word;
+		while (word_cpy)
 		{
-			if (((t_token_content *)cmd_line_content->word->content)->type
+			if (((t_token_content *)word_cpy->content)->type
 				== SYN_ERROR)
 				return (2);
-			cmd_line_content->word = cmd_line_content->word->next;
+			word_cpy = word_cpy->next;
 		}
 		cmd_line_cpy = cmd_line_cpy->next;
 	}

@@ -6,7 +6,7 @@
 #    By: ogonzale <ogonzale@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2022/10/29 12:34:22 by ogonzale         ###   ########.fr        #
+#    Updated: 2022/11/10 18:41:22 by ogonzale         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ WHITE 		:= \033[0;97m
 
 PARSE_DIR	:= parse/
 PARSE_FILES	:= split_cmd_line ft_split_mod split_words split_words_2 \
-	           split_utils split_utils_2
+	           split_utils split_utils_2 expand_words
 
 MAND_DIR	:= mand/
 MAND_FILES	+= $(addprefix $(PARSE_DIR), $(PARSE_FILES))
