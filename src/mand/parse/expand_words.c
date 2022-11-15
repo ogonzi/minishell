@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/15 17:37:53 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/15 18:54:59 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ void	print_list(t_list *lst)
 	lst_cpy = 0;
 }
 
+//TODO: When the getenv returns NULL, collapse env_var, for example,
+// a$b$USER should become a$USER.
+// Also, remove quotes according to quotes rules, for example,
+// "a'a"$b'$USER' should become a'a$USER
+
 void	expand(char *word)
 {
 	int		i;
@@ -44,12 +49,14 @@ void	expand(char *word)
 		{
 			i++;
 			start = i;
-			while (ft_is_in_set(word[i], " \t\r\"\0") == 0)
+			while (ft_is_in_set(word[i], " \t\r\"$\0") == 0)
 				i++;
 			env_var = ft_substr(word, start, i - start);
-			printf("%s\n", env_var);
+			if (getenv(env_var) == NULL)
+				printf("env_var is NULL\n");			
 		}
-		i++;
+		else
+			i++;
 	}
 }
 
