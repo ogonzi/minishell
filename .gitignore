@@ -10,3 +10,4 @@
 minishell
 test.sh
 minishell_test.log
+.objs

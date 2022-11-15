@@ -3,28 +3,21 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ogonzale <ogonzale@student.42barcel>       +#+  +:+       +#+         #
+#    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2022/10/29 12:34:22 by ogonzale         ###   ########.fr        #
+#    Updated: 2022/11/15 16:50:23 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Standard
+# -=-=-=-=- NAME -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 NAME 		:= minishell
 BNAME		:= minishell_bonus
-INC		 	:= inc/
-LIBFT_DIR	:= lib/libft/
-LIBFT		:= $(LIBFT_DIR)libft.a
-INCLUDE		:= -I $(INC) -I $(LIBFT_DIR)$(INC)
-SRC_DIR 	:= src/
-OBJ_DIR 	:= obj/
-CC 			:= cc
-CFLAGS 		:= -Wall -Wextra -Werror
-RM 			:= rm -f
 
-# Colors
+MKFL        = Makefile
+
+# -=-=-=-=- CLRS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 DEF_COLOR 	:= \033[0;39m
 GRAY 		:= \033[0;90m
@@ -36,72 +29,84 @@ MAGENTA 	:= \033[0;95m
 CYAN 		:= \033[0;96m
 WHITE 		:= \033[0;97m
 
-#Sources
+# -=-=-=-=- CMND -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-PARSE_DIR	:= parse/
-PARSE_FILES	:= split_cmd_line ft_split_mod split_words split_words_2 \
-	           split_utils split_utils_2
+CFLAGS      = -Wall -Wextra -Werror -W
+XFLAGS      = -fsanitize=address -g
 
-MAND_DIR	:= mand/
-MAND_FILES	+= $(addprefix $(PARSE_DIR), $(PARSE_FILES))
-MAND_FILES	+= minishell signals free exec get_exec_path utils 
+RM      = rm -f
+MK      = mkdir -p
+CP      = cp -f
 
-BONUS_DIR	:= bonus/
-BONUS_FILES	:= 
+# -=-=-=-=- PATH -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-SRC_FILES	= $(addprefix $(MAND_DIR), $(MAND_FILES))
-SRC_BFILES	= $(addprefix $(BONUS_DIR), $(BONUS_FILES))
+MND_DIR	= mandatory/
+INC_DIR = inc/
+SRC_DIR = src/
+TUL_DIR = tools/
+UTL_DIR = util/
+OBJ_DIR = .obj/
 
-SRC 		= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
-OBJ 		= $(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
+LIB_DIR = library/
+LFT_DIR = $(LIB_DIR)libft/
+PRT_DIR = $(LIB_DIR)ft_printf/
+GNL_DIR = $(LIB_DIR)ft_gnl/
 
-BSRC 		= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_BFILES)))
-BOBJ 		= $(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_BFILES)))
+# -=-=-=-=- FILE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-###
+INCLUDE = -I./$(INC_DIR) -I./$(LFT_DIR)$(INC_DIR)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile
+PRS_DIR	= parser/
+PRS_FLS	= split_cmd_line.c ft_split_mod.c split_words.c split_words_2.c \
+	           split_utils.c split_utils_2.c
+
+MND_FLS	= minishell.c signals.c free.c exec.c get_exec_path.c util.c
+
+UTL_DIR	= errors.c
+
+SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(PRS_DIR), $(PRS_FILES))))
+SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(SRC_DIR), $(MND_FLS)))
+
+OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
+DEPS	= $(addsuffix .d, $(basename $(OBJS)))
+
+# -=-=-=-=- RULE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
+
+$(OBJ_DIR)%.o: %.c $(MKFL)
 	@mkdir -p $(dir $@)
-	@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
+	@printf "\r$(GREEN)\tCompiling: $(YELLOW)$< $(DEF_CLR)                   \r"
 	@$(CC) -MT $@ -MMD -MP $(CFLAGS) $(INCLUDE) -c $< -o $@
 
-all: $(LIBFT) $(NAME)
+all:
+	@$(MAKE) -C $(LFT_DIR)
+	@$(MAKE) $(NAME)
 
-$(NAME): $(OBJ) 
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
-	@echo "$(GREEN)$(NAME) compiled!$(DEF_COLOR)"
+$(NAME):: $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $(NAME)
+	@printf "\n\t$(WHITE)Program \033[1;31mMinishell $(WHITE)has been compiled!$(DEF_COLOR)\n"
 
-$(LIBFT):
-	@make -sC $(LIBFT_DIR)
+$(NAME)::
+	@printf "\t$(WHITE)Nothing more to be done for program \033[1;31mMinishell$(DEF_COLOR)\n"
+
+-include $(DEPS)
 
 clean:
 	@$(RM) -r $(OBJ_DIR)
 	@make clean -sC $(LIBFT_DIR)
-	@echo "$(BLUE)Libft object and dependency files cleaned.$(DEF_COLOR)"
-	@$(RM) $(OBJF)
-	@echo "$(BLUE)$(NAME) object and dependency files cleaned.$(DEF_COLOR)"
+	@echo "$(BLUE)	Minishell object and dependencies files cleaned.$(DEF_COLOR)"
 
-fclean:	clean
+fclean:
+	@$(RM) -r $(OBJ_DIR)
 	@$(RM) $(NAME)
-	@$(RM) $(BNAME)
-	@$(RM) libft.a
-	@make fclean -C $(LIBFT_DIR)
+	@$(MAKE) fclean -C $(LFT_DIR)
 	@rm -rf *.dSYM
 	@find . -name ".DS_Store" -delete
-	@echo "$(CYAN)Libft executable files cleaned.$(DEF_COLOR)"
-	@echo "$(CYAN)$(NAME) executable and junk files cleaned.$(DEF_COLOR)"
+	@echo "$(WHITE)	All objects, dependencies and executables removed.$(DEF_COLOR)"
 
-re:	fclean all
-	@echo "$(GREEN)Cleaned and rebuilt everything for $(NAME).$(DEF_COLOR)"
-
-bonus:	$(LIBFT) $(BNAME)
-
-$(BNAME):	$(BOBJ)
-	@$(CC) $(CFLAGS) $(BOBJ) $(LIBFT) -o $(BNAME)
-	@echo "$(GREEN)$(BNAME) compiled!$(DEF_COLOR)"
-
-rebonus: fclean bonus
-	@echo "$(GREEN)Cleaned and rebuilt bonus.$(DEF_COLOR)"
+re:
+	@$(MAKE) fclean
+	@$(MAKE)
+	@echo "$(GREEN)Cleaned and rebuilt everything for $(NAME)project.$(DEF_COLOR)"
 
 norm:
 	@clear
@@ -109,4 +114,3 @@ norm:
 	
 .PHONY:	all clean fclean re norm bonus rebonus $(LIBFT)
 
--include $(OBJ:%.o=%.d) $(BOBJ:%.o=%.d)
