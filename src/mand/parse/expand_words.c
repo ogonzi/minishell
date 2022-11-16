@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/15 18:54:59 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:23:16 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_list(t_list *lst)
 // Also, remove quotes according to quotes rules, for example,
 // "a'a"$b'$USER' should become a'a$USER
 
-void	expand(char *word)
+void	expand(char *word, int *remove_char)
 {
 	int		i;
 	int		start;
@@ -49,32 +49,110 @@ void	expand(char *word)
 		{
 			i++;
 			start = i;
-			while (ft_is_in_set(word[i], " \t\r\"$\0") == 0)
+			while (ft_is_in_set(word[i], " \t\r\"$") == 0 && word[i] != '\0')
 				i++;
 			env_var = ft_substr(word, start, i - start);
-			if (getenv(env_var) == NULL)
-				printf("env_var is NULL\n");			
+			if (ft_strlen(env_var) > 0 && getenv(env_var) == NULL)
+			{
+				remove_char[start - 1] = 1;
+				while (start < i)
+				{
+					remove_char[start] = 1;
+					start++;
+				}
+			}
 		}
 		else
 			i++;
 	}
 }
 
-int	expand_words(t_list **cmd_line)
+void	remove_quotes(char *word, int *remove_char)
 {
-	t_list	*cmd_line_cpy;
-	t_list	*word_cpy;
+	int	i;
+	int	single_quote_flag;
 
-	cmd_line_cpy = *cmd_line;
-	while (cmd_line_cpy)
+	i = 0;
+	while (word[i] != '\0')
 	{
-		word_cpy = ((t_cmd_line_content *)cmd_line_cpy->content)->word;
-		while (word_cpy)
+		if (word[i] == '\'')
 		{
-			expand(((t_token_content *)word_cpy->content)->word);
-			word_cpy = word_cpy->next;
+			remove_char[i] = 1;
+			find_closing_quote(word, &i, &single_quote_flag, '\'');
+			remove_char[i] = 1;
 		}
-		cmd_line_cpy = cmd_line_cpy->next; 
+		if (word[i] == '\"')
+		{
+			remove_char[i] = 1;
+			find_closing_quote(word, &i, &single_quote_flag, '\"');
+			remove_char[i] = 1;
+		}
+		i++;
+	}
+}
+
+void	format_word(char *word, int *remove_char)
+{
+	int		i;
+	int		j;
+	int		word_len;
+	char	*word_cpy;
+
+	word_cpy = ft_strdup(word);
+	word_len = ft_strlen(word);
+	i = -1;
+	j = 0;
+	while (++i < word_len)
+	{
+		if (remove_char[i] == 0)
+		{
+			word[j] = word_cpy[i];
+			j++;
+		}
+	}
+	while (j < word_len)
+	{
+		word[j] = '\0';
+		j++;
+	}
+}
+
+void	alloc_remove_char(int **remove_char, char *word)
+{
+	int	word_len;
+	int	i;
+
+	word_len = ft_strlen(word);
+	*remove_char = malloc(sizeof(int) * word_len);
+	if (*remove_char == NULL)
+		terminate(ERR_MEM, 1);
+	i = -1;
+	while (++i < word_len)
+		(*remove_char)[i] = 0;
+}
+
+int	expand_words(t_list **l_cmd_line)
+{
+	t_list	*l_cmd_line_cpy;
+	t_list	*l_word_cpy;
+	char	*word;
+	int		*remove_char;
+
+	l_cmd_line_cpy = *l_cmd_line;
+	while (l_cmd_line_cpy)
+	{
+		l_word_cpy = ((t_cmd_line_content *)l_cmd_line_cpy->content)->word;
+		while (l_word_cpy)
+		{
+			word = ((t_token_content *)l_word_cpy->content)->word;
+			alloc_remove_char(&remove_char, word);
+			expand(word, remove_char);
+			remove_quotes(word, remove_char);
+			format_word(word, remove_char);
+			free(remove_char);
+			l_word_cpy = l_word_cpy->next;
+		}
+		l_cmd_line_cpy = l_cmd_line_cpy->next; 
 	}
 	return (0);
 }
