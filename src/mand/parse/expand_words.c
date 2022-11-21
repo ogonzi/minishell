@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/16 17:23:16 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/16 18:39:19 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	expand(char *word, int *remove_char)
 					start++;
 				}
 			}
+			free(env_var);
 		}
 		else
 			i++;
