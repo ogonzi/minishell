@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/09 18:45:08 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/02 19:05:08 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ void	set_split(char ***split_line, t_split_data *split, char *line, int i);
 
 int		print_error_syntax(const char *token);
 int		syntax_error(char *word);
+void	set_opposite_binary(int *value);
 
 #endif
