@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/10 18:41:04 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/02 18:55:37 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,13 @@ void	set_token_node(char *word, t_list **token_node,
 
 /* split_words_2.c */
 
-void	handle_redirection_split(char *split_cmd, t_list **token_node,
-			enum e_type *last_word_type, t_cmd_line_content *cmd_line);
 int		redirection_conditions(char *split_cmd);
 int		check_syntax_error(t_list **cmd_line);
+
+/* split_words_3 */
+
+void	handle_redirection_split(char *split_cmd, t_list **token_node,
+			enum e_type *last_word_type, t_cmd_line_content *cmd_line);
 
 /* expand_words.c */
 
