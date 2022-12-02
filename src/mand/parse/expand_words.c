@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/16 18:39:19 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/02 18:04:15 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,32 @@ void	print_list(t_list *lst)
 	lst_cpy = 0;
 }
 
-//TODO: When the getenv returns NULL, collapse env_var, for example,
-// a$b$USER should become a$USER.
-// Also, remove quotes according to quotes rules, for example,
-// "a'a"$b'$USER' should become a'a$USER
-
 void	expand(char *word, int *remove_char)
 {
 	int		i;
 	int		start;
 	int		single_quote_flag;
+	int		is_double_quoted;
 	char	*env_var;
 
 	i = 0;
+	is_double_quoted = 0;
 	while (word[i] != '\0')
 	{
-		if (word[i] == '\'')
+		if (word[i] == '\"')
+		{
+			if (is_double_quoted == 0)
+				is_double_quoted = 1;
+			else
+				is_double_quoted = 0;
+		}
+		if (word[i] == '\'' && is_double_quoted == 0)
 			find_closing_quote(word, &i, &single_quote_flag, '\'');
 		if (word[i] == '$' && (i == 0 || word[i - 1] != '\\'))
 		{
 			i++;
 			start = i;
-			while (ft_is_in_set(word[i], " \t\r\"$") == 0 && word[i] != '\0')
+			while (ft_is_in_set(word[i], " \t\r\"\'$") == 0 && word[i] != '\0')
 				i++;
 			env_var = ft_substr(word, start, i - start);
 			if (ft_strlen(env_var) > 0 && getenv(env_var) == NULL)
@@ -153,6 +157,7 @@ int	expand_words(t_list **l_cmd_line)
 			free(remove_char);
 			l_word_cpy = l_word_cpy->next;
 		}
+		print_list(((t_cmd_line_content *)l_cmd_line_cpy->content)->word);
 		l_cmd_line_cpy = l_cmd_line_cpy->next; 
 	}
 	return (0);
