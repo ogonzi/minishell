@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/02 19:16:27 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/03 18:03:30 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,50 +26,6 @@ void	print_list(t_list *lst)
 		lst_cpy = lst_cpy->next;
 	}
 	lst_cpy = 0;
-}
-
-void	handle_expand_env_var(char *word, int *i, int *remove_char)
-{
-	int		start;
-	char	*env_var;
-
-	(*i)++;
-	start = *i;
-	while (ft_is_in_set(word[*i], " \t\r\"\'$") == 0 && word[*i] != '\0')
-		(*i)++;
-	env_var = ft_substr(word, start, *i - start);
-	//TODO: Handle return fail from ft_substr
-	if (ft_strlen(env_var) > 0 && getenv(env_var) == NULL)
-	{
-		remove_char[start - 1] = 1;
-		while (start < *i)
-		{
-			remove_char[start] = 1;
-			start++;
-		}
-	}
-	free(env_var);
-}
-
-void	expand(char *word, int *remove_char)
-{
-	int		i;
-	int		single_quote_flag;
-	int		is_double_quoted;
-
-	i = 0;
-	is_double_quoted = 0;
-	while (word[i] != '\0')
-	{
-		if (word[i] == '\"')
-			set_opposite_binary(&is_double_quoted);
-		if (word[i] == '\'' && is_double_quoted == 0)
-			find_closing_quote(word, &i, &single_quote_flag, '\'');
-		if (word[i] == '$' && (i == 0 || word[i - 1] != '\\'))
-			handle_expand_env_var(word, &i, remove_char);
-		else
-			i++;
-	}
 }
 
 void	remove_quotes(char *word, int *remove_char)
@@ -157,8 +113,7 @@ int	expand_words(t_list **l_cmd_line)
 			free(remove_char);
 			l_word_cpy = l_word_cpy->next;
 		}
-		print_list(((t_cmd_line_content *)l_cmd_line_cpy->content)->word);
-		l_cmd_line_cpy = l_cmd_line_cpy->next; 
+		l_cmd_line_cpy = l_cmd_line_cpy->next;
 	}
 	return (0);
 }
