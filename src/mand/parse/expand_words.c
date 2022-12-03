@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/03 18:03:30 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/03 18:10:21 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	format_word(char *word, int *remove_char)
 	char	*word_cpy;
 
 	word_cpy = ft_strdup(word);
+	if (word_cpy == NULL)
+		terminate(ERR_MEM, 1);
 	word_len = ft_strlen(word);
 	i = -1;
 	j = 0;
@@ -76,6 +78,7 @@ void	format_word(char *word, int *remove_char)
 		word[j] = '\0';
 		j++;
 	}
+	free(word_cpy);
 }
 
 void	alloc_remove_char(int **remove_char, char *word)
