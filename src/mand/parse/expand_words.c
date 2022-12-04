@@ -6,27 +6,13 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/03 18:10:21 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/04 17:40:44 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "utils.h"
 #include <stdio.h>
-
-void	print_list(t_list *lst)
-{
-	t_list				*lst_cpy;
-
-	lst_cpy = lst;
-	while (lst_cpy)
-	{
-		printf("%s (%d)\n", ((t_token_content *)lst_cpy->content)->word,
-			((t_token_content *)lst_cpy->content)->type);
-		lst_cpy = lst_cpy->next;
-	}
-	lst_cpy = 0;
-}
 
 void	remove_quotes(char *word, int *remove_char)
 {
