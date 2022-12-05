@@ -18,7 +18,7 @@ int	all_sep(char *line, int i, char *sep)
 {
 	while (line[i] != '\0')
 	{
-		if (ft_is_in_set(line[i], sep) == 0)
+		if (ft_strchr(sep, line[i]) == 0)
 			return (0);
 		i++;
 	}
@@ -40,7 +40,7 @@ int	count_num_splits(char *line, char *sep)
 			find_closing_quote(line, &i, &quote_flag, '\'');
 		if (line[i] == '\"')
 			find_closing_quote(line, &i, &quote_flag, '\"');
-		if (ft_is_in_set(line[i], sep) && all_sep(line, i, sep) != 1)
+		if (ft_strchr(sep, line[i]) && all_sep(line, i, sep) != 1)
 			num_splits++;
 		i++;
 	}
@@ -73,10 +73,10 @@ int	get_splits(char *line, char *sep, char ***split_line)
 	i = 0;
 	while (line[i] != '\0')
 	{
-		if (i == 0 && ft_is_in_set(line[i], sep) && sep[0] == '|')
+		if (i == 0 && ft_strchr(sep, line[i]) && sep[0] == '|')
 			return (print_error_syntax("`|'"));
 		move_to_end_of_quote(line, &i);
-		if (ft_is_in_set(line[i], sep))
+		if (ft_strchr(sep, line[i]))
 		{
 			if (sep[0] == '|')
 				if (no_command_between_pipes(&line[i], split, split_line) == 1)

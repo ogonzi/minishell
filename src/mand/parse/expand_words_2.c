@@ -20,7 +20,7 @@ void	handle_expand_env_var(char *word, int *i, int *remove_char)
 
 	(*i)++;
 	start = *i;
-	while (ft_is_in_set(word[*i], " \t\r\"\'$") == 0 && word[*i] != '\0')
+	while (ft_strchr(" \t\r\"\'$", word[*i]) == 0 && word[*i] != '\0')
 		(*i)++;
 	env_var = ft_substr(word, start, *i - start);
 	if (env_var == NULL)
