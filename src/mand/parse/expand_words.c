@@ -81,6 +81,39 @@ void	alloc_remove_char(int **remove_char, char *word)
 		(*remove_char)[i] = 0;
 }
 
+//TODO: Right now: $USER$USER returns username, or "'$USER'" returns username.
+// The problem is it is modifying the whole string, instead of only expanding the
+// environment variable
+
+void	expand_env(char **word)
+{
+	char	*expanded_env_var;
+	char	*env_var;
+	int		length_expanded_env_var;
+	int		i;
+	int		start;
+
+	start = 0;
+	while ((*word)[start] != '$')
+		start++;
+	start++;
+	i = start;
+	while (ft_isalnum((*word)[i]) || (*word)[i] == '_')
+		(i)++;
+	env_var = ft_substr(*word, start, i - start);
+	if (env_var == NULL)
+		terminate(ERR_MEM, 1);
+	expanded_env_var = getenv(env_var);
+	free(env_var);
+	length_expanded_env_var = ft_strlen(expanded_env_var);
+	free(*word);
+	*word = NULL;
+	*word = malloc(sizeof(char) * (length_expanded_env_var + 1));
+	if (*word == NULL)
+		terminate(ERR_MEM, 1);
+	ft_strlcpy(*word, expanded_env_var, length_expanded_env_var + 1);
+}
+
 int	expand_words(t_list **l_cmd_line)
 {
 	t_list	*l_cmd_line_cpy;
@@ -100,6 +133,8 @@ int	expand_words(t_list **l_cmd_line)
 			remove_quotes(word, remove_char);
 			format_word(word, remove_char);
 			free(remove_char);
+			if (ft_strchr(word, '$'))
+				expand_env(&word);
 			l_word_cpy = l_word_cpy->next;
 		}
 		l_cmd_line_cpy = l_cmd_line_cpy->next;
