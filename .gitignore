@@ -7,3 +7,6 @@
 .cache_exists
 .gdb_history
 *.swp
+minishell
+test.sh
+minishell_test.log

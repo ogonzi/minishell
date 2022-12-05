@@ -6,10 +6,11 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/05 18:05:00 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/04 17:49:54 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "utils.h"
 #include "libft.h"
 #include <stdio.h>
@@ -17,76 +18,82 @@
 #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <signal.h>
 
-void	init_shell(void)
+void	print_list(t_list *lst)
 {
-	printf("\n\n\n\n*******************************");
-	printf("\n\n**PROVISIONAL MINISHELL START**");
-	printf("\n\n*******************************");
-	printf("\n\nUser is: %s\n", getenv("USER"));
-	printf("\n");
+	t_list	*lst_cpy;
+	t_list	*word_cpy;
+
+	lst_cpy = lst;
+	while (lst_cpy)
+	{
+		word_cpy = ((t_cmd_line_content *)lst_cpy->content)->word;
+		printf("%s\n", ((t_cmd_line_content *)lst_cpy->content)->cmd);
+		while (word_cpy)
+		{
+			printf("\t%s (%d)\n", ((t_token_content *)word_cpy->content)->word,
+					((t_token_content *)word_cpy->content)->type);
+			word_cpy = word_cpy->next;
+		}
+		
+		lst_cpy = lst_cpy->next;
+	}
+	lst_cpy = 0;
 }
 
-/*
- * En principi el limit de longitud d'un path en MAC es 1024, hi ha una
- * constant que es diu PATH_MAX que ho hauria d'especificar, pero caldria
- * utilizar limits.h i el mateix getcwd diu que no es gaire bona idea
- * utilitzar-ho.
- */
 
-void	print_dir(void)
-{
-	char	buf[1024];
-	char	*err;
-
-	err = getcwd(buf, sizeof(buf));
-	if (err == NULL)
-		terminate(ERR_GETPWD, 1);
-	printf("\033[0;32m");
-	printf("%s@%s", getenv("USER"), getenv("NAME"));
-	printf("\033[0m");
-	printf(":");
-	printf("\033[0;34m");
-	printf("%s", buf);
-	printf("\033[0m");
-	printf("$");
-}
-
-int	handle_input(char **line)
+int	handle_input(t_list **cmd_line)
 {
 	char	*buf;
 	int		len_buf;
+	int		err;
 
-	buf = readline(" ");
+	buf = readline("msh> ");
+	if (buf == NULL)
+	{
+		write(STDOUT_FILENO, "exit\n", 5);
+		return (-1);
+	}
 	len_buf = ft_strlen(buf);
 	if (len_buf != 0)
 	{
 		add_history(buf);
-		*line = malloc(sizeof(char) * (len_buf + 1));
-		if (*line == NULL)
-			terminate(ERR_MEM, 1);
-		ft_strlcpy(*line, buf, len_buf + 1);
-		return (0);
+		err = split_cmd_line(cmd_line, buf);
+		if (err != 0)
+			return (free_and_return_error_code(&buf, err));
+		err = split_words(cmd_line);
+		if (err != 0)
+			return (free_and_return_error_code(&buf, err));
+		err = expand_words(cmd_line);
+		if (err != 0)
+			return (free_and_return_error_code(&buf, err));
 	}
-	return (1);
+	free(buf);
+	buf = NULL;
+	return (0);
 }
 
 int	main(int argc, char *argv[])
 {
-	char	*line;
+	t_list	*cmd_line;
 
 	if (argc != 1)
 		terminate(ERR_ARGS, 0);
+	set_sigint_action();
+	do_sigign(SIGQUIT);
 	init_shell();
+	cmd_line = NULL;
 	while (1)
 	{
-		print_dir();
-		if (handle_input(&line) == 1)
+		if (handle_input(&cmd_line) == -1)
 			break ;
-		printf("Input: %s\n", line);
-		free(line);
+		print_list(cmd_line);
+		if (cmd_line != NULL)
+			free_cmd_line(&cmd_line);
 	}
-	free(line);
 	(void)argv;
 	return (0);
 }

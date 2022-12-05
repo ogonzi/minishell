@@ -42,7 +42,8 @@ TODO
 TODO
 
 ## Resources
-
+- [The Bourne-Again Shell](https://www.aosabook.org/en/bash.html#:~:text=Bash%20reads%20input%20from%20the,Unix%20emacs%20and%20vi%20editors.)
+- [Inter-process communication II: signal and signal handler](https://web.stanford.edu/~hhli/CS110Notes/CS110NotesCollection/Topic%202%20Multiprocessing%20(4).html)
 
 ## Known bugs
 
