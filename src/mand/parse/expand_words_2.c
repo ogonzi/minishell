@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 #include "utils.h"
+#include <stdio.h>
 
 void	handle_expand_env_var(char *word, int *i, int *remove_char)
 {
@@ -20,7 +21,7 @@ void	handle_expand_env_var(char *word, int *i, int *remove_char)
 
 	(*i)++;
 	start = *i;
-	while (ft_isalnum((*word)[i]) || (*word)[i] == '_')
+	while (ft_isalnum(word[*i]) || word[*i] == '_')
 		(*i)++;
 	env_var = ft_substr(word, start, *i - start);
 	if (env_var == NULL)
