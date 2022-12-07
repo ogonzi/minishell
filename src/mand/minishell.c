@@ -6,21 +6,12 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/04 17:49:54 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/07 11:12:35 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "utils.h"
-#include "libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
 
 void	print_list(t_list *lst)
 {
@@ -35,15 +26,13 @@ void	print_list(t_list *lst)
 		while (word_cpy)
 		{
 			printf("\t%s (%d)\n", ((t_token_content *)word_cpy->content)->word,
-					((t_token_content *)word_cpy->content)->type);
+				((t_token_content *)word_cpy->content)->type);
 			word_cpy = word_cpy->next;
 		}
-		
 		lst_cpy = lst_cpy->next;
 	}
 	lst_cpy = 0;
 }
-
 
 int	handle_input(t_list **cmd_line)
 {
