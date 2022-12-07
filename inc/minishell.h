@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/10 17:11:41 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/11/16 18:40:07 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,6 @@ enum	e_type
 	SYN_ERROR,
 };
 
-typedef struct s_token_content
-{
-	char				*word;
-	enum e_type			type;
-}						t_token_content;
-
 typedef struct s_word
 {
 	char		*str;
@@ -49,6 +43,12 @@ typedef struct s_word
 	int			end;
 	enum e_type	*last_type;
 }				t_word;
+
+typedef struct s_token_content
+{
+	char				*word;
+	enum e_type			type;
+}						t_token_content;
 
 /* signals.c */
 
