@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 16:30:21 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/08 16:52:50 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,23 @@ void	alloc_remove_char(int **remove_char, char *word)
 		(*remove_char)[i] = 0;
 }
 
+void	handle_word_expansion(char *word, int *single_quoted)
+{
+	int	*remove_char;
+
+	*single_quoted = 0;
+	alloc_remove_char(&remove_char, word);
+	expand(word, remove_char);
+	remove_quotes(word, remove_char, single_quoted);
+	format_word(word, remove_char);
+	free(remove_char);
+}
+
 int	expand_words(t_list **l_cmd_line, int exit_status)
 {
 	t_list	*l_cmd_line_cpy;
 	t_list	*l_word_cpy;
 	char	*word;
-	int		*remove_char;
 	int		single_quoted;
 
 	l_cmd_line_cpy = *l_cmd_line;
@@ -97,11 +108,7 @@ int	expand_words(t_list **l_cmd_line, int exit_status)
 		{
 			single_quoted = 0;
 			word = ((t_token_content *)l_word_cpy->content)->word;
-			alloc_remove_char(&remove_char, word);
-			expand(word, remove_char);
-			remove_quotes(word, remove_char, &single_quoted);
-			format_word(word, remove_char);
-			free(remove_char);
+			handle_word_expansion(word, &single_quoted);
 			if (ft_strchr(word, '$') && single_quoted == 0)
 				((t_token_content *)l_word_cpy->content)->word
 					= expand_env(word, exit_status);
