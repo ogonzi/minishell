@@ -3,30 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   split_words.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:12:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/10 17:13:05 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/08 18:34:33 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "utils.h"
 #include <stdio.h>
-
-void	print_list(t_list *lst)
-{
-	t_list				*lst_cpy;
-
-	lst_cpy = lst;
-	while (lst_cpy)
-	{
-		printf("%s (%d)\n", ((t_token_content *)lst_cpy->content)->word,
-			((t_token_content *)lst_cpy->content)->type);
-		lst_cpy = lst_cpy->next;
-	}
-	lst_cpy = 0;
-}
 
 void	set_type_after_redir(enum e_type *last_word_type)
 {
@@ -70,20 +56,20 @@ void	set_word_type(char *word, int word_len, enum e_type *last_word_type)
 void	set_token_node(char *word, t_list **token_node,
 			enum e_type *last_word_type)
 {
-	t_token_content		*token_content;
+	t_token_data		*token_data;
 	int					word_len;
 
 	word_len = ft_strlen(word);
 	set_word_type(word, word_len, last_word_type);
-	token_content = malloc(sizeof(t_token_content));
-	if (token_content == NULL)
+	token_data = malloc(sizeof(t_token_data));
+	if (token_data == NULL)
 		terminate(ERR_MEM, 1);
-	token_content->word = malloc(sizeof(char) * (word_len + 1));
-	if (token_content->word == NULL)
+	token_data->word = malloc(sizeof(char) * (word_len + 1));
+	if (token_data->word == NULL)
 		terminate(ERR_MEM, 1);
-	token_content->type = *last_word_type;
-	ft_strlcpy(token_content->word, word, word_len + 1);
-	*token_node = ft_lstnew(token_content);
+	token_data->type = *last_word_type;
+	ft_strlcpy(token_data->word, word, word_len + 1);
+	*token_node = ft_lstnew(token_data);
 	if (*token_node == NULL)
 		terminate(ERR_MEM, 1);
 }
@@ -96,15 +82,15 @@ void	set_token_node(char *word, t_list **token_node,
  * list. If not, the token node is set and added to the end of the list.
  */
 
-void	split_and_classify(void *content)
+void	split_and_classify(void *data)
 {
-	t_cmd_line_content	*cmd_line;
+	t_cmd_line_data	*cmd_line;
 	t_list				*token_node;
 	char				**split_cmd;
 	int					i;
 	enum e_type			last_word_type;
 
-	cmd_line = content;
+	cmd_line = data;
 	ft_split_mod(&split_cmd, cmd_line->cmd, " \t\n");
 	cmd_line->word = NULL;
 	i = 0;
@@ -122,14 +108,10 @@ void	split_and_classify(void *content)
 		i++;
 	}
 	ft_free_twod_memory(split_cmd);
-	print_list(cmd_line->word);
 }
 
 int	split_words(t_list **cmd_line)
 {
-	t_list				*cmd_line_cpy;
-
-	cmd_line_cpy = *cmd_line;
-	ft_lstiter(cmd_line_cpy, &split_and_classify);
-	return (check_syntax_error(&cmd_line_cpy));
+	ft_lstforeach(*cmd_line, &split_and_classify);
+	return (check_syntax_error(cmd_line));
 }

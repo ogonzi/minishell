@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_cmd_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 18:11:15 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/10 17:12:30 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/08 16:19:53 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@
 void	set_node(char **split_line, t_list **cmd_line_node)
 {
 	int					cmd_len;
-	t_cmd_line_content	*cmd_line_content;
+	t_cmd_line_data	*cmd_line_data;
 
 	cmd_len = ft_strlen(*split_line);
-	cmd_line_content = malloc(sizeof(t_cmd_line_content));
-	if (cmd_line_content == NULL)
+	cmd_line_data = malloc(sizeof(t_cmd_line_data));
+	if (cmd_line_data == NULL)
 		terminate(ERR_MEM, 1);
-	cmd_line_content->cmd = malloc(sizeof(char) * (cmd_len + 1));
-	if (cmd_line_content->cmd == NULL)
+	cmd_line_data->cmd = malloc(sizeof(char) * (cmd_len + 1));
+	if (cmd_line_data->cmd == NULL)
 		terminate(ERR_MEM, 1);
-	ft_strlcpy(cmd_line_content->cmd, *split_line, cmd_len + 1);
-	*cmd_line_node = ft_lstnew(cmd_line_content);
+	ft_strlcpy(cmd_line_data->cmd, *split_line, cmd_len + 1);
+	*cmd_line_node = ft_lstnew(cmd_line_data);
 	if (*cmd_line_node == NULL)
 		terminate(ERR_MEM, 1);
 }

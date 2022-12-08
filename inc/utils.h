@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/09 18:45:08 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/08 23:26:09 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,8 @@ void	set_split(char ***split_line, t_split_data *split, char *line, int i);
 
 int		print_error_syntax(const char *token);
 int		syntax_error(char *word);
+void	set_opposite_binary(int *value);
+void	copy_char_to_word(char *word, char *cpy_word,
+			int *from_index, int *to_index);
 
 #endif

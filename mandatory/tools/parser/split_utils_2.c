@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 19:04:01 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/09 18:53:01 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/07 11:10:58 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,20 @@ int	syntax_error(char *word)
 			return (print_error_syntax("`>'"));
 	}
 	return (0);
+}
+
+void	set_opposite_binary(int *value)
+{
+	if (*value == 1)
+		*value = 0;
+	else
+		*value = 1;
+}
+
+void	copy_char_to_word(char *word, char *cpy_word,
+		int *from_index, int *to_index)
+{
+	word[*to_index] = cpy_word[*from_index];
+	(*from_index)++;
+	(*to_index)++;
 }

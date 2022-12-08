@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:53:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/26 17:31:59 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/08 23:43:05 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_printf_fd.h"
 #include "ft_printf.h"
 #include "utils.h"
 #include <stdio.h>
@@ -20,7 +21,7 @@ void	terminate(char *s, int system_error_flag)
 	if (system_error_flag == 1)
 		perror(s);
 	else
-		ft_putendl_fd(s, 2);
+		ft_printf_fd(STDERR_FILENO, "%s\n", s);
 	exit(EXIT_FAILURE);
 }
 
