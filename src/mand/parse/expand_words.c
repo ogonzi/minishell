@@ -6,13 +6,12 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/07 11:01:34 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:46:45 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "utils.h"
-#include <stdio.h>
 
 void	remove_quotes(char *word, int *remove_char)
 {
@@ -81,7 +80,7 @@ void	alloc_remove_char(int **remove_char, char *word)
 		(*remove_char)[i] = 0;
 }
 
-int	expand_words(t_list **l_cmd_line)
+int	expand_words(t_list **l_cmd_line, int exit_status)
 {
 	t_list	*l_cmd_line_cpy;
 	t_list	*l_word_cpy;
@@ -102,7 +101,7 @@ int	expand_words(t_list **l_cmd_line)
 			free(remove_char);
 			if (ft_strchr(word, '$'))
 				((t_token_content *)l_word_cpy->content)->word
-					= expand_env(word);
+					= expand_env(word, exit_status);
 			l_word_cpy = l_word_cpy->next;
 		}
 		l_cmd_line_cpy = l_cmd_line_cpy->next;

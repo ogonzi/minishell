@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/07 11:11:59 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:46:45 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	handle_redirection_split(char *split_cmd, t_list **token_node,
 
 /* expand_words.c */
 
-int		expand_words(t_list **cmd_line);
+int		expand_words(t_list **cmd_line, int exit_status);
 
 /* expand_words_2.c */
 
@@ -98,7 +98,7 @@ void	expand(char *word, int *remove_char);
 
 /* expand_words_3.c */
 
-char	*expand_env(char *word);
+char	*expand_env(char *word, int exit_status);
 
 /* free.c */
 
