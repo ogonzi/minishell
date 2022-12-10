@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 14:46:45 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/10 12:15:29 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_list(t_list *lst)
 	lst_cpy = 0;
 }
 
-int	handle_input(t_list **cmd_line, int exit_status)
+static int	handle_input(t_prompt *prompt)
 {
 	char	*buf;
 	int		len_buf;
@@ -50,13 +50,13 @@ int	handle_input(t_list **cmd_line, int exit_status)
 	if (len_buf != 0)
 	{
 		add_history(buf);
-		err = split_cmd_line(cmd_line, buf);
+		err = split_cmd_line(prompt, buf);
 		if (err != 0)
 			return (free_and_return_error_code(&buf, err));
-		err = split_words(cmd_line);
+		err = split_words(prompt);
 		if (err != 0)
 			return (free_and_return_error_code(&buf, err));
-		err = expand_words(cmd_line, exit_status);
+		err = expand_words(prompt);
 		if (err != 0)
 			return (free_and_return_error_code(&buf, err));
 	}
@@ -65,27 +65,47 @@ int	handle_input(t_list **cmd_line, int exit_status)
 	return (0);
 }
 
-int	main(int argc, char *argv[])
+static void	custom_getpid(t_prompt *prompt)
 {
-	t_list	*cmd_line;
-	int		exit_status;
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+		terminate(ERR_FORK, 1);
+	if (pid == 0)
+		exit(1);
+	waitpid(pid, NULL, 0);
+	prompt->pid = pid - 1;
+}
+
+static void	init_prompt(t_prompt *prompt, char *argv[], char *envp[])
+{
+	prompt->cmd_line = NULL;
+	prompt->environ = NULL;
+	prompt->exit_status = 0;
+	custom_getpid(prompt);
+	set_environ(prompt, envp);
+	init_env_vars(prompt, argv);
+}
+
+int	main(int argc, char *argv[], char *envp[])
+{
+	t_prompt	prompt;
 
 	if (argc != 1)
 		terminate(ERR_ARGS, 0);
-	set_sigint_action();
-	do_sigign(SIGQUIT);
 	init_shell();
-	cmd_line = NULL;
-	exit_status = 0;
+	init_prompt(&prompt, argv, envp);
 	while (1)
 	{
-		exit_status = handle_input(&cmd_line, exit_status);
-		if (exit_status == -1)
+		set_sigint_action();
+		do_sigign(SIGQUIT);
+		prompt.exit_status = handle_input(&prompt);
+		if (prompt.exit_status == -1)
 			break ;
-		print_list(cmd_line);
-		if (cmd_line != NULL)
-			free_cmd_line(&cmd_line);
+		print_list(prompt.cmd_line);
+		if (prompt.cmd_line != NULL)
+			free_cmd_line(&prompt.cmd_line);
 	}
-	(void)argv;
-	return (0);
+	exit (prompt.exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 14:46:45 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/10 12:14:37 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ typedef struct s_cmd_line_content
 	char	*cmd;
 	t_list	*word;
 }			t_cmd_line_content;
+
+typedef struct s_prompt
+{
+	t_list	*cmd_line;
+	t_list	*environ;
+	pid_t	pid;
+	int		exit_status;
+}			t_prompt;
+
+typedef struct s_environ_content
+{
+	char	*env_var;
+}			t_environ_content;
+
 
 enum	e_type
 {
@@ -64,9 +78,16 @@ void	set_sigint_action(void);
 void	set_child_sigaction(void);
 void	do_sigign(int signum);
 
+/* env.c */
+
+void	custom_setenv(char *name, char *value, t_prompt *prompt);
+char	*custom_getenv(char *name, t_prompt *prompt);
+void	init_env_vars(t_prompt *prompt, char *argv[]);
+void	set_environ(t_prompt *prompt, char *envp[]);
+
 /* split_cmd_line.c */
 
-int		split_cmd_line(t_list **cmd_line, char *line);
+int		split_cmd_line(t_prompt *prompt, char *line);
 
 /* split.c */
 
@@ -74,7 +95,7 @@ int		ft_split_mod(char ***split_line, char *line, char *sep);
 
 /* split_words.c */
 
-int		split_words(t_list **cmd_line);
+int		split_words(t_prompt *prompt);
 void	set_token_node(char *word, t_list **token_node,
 			enum e_type *last_word_type);
 
@@ -90,7 +111,7 @@ void	handle_redirection_split(char *split_cmd, t_list **token_node,
 
 /* expand_words.c */
 
-int		expand_words(t_list **cmd_line, int exit_status);
+int		expand_words(t_prompt *prompt);
 
 /* expand_words_2.c */
 

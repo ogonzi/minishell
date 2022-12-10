@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 18:11:15 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/15 16:44:51 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/10 10:41:27 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	check_quotes(char *line)
 	return (1);
 }
 
-int	split_cmd_line(t_list **cmd_line, char *line)
+int	split_cmd_line(t_prompt *prompt, char *line)
 {
 	int					i;
 	t_list				*cmd_line_node;
@@ -74,7 +74,7 @@ int	split_cmd_line(t_list **cmd_line, char *line)
 	while (split_line[i] != NULL)
 	{
 		set_node(&split_line[i], &cmd_line_node);
-		ft_lstadd_back(cmd_line, cmd_line_node);
+		ft_lstadd_back(&prompt->cmd_line, cmd_line_node);
 		i++;
 	}
 	ft_free_twod_memory(split_line);

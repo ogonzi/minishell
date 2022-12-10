@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 16:52:50 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/10 10:45:04 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,14 @@ void	handle_word_expansion(char *word, int *single_quoted)
 	free(remove_char);
 }
 
-int	expand_words(t_list **l_cmd_line, int exit_status)
+int	expand_words(t_prompt *prompt)
 {
 	t_list	*l_cmd_line_cpy;
 	t_list	*l_word_cpy;
 	char	*word;
 	int		single_quoted;
 
-	l_cmd_line_cpy = *l_cmd_line;
+	l_cmd_line_cpy = prompt->cmd_line;
 	while (l_cmd_line_cpy)
 	{
 		l_word_cpy = ((t_cmd_line_content *)l_cmd_line_cpy->content)->word;
@@ -111,7 +111,7 @@ int	expand_words(t_list **l_cmd_line, int exit_status)
 			handle_word_expansion(word, &single_quoted);
 			if (ft_strchr(word, '$') && single_quoted == 0)
 				((t_token_content *)l_word_cpy->content)->word
-					= expand_env(word, exit_status);
+					= expand_env(word, prompt->exit_status);
 			l_word_cpy = l_word_cpy->next;
 		}
 		l_cmd_line_cpy = l_cmd_line_cpy->next;

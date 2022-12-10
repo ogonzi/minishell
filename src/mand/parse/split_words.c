@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:12:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/15 16:57:06 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/10 10:45:53 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ void	split_and_classify(void *content)
 	ft_free_twod_memory(split_cmd);
 }
 
-int	split_words(t_list **cmd_line)
+int	split_words(t_prompt *prompt)
 {
-	ft_lstiter(*cmd_line, &split_and_classify);
-	return (check_syntax_error(cmd_line));
+	ft_lstiter(prompt->cmd_line, &split_and_classify);
+	return (check_syntax_error(&prompt->cmd_line));
 }
