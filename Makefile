@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2022/12/08 23:39:58 by cpeset-c         ###   ########.fr        #
+#    Updated: 2022/12/12 19:27:45 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,8 @@ WHITE 		:= \033[0;97m
 CFLAGS      = -Wall -Wextra -Werror -W
 DFLAGS		= -MT $@ -MMD -MP
 XFLAGS      = -fsanitize=address -g3
+LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib
+CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include
 
 RM      = rm -f
 MK      = mkdir -p
@@ -51,7 +53,7 @@ OBJ_DIR = .obj/
 
 PRS_DIR	= parser/
 
-LIB_DIR = clift_library/
+LIB_DIR = library/
 LFT_DIR = $(LIB_DIR)libft/
 OUT_DIR = $(LIB_DIR)liboutput/
 
@@ -60,7 +62,7 @@ OUT_DIR = $(LIB_DIR)liboutput/
 LIBFT	= $(LIB_DIR)libft.a
 PRINT	= $(OUT_DIR)liboutput.a
 
-INCLUDE = -I$(INC_DIR) -I$(LFT_DIR)$(INC_DIR) -I$(OUT_DIR)$(INC_DIR)
+INCLUDE = -I$(INC_DIR) -I$(LFT_DIR)$(INC_DIR) -I$(OUT_DIR)$(INC_DIR) $(CPPFLAGS)
 
 SRC_FLS	= minishell.c \
 		signals.c \
@@ -103,7 +105,7 @@ all:
 	@$(MAKE) $(NAME)
 
 $(NAME):: $(OBJS)
-	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJS) $(LIBFT) $(PRINT) -lreadline -o $(NAME)
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJS) $(LIBFT) $(PRINT) $(LDFLAGS) -lreadline -o $(NAME)
 	@printf "\n\t$(WHITE)Program \033[1;31mMinishell $(WHITE)has been compiled!$(DEF_COLOR)\n"
 
 $(NAME)::
