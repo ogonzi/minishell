@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/13 16:49:24 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/13 17:20:35 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_cmd_line_content
 {
 	char	*cmd;
 	t_list	*word;
+	int		exit_status;
 }			t_cmd_line_content;
 
 typedef struct s_prompt
@@ -41,7 +42,6 @@ typedef struct s_environ_content
 {
 	char	*env_var;
 }			t_environ_content;
-
 
 enum	e_type
 {
@@ -123,7 +123,8 @@ char	*expand_env(char *word, int exit_status);
 
 /* free.c */
 
-void	free_all(t_prompt *prompt);
+void	free_cmd_line(t_list **cmd_line);
+void	free_environ(t_list **environ);
 
 /* exec.c */
 

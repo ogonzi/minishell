@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 18:33:12 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/13 17:03:14 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/13 17:21:17 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,24 +63,30 @@ void	ft_free_environ_content(void *content)
 	environ_content = NULL;
 }
 
-void	free_all(t_prompt *prompt)
+void	free_environ(t_list **environ)
 {
 	t_list	*tmp;
 
-	ft_lstiter(prompt->cmd_line, &ft_free_cmd_line_content);
-	while (prompt->cmd_line)
+	ft_lstiter(*environ, &ft_free_environ_content);
+	while (*environ)
 	{
-		tmp = prompt->cmd_line->next;
-		free(prompt->cmd_line);
-		prompt->cmd_line = tmp;
+		tmp = (*environ)->next;
+		free(*environ);
+		*environ = tmp;
 	}
-	ft_lstiter(prompt->environ, &ft_free_environ_content);
-	while (prompt->environ)
+	*environ = NULL;
+}
+
+void	free_cmd_line(t_list **cmd_line)
+{
+	t_list	*tmp;
+
+	ft_lstiter(*cmd_line, &ft_free_cmd_line_content);
+	while (*cmd_line)
 	{
-		tmp = prompt->environ->next;
-		free(prompt->environ);
-		prompt->environ = tmp;
+		tmp = (*cmd_line)->next;
+		free(*cmd_line);
+		*cmd_line = tmp;
 	}
-	prompt->cmd_line = NULL;
-	prompt->environ = NULL;
+	*cmd_line = NULL;
 }

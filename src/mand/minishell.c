@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/13 16:48:32 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/13 17:20:29 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,8 @@ int	main(int argc, char *argv[], char *envp[])
 		handle_pipeline(prompt);
 		print_list(prompt.cmd_line);
 		if (prompt.cmd_line != NULL)
-			free_all(&prompt);
+			free_cmd_line(&prompt.cmd_line);
 	}
+	free_environ(&prompt.environ);
 	return (prompt.exit_status);
 }
