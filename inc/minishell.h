@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/10 12:14:37 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/13 16:49:24 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ char	*expand_env(char *word, int exit_status);
 
 /* free.c */
 
-void	free_cmd_line(t_list **cmd_line);
+void	free_all(t_prompt *prompt);
 
 /* exec.c */
 

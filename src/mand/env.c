@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 12:10:13 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/10 12:14:54 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/13 17:08:42 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	custom_setenv(char *name, char *value, t_prompt *prompt)
 		terminate(ERR_MEM, 1);
 	aux[1] = ft_strjoin(aux[0], value);
 	free(aux[0]);
-	set_environ_node(aux[0], &environ_node);
+	set_environ_node(aux[1], &environ_node);
 	ft_lstadd_back(&prompt->environ, environ_node);
 	free(aux[1]);
 }

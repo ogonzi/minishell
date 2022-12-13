@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/10 12:15:29 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/13 16:48:32 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,73 @@ static void	init_prompt(t_prompt *prompt, char *argv[], char *envp[])
 	init_env_vars(prompt, argv);
 }
 
+static void	redir_pipe(t_list *command_cpy, t_prompt prompt, int *tmp_fd)
+{
+	pid_t	pid;
+	int		fd[2];
+
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	if (command_cpy->next)
+	{
+		pipe(fd);
+		pid = fork();
+		if (pid)
+		{
+			close(fd[1]);
+			close(*tmp_fd);
+			*tmp_fd = fd[0];
+		}
+		else if (!pid)
+		{
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[0]);
+			close(fd[1]);
+			char *argv[] = {"echo", "hello", NULL};
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+			dup2(*tmp_fd, STDIN_FILENO);
+			close(*tmp_fd);
+			execve("/bin/echo", argv, 0);
+			write(STDERR_FILENO, "Error\n", 6);
+		}
+	}
+	else {
+		pid = fork();
+		if (pid) {
+			close(*tmp_fd);
+			while (waitpid(-1, NULL, WUNTRACED) != -1)
+				;
+			*tmp_fd = dup(STDIN_FILENO);
+		}
+		else if (!pid) {
+			char *argv[] = {"wc", NULL, NULL};
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+			dup2(*tmp_fd, STDIN_FILENO);
+			close(*tmp_fd);
+			execve("/bin/wc", argv, 0);
+			write(STDERR_FILENO, "Error\n", 6);
+		}
+	}
+	(void)prompt;
+}
+
+static void handle_pipeline(t_prompt prompt)
+{
+	t_list	*command_cpy;
+	int		tmp_fd;
+
+	tmp_fd = dup(STDIN_FILENO);
+	command_cpy = prompt.cmd_line;
+	while (command_cpy)
+	{
+		redir_pipe(command_cpy, prompt, &tmp_fd);
+		command_cpy = command_cpy->next;
+	}
+	close(tmp_fd);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_prompt	prompt;
@@ -103,9 +170,10 @@ int	main(int argc, char *argv[], char *envp[])
 		prompt.exit_status = handle_input(&prompt);
 		if (prompt.exit_status == -1)
 			break ;
+		handle_pipeline(prompt);
 		print_list(prompt.cmd_line);
 		if (prompt.cmd_line != NULL)
-			free_cmd_line(&prompt.cmd_line);
+			free_all(&prompt);
 	}
-	exit (prompt.exit_status);
+	return (prompt.exit_status);
 }
