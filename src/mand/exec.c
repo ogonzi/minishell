@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/16 10:03:29 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/16 10:39:13 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,13 @@ static void do_pipe(int fd[2], int *tmp_fd, t_list *command, t_prompt prompt)
 	}
 	else if (!pid)
 	{
+		set_child_sigaction();
 		command_array = get_command_array(command);
 		if (get_exec_path(command_array[0], &exec_path, command, &prompt) != 0)
 			exit(0);
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
 		dup2(*tmp_fd, STDIN_FILENO);
 		close(*tmp_fd);
 		execve(exec_path, command_array, 0);
@@ -94,14 +93,27 @@ static int do_last_command(int *tmp_fd, t_list *command, t_prompt prompt)
 		*tmp_fd = dup(STDIN_FILENO);
 		if (WIFEXITED(exit_status))
 			return (WEXITSTATUS(exit_status));
+		if (WIFSIGNALED(exit_status))
+		{
+			if (WTERMSIG(exit_status) == SIGINT)
+			{
+				write(STDOUT_FILENO, "\n", 1);
+				return(130);
+			}
+			if (WTERMSIG(exit_status) == SIGQUIT)
+			{
+				write(STDOUT_FILENO, "Quit\n", 5);
+				rl_on_new_line();
+				return(131);
+			}
+		}
 	}
 	else if (!pid)
 	{
+		set_child_sigaction();
 		command_array = get_command_array(command);
 		if (get_exec_path(command_array[0], &exec_path, command, &prompt) != 0)
 			exit(((t_cmd_line_content *)command->content)->exit_status);
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
 		dup2(*tmp_fd, STDIN_FILENO);
 		close(*tmp_fd);
 		execve(exec_path, command_array, 0);

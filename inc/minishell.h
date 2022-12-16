@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/16 09:34:52 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/16 10:26:43 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_word
 void	set_sigint_action(void);
 void	set_child_sigaction(void);
 void	do_sigign(int signum);
+void	handle_child_sig(int signum);
 
 /* env.c */
 
