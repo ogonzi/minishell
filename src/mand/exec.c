@@ -6,82 +6,115 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/12 17:33:10 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/16 09:22:46 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include "minishell.h"
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 
-void	print_tokens(char **tokens)
+static char **get_command_array(t_list *command)
 {
-	int	i;
+	char	**command_array;
+	t_list	*token_list;
+	int		len_list;
+	int		i;
 
+	token_list = ((t_cmd_line_content *)command->content)->word;
+	len_list = ft_lstsize(token_list);
+	command_array = malloc(sizeof(char *) * (len_list + 1));
+	if (command_array == NULL)
+		terminate(ERR_MEM, 1);
 	i = 0;
-	while (tokens[i] != NULL)
+	while (token_list)
 	{
-		printf("%s\n", tokens[i]);
+		if (((t_token_content *)token_list->content)->type == 1)
+		{
+			command_array[i] = ft_strdup(((t_token_content *)token_list->content)->word);
+			if (command_array[i] == NULL)
+				terminate(ERR_MEM, 1);
+			i++;
+		}
+		token_list = token_list->next;
+	}
+	while (i < len_list + 1)
+	{
+		command_array[i] = NULL;
 		i++;
 	}
+	return (command_array);
 }
 
-void	do_child(char ***tokens)
+static void	do_pipe(int fd[2], int *tmp_fd, t_list *command, t_prompt prompt)
 {
+	pid_t 	pid;
+	//char	*infile;
+	//char	*outfile;
+	char	**command_array;
 	char	*exec_path;
 
-	set_child_sigaction();
-	get_exec_path(tokens, &exec_path);
-	if (execve(exec_path, *tokens, NULL) == -1)
-		terminate(ERR_EXECVE, 1);
+	pipe(fd);
+	pid = fork();
+	if (pid)
+	{
+		close(fd[1]);
+		close(*tmp_fd);
+		*tmp_fd = fd[0];
+	}
+	else if (!pid)
+	{
+		command_array = get_command_array(command);
+		if (get_exec_path(command_array[0], &exec_path, command, &prompt) != 0)
+			exit(((t_cmd_line_content *)command->content)->exit_status);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		dup2(*tmp_fd, STDIN_FILENO);
+		close(*tmp_fd);
+		execve(exec_path, command_array, 0);
+		write(STDERR_FILENO, "Error\n", 6);
+	}
+	(void)prompt;
 }
 
-void	do_parent(void)
+static void do_last_command(int *tmp_fd, t_list *command, t_prompt prompt)
 {
-	int	child_exit_status;
-	int	wstatus;
-
-	do_sigign(SIGINT);
-	if (wait(&wstatus) == -1)
-		terminate(ERR_WAIT, 1);
-	if (WIFEXITED(wstatus))
-	{
-		child_exit_status = WEXITSTATUS(wstatus);
-		set_sigint_action();
-	}
-	if (WIFSIGNALED(wstatus))
-	{
-		if (WTERMSIG(wstatus) == SIGINT)
-		{
-			write(STDOUT_FILENO, "\n", 1);
-			set_sigint_action();
-			child_exit_status = 130;
-		}
-		if (WTERMSIG(wstatus) == SIGQUIT)
-		{
-			write(STDOUT_FILENO, "Quit\n", 5);
-			rl_on_new_line();
-			child_exit_status = 131;
-		}
-	}
-	(void)child_exit_status;
-}
-
-void	exec(char ***tokens)
-{
-	pid_t	pid;
+	pid_t 	pid;
+	char	*exec_path;
+	char	**command_array;
 
 	pid = fork();
-	if (pid < 0)
-		terminate(ERR_FORK, 1);
-	else if (pid == 0)
-		do_child(tokens);
+	if (pid)
+	{
+		close(*tmp_fd);
+		while (waitpid(-1, NULL, WUNTRACED) != -1)
+			;
+		*tmp_fd = dup(STDIN_FILENO);
+	}
+	else if (!pid)
+	{
+		command_array = get_command_array(command);
+		if (get_exec_path(command_array[0], &exec_path, command, &prompt) != 0)
+			exit(((t_cmd_line_content *)command->content)->exit_status);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		dup2(*tmp_fd, STDIN_FILENO);
+		close(*tmp_fd);
+		execve(exec_path, command_array, 0);
+		write(STDERR_FILENO, "Error\n", 6);
+	}
+}
+
+void redir_pipe(t_list *command_cpy, t_prompt prompt, int *tmp_fd)
+{
+	int fd[2];
+
+	do_sigign(SIGINT);
+	do_sigign(SIGQUIT);
+	if (command_cpy->next)
+		do_pipe(fd, tmp_fd, command_cpy, prompt);
 	else
-		do_parent();
+		do_last_command(tmp_fd, command_cpy, prompt);
 }

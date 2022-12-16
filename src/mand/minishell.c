@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/13 17:20:29 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/16 09:23:13 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,58 +88,6 @@ static void	init_prompt(t_prompt *prompt, char *argv[], char *envp[])
 	init_env_vars(prompt, argv);
 }
 
-static void	redir_pipe(t_list *command_cpy, t_prompt prompt, int *tmp_fd)
-{
-	pid_t	pid;
-	int		fd[2];
-
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	if (command_cpy->next)
-	{
-		pipe(fd);
-		pid = fork();
-		if (pid)
-		{
-			close(fd[1]);
-			close(*tmp_fd);
-			*tmp_fd = fd[0];
-		}
-		else if (!pid)
-		{
-			dup2(fd[1], STDOUT_FILENO);
-			close(fd[0]);
-			close(fd[1]);
-			char *argv[] = {"echo", "hello", NULL};
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-			dup2(*tmp_fd, STDIN_FILENO);
-			close(*tmp_fd);
-			execve("/bin/echo", argv, 0);
-			write(STDERR_FILENO, "Error\n", 6);
-		}
-	}
-	else {
-		pid = fork();
-		if (pid) {
-			close(*tmp_fd);
-			while (waitpid(-1, NULL, WUNTRACED) != -1)
-				;
-			*tmp_fd = dup(STDIN_FILENO);
-		}
-		else if (!pid) {
-			char *argv[] = {"wc", NULL, NULL};
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-			dup2(*tmp_fd, STDIN_FILENO);
-			close(*tmp_fd);
-			execve("/bin/wc", argv, 0);
-			write(STDERR_FILENO, "Error\n", 6);
-		}
-	}
-	(void)prompt;
-}
-
 static void handle_pipeline(t_prompt prompt)
 {
 	t_list	*command_cpy;
@@ -171,7 +119,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (prompt.exit_status == -1)
 			break ;
 		handle_pipeline(prompt);
-		print_list(prompt.cmd_line);
+		//print_list(prompt.cmd_line);
 		if (prompt.cmd_line != NULL)
 			free_cmd_line(&prompt.cmd_line);
 	}
