@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/16 09:14:18 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/16 09:34:52 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,10 @@ void	free_environ(t_list **environ);
 
 /* exec.c */
 
-void	redir_pipe(t_list *command_cpy, t_prompt prompt, int *tmp_fd);
+int		redir_pipe(t_list *command_cpy, t_prompt prompt, int *tmp_fd);
 
 /* get_exec_path.c */
 
-int	get_exec_path(char *token, char **exec_path, t_list *command, t_prompt *prompt);
+int		get_exec_path(char *token, char **exec_path, t_list *command, t_prompt *prompt);
 
 #endif

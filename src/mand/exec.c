@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/16 09:22:46 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/16 10:03:29 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 static char **get_command_array(t_list *command)
 {
-	char	**command_array;
-	t_list	*token_list;
-	int		len_list;
-	int		i;
+	char **command_array;
+	t_list *token_list;
+	int len_list;
+	int i;
 
 	token_list = ((t_cmd_line_content *)command->content)->word;
 	len_list = ft_lstsize(token_list);
@@ -45,13 +45,13 @@ static char **get_command_array(t_list *command)
 	return (command_array);
 }
 
-static void	do_pipe(int fd[2], int *tmp_fd, t_list *command, t_prompt prompt)
+static void do_pipe(int fd[2], int *tmp_fd, t_list *command, t_prompt prompt)
 {
-	pid_t 	pid;
-	//char	*infile;
-	//char	*outfile;
-	char	**command_array;
-	char	*exec_path;
+	pid_t pid;
+	// char	*infile;
+	// char	*outfile;
+	char **command_array;
+	char *exec_path;
 
 	pipe(fd);
 	pid = fork();
@@ -65,7 +65,7 @@ static void	do_pipe(int fd[2], int *tmp_fd, t_list *command, t_prompt prompt)
 	{
 		command_array = get_command_array(command);
 		if (get_exec_path(command_array[0], &exec_path, command, &prompt) != 0)
-			exit(((t_cmd_line_content *)command->content)->exit_status);
+			exit(0);
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
@@ -76,22 +76,24 @@ static void	do_pipe(int fd[2], int *tmp_fd, t_list *command, t_prompt prompt)
 		execve(exec_path, command_array, 0);
 		write(STDERR_FILENO, "Error\n", 6);
 	}
-	(void)prompt;
 }
 
-static void do_last_command(int *tmp_fd, t_list *command, t_prompt prompt)
+static int do_last_command(int *tmp_fd, t_list *command, t_prompt prompt)
 {
-	pid_t 	pid;
-	char	*exec_path;
-	char	**command_array;
+	pid_t	pid;
+	char 	*exec_path;
+	char 	**command_array;
+	int		exit_status;				
 
 	pid = fork();
 	if (pid)
 	{
 		close(*tmp_fd);
-		while (waitpid(-1, NULL, WUNTRACED) != -1)
+		while (waitpid(-1, &exit_status, 0) != -1)
 			;
 		*tmp_fd = dup(STDIN_FILENO);
+		if (WIFEXITED(exit_status))
+			return (WEXITSTATUS(exit_status));
 	}
 	else if (!pid)
 	{
@@ -105,16 +107,20 @@ static void do_last_command(int *tmp_fd, t_list *command, t_prompt prompt)
 		execve(exec_path, command_array, 0);
 		write(STDERR_FILENO, "Error\n", 6);
 	}
+	return (0);
 }
 
-void redir_pipe(t_list *command_cpy, t_prompt prompt, int *tmp_fd)
+int redir_pipe(t_list *command_cpy, t_prompt prompt, int *tmp_fd)
 {
 	int fd[2];
+	int	exit_status;
 
 	do_sigign(SIGINT);
 	do_sigign(SIGQUIT);
+	exit_status = 0;
 	if (command_cpy->next)
 		do_pipe(fd, tmp_fd, command_cpy, prompt);
 	else
-		do_last_command(tmp_fd, command_cpy, prompt);
+		exit_status = do_last_command(tmp_fd, command_cpy, prompt);
+	return (exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/16 09:23:13 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/16 09:39:25 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,19 +88,21 @@ static void	init_prompt(t_prompt *prompt, char *argv[], char *envp[])
 	init_env_vars(prompt, argv);
 }
 
-static void handle_pipeline(t_prompt prompt)
+static int handle_pipeline(t_prompt prompt)
 {
 	t_list	*command_cpy;
 	int		tmp_fd;
+	int		exit_status;
 
 	tmp_fd = dup(STDIN_FILENO);
 	command_cpy = prompt.cmd_line;
 	while (command_cpy)
 	{
-		redir_pipe(command_cpy, prompt, &tmp_fd);
+		exit_status = redir_pipe(command_cpy, prompt, &tmp_fd);
 		command_cpy = command_cpy->next;
 	}
 	close(tmp_fd);
+	return (exit_status);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -118,7 +120,7 @@ int	main(int argc, char *argv[], char *envp[])
 		prompt.exit_status = handle_input(&prompt);
 		if (prompt.exit_status == -1)
 			break ;
-		handle_pipeline(prompt);
+		prompt.exit_status = handle_pipeline(prompt);
 		//print_list(prompt.cmd_line);
 		if (prompt.cmd_line != NULL)
 			free_cmd_line(&prompt.cmd_line);
