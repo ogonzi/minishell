@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:33:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/19 12:43:38 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/16 16:55:25 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	handle_sig(int sig)
 	}
 }
 
-void	handle_child_sig(int signum)
+static void	handle_child_sig(int signum)
 {
 	if (signum == SIGINT)
 	{

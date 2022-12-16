@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:39:10 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/16 09:13:05 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/16 17:12:44 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 #include "utils.h"
 #include "minishell.h"
 #include <stdio.h>
-
-void	ft_get_paths(char ***paths, char *path_line)
-{
-	*paths = ft_split(path_line, ':');
-	if (!(*paths))
-		terminate(ERR_MEM, 1);
-}
 
 int	ft_check_access(char **exec_path, char **paths)
 {
@@ -33,7 +26,8 @@ int	ft_check_access(char **exec_path, char **paths)
 	return (0);
 }
 
-int	ft_check_script(char **exec_path, char *first_arg, char **paths)
+int	ft_check_script(char **exec_path, char *first_arg,
+					char **paths, t_list **command)
 {
 	*exec_path = ft_strdup(first_arg);
 	if (!(*exec_path))
@@ -41,7 +35,7 @@ int	ft_check_script(char **exec_path, char *first_arg, char **paths)
 	if (ft_check_access(exec_path, paths) == 1)
 	{
 		if (ft_strchr((const char *)*exec_path, '/') == NULL)
-			exit(127);
+			((t_cmd_line_content *)(*command)->content)->exit_status = 127;
 		return (1);
 	}
 	return (0);
@@ -59,7 +53,8 @@ void	ft_get_full_path(char *path, char **full_path, char *user_exec_path,
 	free(*full_path);
 }
 
-int	get_exec_path(char *token, char **exec_path, t_list *command, t_prompt *prompt)
+int	get_exec_path(char *token, char **exec_path,
+					t_list *command, t_prompt *prompt)
 {
 	char	**paths;
 	char	*path_line;
@@ -70,7 +65,9 @@ int	get_exec_path(char *token, char **exec_path, t_list *command, t_prompt *prom
 	paths = NULL;
 	if (path_line != NULL)
 	{
-		ft_get_paths(&paths, path_line);
+		paths = ft_split(path_line, ':');
+		if (paths == NULL)
+			terminate(ERR_MEM, 1);
 		i = 0;
 		while (paths[i] != NULL)
 		{
@@ -84,7 +81,7 @@ int	get_exec_path(char *token, char **exec_path, t_list *command, t_prompt *prom
 		i++;
 		}
 	}
-	if (ft_check_script(exec_path, token, paths) == 1)
+	if (ft_check_script(exec_path, token, paths, &command) == 1)
 	{
 		free(path_line);
 		return (0);

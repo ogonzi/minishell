@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 12:10:13 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/13 17:08:42 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/16 17:17:48 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,11 @@ char	*custom_getenv(char *name, t_prompt *prompt)
 	while (environ_copy)
 	{
 		env_var = ((t_environ_content *)environ_copy->content)->env_var;
-		if (ft_strncmp(env_var, name, name_length) == 0 && env_var[name_length] == '=')
+		if (ft_strncmp(env_var, name, name_length) == 0
+			&& env_var[name_length] == '=')
 		{
-			value = ft_substr(env_var, name_length + 1, ft_strlen(env_var) - name_length + 1);
+			value = ft_substr(env_var,
+					name_length + 1, ft_strlen(env_var) - name_length + 1);
 			if (value == NULL)
 				terminate(ERR_MEM, 1);
 			return (value);
@@ -101,7 +103,8 @@ void	init_env_vars(t_prompt *prompt, char *argv[])
 	free(num);
 	value = custom_getenv("PATH", prompt);
 	if (!value)
-		custom_setenv("PATH", "/usr/local/sbin:/usr/local/bin:/usr/bin:/bin", prompt);
+		custom_setenv("PATH",
+			"/usr/local/sbin:/usr/local/bin:/usr/bin:/bin", prompt);
 	free(value);
 	value = custom_getenv("_", prompt);
 	if (!value)
