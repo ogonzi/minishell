@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/17 18:11:22 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 20:28:03 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ static void	do_pipe(int fd[2], int *tmp_fd, t_list *command, t_prompt prompt)
 	}
 	else if (pid == 0)
 	{
-		if (dup2(fd[1], STDOUT_FILENO) == -1)
-			terminate(ERR_DUP, 1);
+		dup_to_out(fd, command);
 		close(fd[0]);
 		close(fd[1]);
 		do_execve(tmp_fd, command, prompt);

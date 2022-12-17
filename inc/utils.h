@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/17 18:16:57 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 20:06:55 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define ERR_FORK			"Function error -> fork"
 # define ERR_WAIT			"Function error -> wait"
 # define ERR_EXECVE			"Function error -> execve"
+# define ERR_OPEN			"Function error -> open"
 # define ERR_CHLD			"Core dump in child"
 
 /* utils.c */
@@ -40,6 +41,7 @@ void	ft_free_twod_memory(char **arr);
 /* exec_utils.c */
 char	**get_command_array(t_list *command);
 char	**get_envp(t_list *environ);
+void	dup_to_out(int fd[2], t_list *command);
 
 /* split_utils.c */
 
