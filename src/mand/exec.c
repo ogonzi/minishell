@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/17 10:40:38 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 12:44:51 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static char	**get_envp(t_list *environ)
 	return (envp);
 }
 
-static void do_execve(int *tmp_fd, t_list *command, t_prompt prompt)
+static void	do_execve(int *tmp_fd, t_list *command, t_prompt prompt)
 {
 	char	*exec_path;
 	char	**command_array;
@@ -80,9 +80,11 @@ static void do_execve(int *tmp_fd, t_list *command, t_prompt prompt)
 	envp = get_envp(prompt.environ);
 	if (get_exec_path(command_array[0], &exec_path, command, &prompt) != 0)
 		exit(((t_cmd_line_content *)command->content)->exit_status);
-	dup2(*tmp_fd, STDIN_FILENO);
+	if (dup2(*tmp_fd, STDIN_FILENO) == -1)
+		terminate(ERR_DUP, 1);
 	close(*tmp_fd);
-	execve(exec_path, command_array, envp);
+	if (execve(exec_path, command_array, envp) == -1)
+		terminate(ERR_EXECVE, 1);
 }
 
 //TODO: Infile and outfile redirections
@@ -111,36 +113,51 @@ static void	do_pipe(int fd[2], int *tmp_fd, t_list *command, t_prompt prompt)
 	}
 }
 
-//TODO: Fix return value of signal sent in pipe that is not last (should be 0)
-//Handle system error exit from child (for example malloc failing in child)
+static int
+	handle_child_exit(int exit_status, int last_pipe_exit, int last_pipe)
+{
+	if (WIFEXITED(exit_status) && last_pipe == 1)
+		return (WEXITSTATUS(exit_status));
+	if (WIFSIGNALED(exit_status))
+	{
+		if (WCOREDUMP(exit_status))
+			terminate(ERR_CHLD, 0);
+		if (WTERMSIG(exit_status) == SIGINT)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			if (last_pipe == 1 || (last_pipe == 0 && last_pipe_exit != 0))
+				return (130);
+		}
+		if (WTERMSIG(exit_status) == SIGQUIT)
+		{
+			write(STDOUT_FILENO, "Quit\n", 5);
+			rl_on_new_line();
+			if (last_pipe == 1 || (last_pipe == 0 && last_pipe_exit != 0))
+				return (131);
+		}
+	}
+	return (last_pipe_exit);
+}
+
 static int	do_last_command(int *tmp_fd, t_list *command, t_prompt prompt)
 {
 	pid_t	pid;
 	int		exit_status;
+	int		last_pipe_exit;
 
 	pid = fork();
 	if (pid)
 	{
 		close(*tmp_fd);
+		*tmp_fd = dup(STDIN_FILENO);
+		last_pipe_exit = 0;
+		while (waitpid(pid, &exit_status, 0) != -1)
+			;
+		last_pipe_exit = handle_child_exit(exit_status, last_pipe_exit, 1);
+		exit_status = 0;
 		while (waitpid(WAIT_ANY, &exit_status, 0) != -1)
 			;
-		*tmp_fd = dup(STDIN_FILENO);
-		if (WIFEXITED(exit_status))
-			return (WEXITSTATUS(exit_status));
-		if (WIFSIGNALED(exit_status))
-		{
-			if (WTERMSIG(exit_status) == SIGINT)
-			{
-				write(STDOUT_FILENO, "\n", 1);
-				return (130);
-			}
-			if (WTERMSIG(exit_status) == SIGQUIT)
-			{
-				write(STDOUT_FILENO, "Quit\n", 5);
-				rl_on_new_line();
-				return (131);
-			}
-		}
+		return (handle_child_exit(exit_status, last_pipe_exit, 0));
 	}
 	else if (!pid)
 		do_execve(tmp_fd, command, prompt);

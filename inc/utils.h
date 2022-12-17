@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/17 10:39:07 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 11:34:09 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define ERR_FORK			"Function error -> fork"
 # define ERR_WAIT			"Function error -> wait"
 # define ERR_EXECVE			"Function error -> execve"
+# define ERR_CHLD			"Core dump in child"
 
 /* utils.c */
 
