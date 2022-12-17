@@ -6,14 +6,11 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 18:33:12 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/16 17:05:51 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 10:27:07 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 static void	ft_free_words(void *content)
 {
@@ -26,28 +23,24 @@ static void	ft_free_words(void *content)
 	token_content = NULL;
 }
 
-static void	free_word_list(t_list **words)
-{
-	t_list	*tmp;
-
-	ft_lstiter(*words, &ft_free_words);
-	while (*words)
-	{
-		tmp = (*words)->next;
-		free(*words);
-		*words = tmp;
-	}
-	*words = NULL;
-}
-
 static void	ft_free_cmd_line_content(void *content)
 {
 	t_cmd_line_content	*cmd_line_content;
+	t_list				*tmp;
+	t_list				*words;
 
 	cmd_line_content = content;
 	free(cmd_line_content->cmd);
 	cmd_line_content->cmd = NULL;
-	free_word_list(&(cmd_line_content->word));
+	words = cmd_line_content->word;
+	ft_lstiter(words, &ft_free_words);
+	while (words)
+	{
+		tmp = words->next;
+		free(words);
+		words = tmp;
+	}
+	words = NULL;
 	free(cmd_line_content);
 	cmd_line_content = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/16 17:51:08 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 10:25:33 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void do_execve(int *tmp_fd, t_list *command, t_prompt prompt)
 		exit(((t_cmd_line_content *)command->content)->exit_status);
 	dup2(*tmp_fd, STDIN_FILENO);
 	close(*tmp_fd);
-	execve(exec_path, command_array, 0);
+	execve(exec_path, command_array, envp);
 }
 
 //TODO: Infile and outfile redirections
