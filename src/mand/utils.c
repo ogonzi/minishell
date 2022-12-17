@@ -6,14 +6,12 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:53:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/26 17:31:59 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:08:16 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_printf.h"
+#include "minishell.h"
 #include "utils.h"
-#include <stdio.h>
 
 void	terminate(char *s, int system_error_flag)
 {

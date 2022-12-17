@@ -6,13 +6,14 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/16 17:18:17 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:34:25 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "utils.h"
 
+/*
 void	print_list(t_list *lst)
 {
 	t_list	*lst_cpy;
@@ -33,11 +34,24 @@ void	print_list(t_list *lst)
 	}
 	lst_cpy = 0;
 }
+*/
+
+static void	custom_getpid(t_prompt *prompt)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+		terminate(ERR_FORK, 1);
+	if (pid == 0)
+		exit(1);
+	waitpid(pid, NULL, 0);
+	prompt->pid = pid - 1;
+}
 
 static int	handle_input(t_prompt *prompt)
 {
 	char	*buf;
-	int		len_buf;
 	int		err;
 
 	buf = readline("msh> ");
@@ -46,8 +60,7 @@ static int	handle_input(t_prompt *prompt)
 		write(STDOUT_FILENO, "exit\n", 5);
 		return (-1);
 	}
-	len_buf = ft_strlen(buf);
-	if (len_buf != 0)
+	if (ft_strlen(buf) != 0)
 	{
 		add_history(buf);
 		err = split_cmd_line(prompt, buf);
@@ -63,19 +76,6 @@ static int	handle_input(t_prompt *prompt)
 	free(buf);
 	buf = NULL;
 	return (0);
-}
-
-static void	custom_getpid(t_prompt *prompt)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
-		terminate(ERR_FORK, 1);
-	if (pid == 0)
-		exit(1);
-	waitpid(pid, NULL, 0);
-	prompt->pid = pid - 1;
 }
 
 static void	init_prompt(t_prompt *prompt, char *argv[], char *envp[])

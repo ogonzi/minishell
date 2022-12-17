@@ -6,22 +6,22 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/16 16:55:32 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:16:42 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
+# include "libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <signal.h>
 
 typedef struct s_cmd_line_content
 {
@@ -77,7 +77,6 @@ typedef struct s_word
 void	set_sigint_action(void);
 void	set_child_sigaction(void);
 void	do_sigign(int signum);
-void	handle_child_sig(int signum);
 
 /* env.c */
 
@@ -133,6 +132,7 @@ int		redir_pipe(t_list *command_cpy, t_prompt prompt, int *tmp_fd);
 
 /* get_exec_path.c */
 
-int		get_exec_path(char *token, char **exec_path, t_list *command, t_prompt *prompt);
+int		get_exec_path(char *token, char **exec_path,
+			t_list *command, t_prompt *prompt);
 
 #endif

@@ -6,12 +6,14 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/17 11:34:09 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:16:57 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_H
 # define UTILS_H
+
+# include "minishell.h"
 
 # define ERR_ARGS			"Incorrect number of arguments, expected 0"
 # define ERR_QUOTES			"Opening quotes aren't properly closed"
@@ -35,6 +37,10 @@ void	init_shell(void);
 int		free_and_return_error_code(char **str, int err);
 void	ft_free_twod_memory(char **arr);
 
+/* exec_utils.c */
+char	**get_command_array(t_list *command);
+char	**get_envp(t_list *environ);
+
 /* split_utils.c */
 
 typedef struct s_split_data
@@ -57,7 +63,8 @@ void	set_opposite_binary(int *value);
 
 /* expand_words_utils.c */
 
-void	copy_char_to_word(char *word, char *cpy_word, int *from_index, int *to_index);
+void	copy_char_to_word(char *word, char *cpy_word,
+			int *from_index, int *to_index);
 int		new_word_length(char *word, int exit_status);
 
 #endif

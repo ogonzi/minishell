@@ -6,68 +6,12 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/17 12:44:51 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:11:22 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include "minishell.h"
-
-static char	**get_command_array(t_list *command)
-{
-	char	**command_array;
-	t_list	*token_list;
-	int		len_list;
-	int		i;
-
-	token_list = ((t_cmd_line_content *)command->content)->word;
-	len_list = ft_lstsize(token_list);
-	command_array = malloc(sizeof(char *) * (len_list + 1));
-	if (command_array == NULL)
-		terminate(ERR_MEM, 1);
-	i = 0;
-	while (token_list)
-	{
-		if (((t_token_content *)token_list->content)->type == 1)
-		{
-			command_array[i]
-				= ft_strdup(((t_token_content *)token_list->content)->word);
-			if (command_array[i] == NULL)
-				terminate(ERR_MEM, 1);
-			i++;
-		}
-		token_list = token_list->next;
-	}
-	while (i < len_list + 1)
-	{
-		command_array[i] = NULL;
-		i++;
-	}
-	return (command_array);
-}
-
-static char	**get_envp(t_list *environ)
-{
-	char	**envp;
-	int		len_list;
-	int		i;
-
-	len_list = ft_lstsize(environ);
-	envp = malloc(sizeof(char *) * (len_list + 1));
-	if (envp == NULL)
-		terminate(ERR_MEM, 1);
-	i = 0;
-	while (environ)
-	{
-		envp[i] = ft_strdup(((t_environ_content *)environ->content)->env_var);
-		if (envp[i] == NULL)
-			terminate(ERR_MEM, 1);
-		i++;
-		environ = environ->next;
-	}
-	envp[i] = NULL;
-	return (envp);
-}
 
 static void	do_execve(int *tmp_fd, t_list *command, t_prompt prompt)
 {
