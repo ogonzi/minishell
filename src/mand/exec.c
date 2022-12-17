@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/17 10:25:33 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 10:40:38 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,17 +90,21 @@ static void	do_pipe(int fd[2], int *tmp_fd, t_list *command, t_prompt prompt)
 {
 	pid_t	pid;
 
-	pipe(fd);
+	if (pipe(fd) != 0)
+		terminate(ERR_PIPE, 1);
 	pid = fork();
-	if (pid)
+	if (pid < 0)
+		terminate(ERR_FORK, 1);
+	else if (pid > 0)
 	{
 		close(fd[1]);
 		close(*tmp_fd);
 		*tmp_fd = fd[0];
 	}
-	else if (!pid)
+	else if (pid == 0)
 	{
-		dup2(fd[1], STDOUT_FILENO);
+		if (dup2(fd[1], STDOUT_FILENO) == -1)
+			terminate(ERR_DUP, 1);
 		close(fd[0]);
 		close(fd[1]);
 		do_execve(tmp_fd, command, prompt);

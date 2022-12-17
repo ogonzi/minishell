@@ -6,11 +6,36 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 18:33:12 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/17 10:27:07 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/17 10:28:51 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	ft_free_environ_content(void *content)
+{
+	t_environ_content	*environ_content;
+
+	environ_content = content;
+	free(environ_content->env_var);
+	environ_content->env_var = NULL;
+	free(environ_content);
+	environ_content = NULL;
+}
+
+void	free_environ(t_list **environ)
+{
+	t_list	*tmp;
+
+	ft_lstiter(*environ, &ft_free_environ_content);
+	while (*environ)
+	{
+		tmp = (*environ)->next;
+		free(*environ);
+		*environ = tmp;
+	}
+	*environ = NULL;
+}
 
 static void	ft_free_words(void *content)
 {
@@ -43,31 +68,6 @@ static void	ft_free_cmd_line_content(void *content)
 	words = NULL;
 	free(cmd_line_content);
 	cmd_line_content = NULL;
-}
-
-static void	ft_free_environ_content(void *content)
-{
-	t_environ_content	*environ_content;
-
-	environ_content = content;
-	free(environ_content->env_var);
-	environ_content->env_var = NULL;
-	free(environ_content);
-	environ_content = NULL;
-}
-
-void	free_environ(t_list **environ)
-{
-	t_list	*tmp;
-
-	ft_lstiter(*environ, &ft_free_environ_content);
-	while (*environ)
-	{
-		tmp = (*environ)->next;
-		free(*environ);
-		*environ = tmp;
-	}
-	*environ = NULL;
 }
 
 void	free_cmd_line(t_list **cmd_line)
