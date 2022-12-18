@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/17 20:04:11 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/18 12:07:54 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ enum	e_type
 	OPEN_FILE,
 	LIMITOR,
 	EXIT_FILE,
-	EXIT_FILE_RET,
+	EXIT_FILE_APP,
 	SYN_ERROR,
 };
 

@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/18 11:21:41 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/18 12:07:54 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	dup_to_out(int fd_out, t_list *command, int last)
 					O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			did_redirection = 1;
 		}
-		else if (token_content->type == EXIT_FILE_RET)
+		else if (token_content->type == EXIT_FILE_APP)
 		{
 			close(fd_out);
 			fd_out = open(token_content->word,

@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:12:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/10 10:45:53 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/18 12:07:54 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ void	set_type_after_redir(enum e_type *last_word_type)
 	else if (*last_word_type == FILE_OUT)
 		*last_word_type = EXIT_FILE;
 	else if (*last_word_type == FILE_OUT_APP)
-		*last_word_type = EXIT_FILE_RET;
+		*last_word_type = EXIT_FILE_APP;
 }
 
 void	set_word_type(char *word, int word_len, enum e_type *last_word_type)
 {
 	if (*last_word_type == NONE || *last_word_type == ARG
 		|| *last_word_type == OPEN_FILE || *last_word_type == LIMITOR
-		|| *last_word_type == EXIT_FILE || *last_word_type == EXIT_FILE_RET)
+		|| *last_word_type == EXIT_FILE || *last_word_type == EXIT_FILE_APP)
 	{
 		if (ft_strncmp("<", word, word_len) == 0)
 			*last_word_type = FILE_IN;
