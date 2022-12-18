@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/17 20:36:48 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/18 11:21:41 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	**get_envp(t_list *environ)
 	return (envp);
 }
 
-void	dup_to_out(int fd[2], t_list *command)
+void	dup_to_in(int fd_in, t_list *command)
 {
 	t_list			*token;
 	t_token_content	*token_content;
@@ -85,22 +85,50 @@ void	dup_to_out(int fd[2], t_list *command)
 	while (token)
 	{
 		token_content = token->content;
-		if (token_content->type == EXIT_FILE)
+		if (token_content->type == OPEN_FILE)
 		{
-			close(fd[1]);
-			fd[1] = open(token_content->word,
-					O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			close(fd_in);
+			fd_in = open(token_content->word, O_RDONLY);
 		}
-		else if (token_content->type == EXIT_FILE_RET)
-		{
-			close(fd[1]);
-			fd[1] = open(token_content->word,
-					O_WRONLY | O_APPEND | O_CREAT, 0644);
-		}
-		if (fd[1] < 0)
+		if (fd_in < 0)
 			terminate(ERR_OPEN, 1);
 		token = token->next;
 	}
-	if (dup2(fd[1], STDOUT_FILENO) == -1)
+	if (dup2(fd_in, STDIN_FILENO) == -1)
+		terminate(ERR_DUP, 1);
+}
+
+
+void	dup_to_out(int fd_out, t_list *command, int last)
+{
+	t_list			*token;
+	t_token_content	*token_content;
+	int				did_redirection;
+
+	did_redirection = 0;
+	token = ((t_cmd_line_content *)command->content)->word;
+	while (token)
+	{
+		token_content = token->content;
+		if (token_content->type == EXIT_FILE)
+		{
+			close(fd_out);
+			fd_out = open(token_content->word,
+					O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			did_redirection = 1;
+		}
+		else if (token_content->type == EXIT_FILE_RET)
+		{
+			close(fd_out);
+			fd_out = open(token_content->word,
+					O_WRONLY | O_APPEND | O_CREAT, 0644);
+			did_redirection = 1;
+		}
+		if (fd_out < 0)
+			terminate(ERR_OPEN, 1);
+		token = token->next;
+	}
+	if ((last == 0 || (last == 1 && did_redirection == 1))
+		&& dup2(fd_out, STDOUT_FILENO) == -1)
 		terminate(ERR_DUP, 1);
 }
