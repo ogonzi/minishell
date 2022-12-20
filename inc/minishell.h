@@ -6,61 +6,27 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 23:42:43 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2022/12/14 23:56:40 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// Our C library and output library
 # include "libft.h"
 # include "ft_printf.h"
 # include "ft_printf_fd.h"
+
+// Other includes
+# include "minishell_structs.h"
+
 # include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <signal.h>
-
-typedef struct s_cmd_line_data	t_cmd_line_data;
-
-struct s_cmd_line_data
-{
-	char	*cmd;
-	t_list	*word;
-};
-
-enum	e_type
-{
-	NONE,
-	ARG,
-	FILE_IN,
-	HERE_DOC,
-	FILE_OUT,
-	FILE_OUT_APP,
-	OPEN_FILE,
-	LIMITOR,
-	EXIT_FILE,
-	EXIT_FILE_RET,
-	SYN_ERROR,
-};
-
-typedef struct s_token_data
-{
-	char				*word;
-	enum e_type			type;
-}						t_token_data;
-
-typedef struct s_word
-{
-	char		*str;
-	int			start;
-	int			end;
-	enum e_type	*last_type;
-}				t_word;
 
 /* signals.c */
 
