@@ -6,13 +6,14 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/18 11:23:02 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/23 12:18:05 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include "minishell.h"
 
+//TODO: Change handling of error message if get_exec_path returns != 0
 static void	do_execve(int *tmp_fd, t_list *command, t_prompt prompt)
 {
 	char	*exec_path;
@@ -22,10 +23,13 @@ static void	do_execve(int *tmp_fd, t_list *command, t_prompt prompt)
 	set_child_sigaction();
 	command_array = get_command_array(command);
 	envp = get_envp(prompt.environ);
-	if (get_exec_path(command_array[0], &exec_path, command, &prompt) != 0)
-		exit(((t_cmd_line_content *)command->content)->exit_status);
 	dup_to_in(*tmp_fd, command);
 	close(*tmp_fd);
+	if (get_exec_path(command_array[0], &exec_path, command, &prompt) != 0)
+	{
+		printf("%s: command not found\n", command_array[0]);
+		exit(((t_cmd_line_content *)command->content)->exit_status);
+	}
 	if (execve(exec_path, command_array, envp) == -1)
 		terminate(ERR_EXECVE, 1);
 }

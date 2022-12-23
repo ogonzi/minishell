@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/18 11:14:44 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/23 12:26:54 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # define ERR_EXECVE			"Function error -> execve"
 # define ERR_OPEN			"Function error -> open"
 # define ERR_CHLD			"Core dump in child"
+
+# define TMP_FILE_HEREDOC	"/tmp/heredoc"
 
 /* utils.c */
 
