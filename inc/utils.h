@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/23 12:26:54 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/24 11:30:48 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@
 # define ERR_WAIT			"Function error -> wait"
 # define ERR_EXECVE			"Function error -> execve"
 # define ERR_OPEN			"Function error -> open"
+# define ERR_CLOSE			"Function error -> close"
+# define ERR_UNLINK			"Function error -> unlink"
 # define ERR_CHLD			"Core dump in child"
-
 # define TMP_FILE_HEREDOC	"/tmp/heredoc"
 
 /* utils.c */
