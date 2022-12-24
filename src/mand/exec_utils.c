@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/23 12:58:12 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/24 11:31:54 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,15 @@ void do_here_doc(int *fd_in, char *limitor)
 	char	 *line;
 	int		tmp_fd;
 
-	write(STDOUT_FILENO, "> ", 2);
-	line = get_next_line(STDIN_FILENO);
-	while (line != NULL)
+	while (1)
 	{
+		write(STDOUT_FILENO, "> ", 2);
+		line = get_next_line(STDIN_FILENO);
+		if (line == NULL)
+		{
+			printf("msh: warning: here-document delimited by end-of-file (wanted `%s')\n", limitor);
+			break ;
+		}
 		if (line_is_limitor(line, limitor))
 			break ;
 		tmp_fd = open(TMP_FILE_HEREDOC, O_WRONLY | O_APPEND | O_CREAT, 0600);
@@ -107,11 +112,7 @@ void do_here_doc(int *fd_in, char *limitor)
 		close(tmp_fd);
 		free(line);
 		line = NULL;
-		write(STDOUT_FILENO, "> ", 2);
-		line = get_next_line(STDIN_FILENO);
 	}
-	if (line == NULL)
-		printf("msh: warning: here-document delimited by end-of-file (wanted `%s')\n", limitor);
 	close(*fd_in);
 	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);
 	unlink(TMP_FILE_HEREDOC);
