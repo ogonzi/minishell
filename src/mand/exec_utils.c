@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/24 11:31:54 by ogonzale         ###   ########.fr       */
+/*   Updated: 2022/12/30 13:21:24 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,13 @@ void do_here_doc(int *fd_in, char *limitor)
 		if (tmp_fd < 0)
 			terminate(ERR_OPEN, 1);
 		write(tmp_fd, line, ft_strlen(line));
-		close(tmp_fd);
+		if (close(tmp_fd) != 0)
+			terminate(ERR_CLOSE, 1);
 		free(line);
 		line = NULL;
 	}
-	close(*fd_in);
+	if (close(*fd_in) != 0)
+		terminate(ERR_CLOSE, 1);
 	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);
 	unlink(TMP_FILE_HEREDOC);
 }
@@ -129,7 +131,8 @@ void dup_to_in(int fd_in, t_list *command)
 		token_content = token->content;
 		if (token_content->type == OPEN_FILE)
 		{
-			close(fd_in);
+			if (close(fd_in) != 0)
+				terminate(ERR_CLOSE, 1);
 			fd_in = open(token_content->word, O_RDONLY);
 			if (fd_in < 0)
 				terminate(ERR_OPEN, 1);
@@ -140,6 +143,7 @@ void dup_to_in(int fd_in, t_list *command)
 	}
 	if (dup2(fd_in, STDIN_FILENO) == -1)
 		terminate(ERR_DUP, 1);
+	close(fd_in);
 }
 
 void dup_to_out(int fd_out, t_list *command, int last)
@@ -155,14 +159,16 @@ void dup_to_out(int fd_out, t_list *command, int last)
 		token_content = token->content;
 		if (token_content->type == EXIT_FILE)
 		{
-			close(fd_out);
+			if (close(fd_out) != 0)
+				terminate(ERR_CLOSE, 1);
 			fd_out = open(token_content->word,
 						  O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			did_redirection = 1;
 		}
 		else if (token_content->type == EXIT_FILE_APP)
 		{
-			close(fd_out);
+			if (close(fd_out) != 0)
+				terminate(ERR_CLOSE, 1);
 			fd_out = open(token_content->word,
 						  O_WRONLY | O_APPEND | O_CREAT, 0644);
 			did_redirection = 1;
@@ -173,4 +179,6 @@ void dup_to_out(int fd_out, t_list *command, int last)
 	}
 	if ((last == 0 || (last == 1 && did_redirection == 1)) && dup2(fd_out, STDOUT_FILENO) == -1)
 		terminate(ERR_DUP, 1);
+	if (close(fd_out) != 0)
+		terminate(ERR_CLOSE, 1);
 }
