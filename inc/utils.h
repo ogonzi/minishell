@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/24 11:30:48 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/02 11:56:09 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	ft_free_twod_memory(char **arr);
 /* exec_utils.c */
 char	**get_command_array(t_list *command);
 char	**get_envp(t_list *environ);
-void	dup_to_in(int fd_in, t_list *command);
-void	dup_to_out(int fd_out, t_list *command, int last);
+void	dup_to_in(int *tmp_fd, t_list *command);
+void	dup_to_out(t_list *command);
 
 /* split_utils.c */
 

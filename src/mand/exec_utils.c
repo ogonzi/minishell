@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/30 13:21:24 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/02 11:56:56 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	line_is_limitor(char *line, char *limitor)
 	return (0);
 }
 
-void do_here_doc(int *fd_in, char *limitor)
+void do_here_doc(int *fd_in, char *limitor, int did_redirection)
 {
 	char	 *line;
 	int		tmp_fd;
@@ -114,43 +114,52 @@ void do_here_doc(int *fd_in, char *limitor)
 		free(line);
 		line = NULL;
 	}
-	if (close(*fd_in) != 0)
+	if (did_redirection == 1 && close(*fd_in) != 0)
 		terminate(ERR_CLOSE, 1);
 	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);
 	unlink(TMP_FILE_HEREDOC);
 }
 
-void dup_to_in(int fd_in, t_list *command)
+void dup_to_in(int *tmp_fd, t_list *command)
 {
 	t_list			*token;
 	t_token_content	*token_content;
+	int				fd_in;
+	int				did_redirection;
 
 	token = ((t_cmd_line_content *)command->content)->word;
+	did_redirection = 0;
 	while (token)
 	{
 		token_content = token->content;
 		if (token_content->type == OPEN_FILE)
 		{
-			if (close(fd_in) != 0)
+			if (did_redirection == 1 && close(fd_in) != 0)
 				terminate(ERR_CLOSE, 1);
 			fd_in = open(token_content->word, O_RDONLY);
 			if (fd_in < 0)
 				terminate(ERR_OPEN, 1);
+			did_redirection = 1;
 		}
 		else if (token_content->type == LIMITOR)
-			do_here_doc(&fd_in, token_content->word);
+		{
+			do_here_doc(&fd_in, token_content->word, did_redirection);
+			did_redirection = 1;
+		}
 		token = token->next;
 	}
-	if (dup2(fd_in, STDIN_FILENO) == -1)
+	if (did_redirection == 1 && dup2(fd_in, *tmp_fd) == -1)
 		terminate(ERR_DUP, 1);
-	close(fd_in);
+	if (did_redirection == 1 && close(fd_in) != 0)
+		terminate(ERR_CLOSE, 1);
 }
 
-void dup_to_out(int fd_out, t_list *command, int last)
+void dup_to_out(t_list *command)
 {
 	t_list *token;
 	t_token_content *token_content;
 	int did_redirection;
+	int				fd_out;
 
 	did_redirection = 0;
 	token = ((t_cmd_line_content *)command->content)->word;
@@ -159,7 +168,7 @@ void dup_to_out(int fd_out, t_list *command, int last)
 		token_content = token->content;
 		if (token_content->type == EXIT_FILE)
 		{
-			if (close(fd_out) != 0)
+			if (did_redirection == 1 && close(fd_out) != 0)
 				terminate(ERR_CLOSE, 1);
 			fd_out = open(token_content->word,
 						  O_WRONLY | O_TRUNC | O_CREAT, 0644);
@@ -167,7 +176,7 @@ void dup_to_out(int fd_out, t_list *command, int last)
 		}
 		else if (token_content->type == EXIT_FILE_APP)
 		{
-			if (close(fd_out) != 0)
+			if (did_redirection == 1 && close(fd_out) != 0)
 				terminate(ERR_CLOSE, 1);
 			fd_out = open(token_content->word,
 						  O_WRONLY | O_APPEND | O_CREAT, 0644);
@@ -177,8 +186,8 @@ void dup_to_out(int fd_out, t_list *command, int last)
 			terminate(ERR_OPEN, 1);
 		token = token->next;
 	}
-	if ((last == 0 || (last == 1 && did_redirection == 1)) && dup2(fd_out, STDOUT_FILENO) == -1)
+	if (did_redirection == 1 && dup2(fd_out, STDOUT_FILENO) == -1)
 		terminate(ERR_DUP, 1);
-	if (close(fd_out) != 0)
+	if (did_redirection == 1 && close(fd_out) != 0)
 		terminate(ERR_CLOSE, 1);
 }
