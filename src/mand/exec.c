@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/03 18:07:41 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:19:58 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,12 @@
 #include "minishell.h"
 
 //TODO: Change handling of error message if get_exec_path returns != 0
-static void	do_execve(t_list *command, t_prompt prompt, int fd[2])
+static void	do_execve(t_list *command, t_prompt prompt, int fd[2], int tmp_fd[2])
 {
 	char	*exec_path;
 	char	**command_array;
 	char	**envp;
-	int		is_last;
 
-	if (command->next == NULL)
-		is_last = 1;
-	else
-		is_last = 0;
 	set_child_sigaction();
 	command_array = get_command_array(command);
 	envp = get_envp(prompt.environ);
@@ -33,9 +28,10 @@ static void	do_execve(t_list *command, t_prompt prompt, int fd[2])
 		printf("%s: command not found\n", command_array[0]);
 		exit(((t_cmd_line_content *)command->content)->exit_status);
 	}
-	if (is_last == 0 && dup2(fd[1], STDOUT_FILENO) == -1)
-		terminate(ERR_DUP, 1);
 	close(fd[1]);
+	if (dup2(tmp_fd[1], STDOUT_FILENO) == -1)
+		terminate(ERR_DUP, 1);
+	close(tmp_fd[1]);
 	if (execve(exec_path, command_array, envp) == -1)
 		terminate(ERR_EXECVE, 1);
 }
@@ -45,7 +41,7 @@ static void	do_child(int fd[2], int tmp_fd[2], t_list *command, t_prompt prompt)
 	close(fd[0]);
 	dup2(tmp_fd[0], STDIN_FILENO);
 	close(tmp_fd[0]);
-	do_execve(command, prompt, fd);
+	do_execve(command, prompt, fd, tmp_fd);
 }
 
 // TODO: Infile and outfile redirections
@@ -62,6 +58,7 @@ static void	do_pipe(int fd[2], int tmp_fd[2], t_list *command, t_prompt prompt)
 	{
 		dup2(fd[0], tmp_fd[0]);
 		close(fd[0]);
+		dup2(fd[1], tmp_fd[1]);
 		close(fd[1]);
 	}
 	else if (pid == 0)
@@ -131,9 +128,9 @@ int	redir_pipe(t_list *command_cpy, t_prompt prompt, int tmp_fd[2])
 
 	do_sigign(SIGINT);
 	do_sigign(SIGQUIT);
-	exit_status = 0;
 	exit_status = dup_to_in(&tmp_fd[0], command_cpy);
-	//dup_to_out(command_cpy);
+	if (exit_status == 0)
+		exit_status = dup_to_out(&tmp_fd[1], command_cpy);
 	if (exit_status == 0 && command_cpy->next)
 		do_pipe(fd, tmp_fd, command_cpy, prompt);
 	else if (exit_status == 0)

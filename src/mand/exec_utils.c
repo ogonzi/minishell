@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/03 17:58:01 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:21:45 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int do_here_doc(int *fd_in, char *limitor, int did_redirection)
 	return (0);	
 }
 
-int dup_to_in(int *tmp_fd, t_list *command)
+int dup_to_in(int *tmp_fd_in, t_list *command)
 {
 	t_list			*token;
 	t_token_content	*token_content;
@@ -158,18 +158,18 @@ int dup_to_in(int *tmp_fd, t_list *command)
 		}
 		token = token->next;
 	}
-	if (did_redirection == 1 && dup2(fd_in, *tmp_fd) == -1)
+	if (did_redirection == 1 && dup2(fd_in, *tmp_fd_in) == -1)
 		terminate(ERR_DUP, 1);
 	if (did_redirection == 1 && close(fd_in) != 0)
 		terminate(ERR_CLOSE, 1);
 	return (0);
 }
 
-void dup_to_out(t_list *command)
+int dup_to_out(int *tmp_fd_out, t_list *command)
 {
-	t_list *token;
-	t_token_content *token_content;
-	int did_redirection;
+	t_list			*token;
+	t_token_content	*token_content;
+	int				did_redirection;
 	int				fd_out;
 
 	did_redirection = 0;
@@ -183,6 +183,11 @@ void dup_to_out(t_list *command)
 				terminate(ERR_CLOSE, 1);
 			fd_out = open(token_content->word,
 						  O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (fd_out == -1)
+			{
+				printf("msh: %s: Error writing file or directory\n", token_content->word);
+				return (1);
+			}
 			did_redirection = 1;
 		}
 		else if (token_content->type == EXIT_FILE_APP)
@@ -191,14 +196,19 @@ void dup_to_out(t_list *command)
 				terminate(ERR_CLOSE, 1);
 			fd_out = open(token_content->word,
 						  O_WRONLY | O_APPEND | O_CREAT, 0644);
+			{
+				printf("msh: %s: Error writing file or directory\n", token_content->word);
+				return (1);
+			}
 			did_redirection = 1;
 		}
 		if (fd_out < 0)
 			terminate(ERR_OPEN, 1);
 		token = token->next;
 	}
-	if (did_redirection == 1 && dup2(fd_out, STDOUT_FILENO) == -1)
+	if (did_redirection == 1 && dup2(fd_out, *tmp_fd_out) == -1)
 		terminate(ERR_DUP, 1);
 	if (did_redirection == 1 && close(fd_out) != 0)
 		terminate(ERR_CLOSE, 1);
+	return (0);
 }

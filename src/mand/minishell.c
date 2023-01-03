@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/03 18:04:37 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:15:56 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,9 @@ static int	handle_pipeline(t_prompt prompt)
 	tmp_fd[0] = dup(STDIN_FILENO);
 	if (tmp_fd[0] == -1)
 		terminate(ERR_DUP, 1);
+	tmp_fd[1] = dup(STDOUT_FILENO);
+	if (tmp_fd[1] == -1)
+		terminate(ERR_DUP, 1);
 	command_cpy = prompt.cmd_line;
 	while (command_cpy)
 	{
@@ -104,6 +107,8 @@ static int	handle_pipeline(t_prompt prompt)
 		command_cpy = command_cpy->next;
 	}
 	if (close(tmp_fd[0]) != 0)
+		terminate(ERR_CLOSE, 1);
+	if (close(tmp_fd[1]) != 0)
 		terminate(ERR_CLOSE, 1);
 	return (exit_status);
 }
