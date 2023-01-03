@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/02 11:56:56 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/03 17:58:01 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	line_is_limitor(char *line, char *limitor)
 	return (0);
 }
 
-void do_here_doc(int *fd_in, char *limitor, int did_redirection)
+int do_here_doc(int *fd_in, char *limitor, int did_redirection)
 {
 	char	 *line;
 	int		tmp_fd;
@@ -116,11 +116,14 @@ void do_here_doc(int *fd_in, char *limitor, int did_redirection)
 	}
 	if (did_redirection == 1 && close(*fd_in) != 0)
 		terminate(ERR_CLOSE, 1);
-	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);
+	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY);
 	unlink(TMP_FILE_HEREDOC);
+	if (*fd_in < 0)
+		return (1);
+	return (0);	
 }
 
-void dup_to_in(int *tmp_fd, t_list *command)
+int dup_to_in(int *tmp_fd, t_list *command)
 {
 	t_list			*token;
 	t_token_content	*token_content;
@@ -138,12 +141,19 @@ void dup_to_in(int *tmp_fd, t_list *command)
 				terminate(ERR_CLOSE, 1);
 			fd_in = open(token_content->word, O_RDONLY);
 			if (fd_in < 0)
-				terminate(ERR_OPEN, 1);
+			{
+				printf("msh: %s: Error reading file or directory\n", token_content->word);
+				return (1);
+			}
 			did_redirection = 1;
 		}
 		else if (token_content->type == LIMITOR)
 		{
-			do_here_doc(&fd_in, token_content->word, did_redirection);
+			if (do_here_doc(&fd_in, token_content->word, did_redirection) != 0)
+			{
+				printf("msh: %s: Error reading file or directory\n", token_content->word);
+				return (1);
+			}
 			did_redirection = 1;
 		}
 		token = token->next;
@@ -152,6 +162,7 @@ void dup_to_in(int *tmp_fd, t_list *command)
 		terminate(ERR_DUP, 1);
 	if (did_redirection == 1 && close(fd_in) != 0)
 		terminate(ERR_CLOSE, 1);
+	return (0);
 }
 
 void dup_to_out(t_list *command)

@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/01 12:38:59 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:04:46 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	free_environ(t_list **environ);
 
 /* exec.c */
 
-int		redir_pipe(t_list *command_cpy, t_prompt prompt, int *tmp_fd);
+int		redir_pipe(t_list *command_cpy, t_prompt prompt, int tmp_fd[2]);
 
 /* get_exec_path.c */
 
