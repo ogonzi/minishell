@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/03 18:21:45 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/03 20:01:36 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,10 @@ int do_here_doc(int *fd_in, char *limitor, int did_redirection)
 	}
 	if (did_redirection == 1 && close(*fd_in) != 0)
 		terminate(ERR_CLOSE, 1);
-	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY);
-	unlink(TMP_FILE_HEREDOC);
+	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);
 	if (*fd_in < 0)
 		return (1);
+	unlink(TMP_FILE_HEREDOC);
 	return (0);	
 }
 
@@ -165,7 +165,7 @@ int dup_to_in(int *tmp_fd_in, t_list *command)
 	return (0);
 }
 
-int dup_to_out(int *tmp_fd_out, t_list *command)
+int dup_to_out(int *tmp_fd_out, t_list *command, int *did_out_redirection)
 {
 	t_list			*token;
 	t_token_content	*token_content;
@@ -196,6 +196,7 @@ int dup_to_out(int *tmp_fd_out, t_list *command)
 				terminate(ERR_CLOSE, 1);
 			fd_out = open(token_content->word,
 						  O_WRONLY | O_APPEND | O_CREAT, 0644);
+			if (fd_out == -1)
 			{
 				printf("msh: %s: Error writing file or directory\n", token_content->word);
 				return (1);
@@ -210,5 +211,6 @@ int dup_to_out(int *tmp_fd_out, t_list *command)
 		terminate(ERR_DUP, 1);
 	if (did_redirection == 1 && close(fd_out) != 0)
 		terminate(ERR_CLOSE, 1);
+	*did_out_redirection = did_redirection;
 	return (0);
 }
