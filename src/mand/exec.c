@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/03 20:03:09 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/04 19:53:24 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	do_child(int fd[2], int tmp_fd[2], t_list *command, t_prompt prompt,
 static void	do_pipe(int fd[2], int tmp_fd[2], t_list *command, t_prompt prompt, int did_out_redirection)
 {
 	pid_t	pid;
-	
+
 	if (pipe(fd) != 0)
 		terminate(ERR_PIPE, 1);
 	pid = fork();
@@ -68,7 +68,7 @@ static void	do_pipe(int fd[2], int tmp_fd[2], t_list *command, t_prompt prompt, 
 	else if (pid > 0)
 	{
 		if (dup2(fd[0], tmp_fd[0]) == -1)
-		 	terminate(ERR_DUP, 1);
+			terminate(ERR_DUP, 1);
 		if (close(fd[0]) != 0)
 			terminate(ERR_CLOSE, 1);
 		if (close(fd[1]) != 0)
@@ -121,7 +121,7 @@ static int	do_last_command(int fd[2], int tmp_fd[2],
 		if (close(fd[0]) != 0)
 			terminate(ERR_CLOSE, 1);
 		if (dup2(fd[1], tmp_fd[1]) == -1)
-		 	terminate(ERR_DUP, 1);
+			terminate(ERR_DUP, 1);
 		if (close(fd[1]) != 0)
 			terminate(ERR_CLOSE, 1);
 		last_pipe_exit = 0;
@@ -153,6 +153,5 @@ int	redir_pipe(t_list *command_cpy, t_prompt prompt, int tmp_fd[2])
 		do_pipe(fd, tmp_fd, command_cpy, prompt, did_out_redirection);
 	else if (exit_status == 0)
 		exit_status = do_last_command(fd, tmp_fd, command_cpy, prompt, did_out_redirection);
-	(void)did_out_redirection;
 	return (exit_status);
 }
