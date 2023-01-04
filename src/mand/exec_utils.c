@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/04 20:18:09 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/04 20:48:04 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,31 +92,37 @@ int	line_is_limitor(char *line, char *limitor)
 	return (0);
 }
 
-int	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
+int	heredoc_continues(char *limitor)
 {
 	char	*line;
 	int		tmp_fd;
 
-	while (1)
+	write(STDOUT_FILENO, "> ", 2);
+	line = get_next_line(STDIN_FILENO);
+	if (line == NULL)
 	{
-		write(STDOUT_FILENO, "> ", 2);
-		line = get_next_line(STDIN_FILENO);
-		if (line == NULL)
-		{
-			printf("msh: warning: here-document delimited by end-of-file (wanted `%s')\n", limitor);
-			break ;
-		}
-		if (line_is_limitor(line, limitor))
-			break ;
-		tmp_fd = open(TMP_FILE_HEREDOC, O_WRONLY | O_APPEND | O_CREAT, 0600);
-		if (tmp_fd < 0)
-			terminate(ERR_OPEN, 1);
-		write(tmp_fd, line, ft_strlen(line));
-		if (close(tmp_fd) != 0)
-			terminate(ERR_CLOSE, 1);
-		free(line);
-		line = NULL;
+		printf("msh: warning: here-document delimited by end-of-file (wanted `%s')\n", limitor);
+		return (0);
 	}
+	if (line_is_limitor(line, limitor))
+		return (0);
+	tmp_fd = open(TMP_FILE_HEREDOC, O_WRONLY | O_APPEND | O_CREAT, 0600);
+	if (tmp_fd < 0)
+		terminate(ERR_OPEN, 1);
+	write(tmp_fd, line, ft_strlen(line));
+	if (close(tmp_fd) != 0)
+		terminate(ERR_CLOSE, 1);
+	free(line);
+	line = NULL;
+	return (1);
+}
+
+// BUG: When there is more than one heredoc input, cat << EOF << CAT,
+// weird stuff happens
+int	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
+{
+	while (heredoc_continues(limitor))
+		;
 	if (*did_redirection == 1 && close(*fd_in) != 0)
 		terminate(ERR_CLOSE, 1);
 	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);
@@ -173,6 +179,30 @@ int	dup_to_in(int *tmp_fd_in, t_list *command)
 	return (0);
 }
 
+int	handle_write_to_exit_file(int *fd_out, int *did_redirection,
+								t_token_content *token_content)
+{
+	if (token_content->type == EXIT_FILE
+		|| token_content->type == EXIT_FILE_APP)
+	{
+		if (*did_redirection == 1 && close(*fd_out) != 0)
+			terminate(ERR_CLOSE, 1);
+		if (token_content->type == EXIT_FILE)
+			*fd_out = open(token_content->word,
+					O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		else if (token_content->type == EXIT_FILE_APP)
+			*fd_out = open(token_content->word,
+					O_WRONLY | O_APPEND | O_CREAT, 0644);
+		if (*fd_out < 0)
+		{
+			printf("msh: %s: Error writing file or directory\n", token_content->word);
+			return (1);
+		}
+		*did_redirection = 1;
+	}
+	return (0);
+}
+
 int	dup_to_out(int *tmp_fd_out, t_list *command, int *did_out_redirection)
 {
 	t_list			*token;
@@ -185,34 +215,9 @@ int	dup_to_out(int *tmp_fd_out, t_list *command, int *did_out_redirection)
 	while (token)
 	{
 		token_content = token->content;
-		if (token_content->type == EXIT_FILE)
-		{
-			if (did_redirection == 1 && close(fd_out) != 0)
-				terminate(ERR_CLOSE, 1);
-			fd_out = open(token_content->word,
-					O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			if (fd_out == -1)
-			{
-				printf("msh: %s: Error writing file or directory\n", token_content->word);
-				return (1);
-			}
-			did_redirection = 1;
-		}
-		else if (token_content->type == EXIT_FILE_APP)
-		{
-			if (did_redirection == 1 && close(fd_out) != 0)
-				terminate(ERR_CLOSE, 1);
-			fd_out = open(token_content->word,
-					O_WRONLY | O_APPEND | O_CREAT, 0644);
-			if (fd_out == -1)
-			{
-				printf("msh: %s: Error writing file or directory\n", token_content->word);
-				return (1);
-			}
-			did_redirection = 1;
-		}
-		if (fd_out < 0)
-			terminate(ERR_OPEN, 1);
+		if (handle_write_to_exit_file(&fd_out,
+				&did_redirection, token_content) == 1)
+			return (1);
 		token = token->next;
 	}
 	if (did_redirection == 1 && dup2(fd_out, *tmp_fd_out) == -1)
