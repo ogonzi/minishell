@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/04 19:50:50 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/04 20:18:09 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	line_is_limitor(char *line, char *limitor)
 	return (0);
 }
 
-int	do_here_doc(int *fd_in, char *limitor, int did_redirection)
+int	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
 {
 	char	*line;
 	int		tmp_fd;
@@ -117,12 +117,30 @@ int	do_here_doc(int *fd_in, char *limitor, int did_redirection)
 		free(line);
 		line = NULL;
 	}
-	if (did_redirection == 1 && close(*fd_in) != 0)
+	if (*did_redirection == 1 && close(*fd_in) != 0)
 		terminate(ERR_CLOSE, 1);
 	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);
 	if (*fd_in < 0)
+	{
+		printf("msh: %s: Error reading file or directory\n", limitor);
 		return (1);
+	}
 	unlink(TMP_FILE_HEREDOC);
+	*did_redirection = 1;
+	return (0);
+}
+
+int	handle_open_file(int *fd_in, int *did_redirection, char *filename)
+{
+	if (*did_redirection == 1 && close(*fd_in) != 0)
+		terminate(ERR_CLOSE, 1);
+	*fd_in = open(filename, O_RDONLY);
+	if (*fd_in < 0)
+	{
+		printf("msh: %s: Error reading file or directory\n", filename);
+		return (1);
+	}
+	*did_redirection = 1;
 	return (0);
 }
 
@@ -138,27 +156,14 @@ int	dup_to_in(int *tmp_fd_in, t_list *command)
 	while (token)
 	{
 		token_content = token->content;
-		if (token_content->type == OPEN_FILE)
-		{
-			if (did_redirection == 1 && close(fd_in) != 0)
-				terminate(ERR_CLOSE, 1);
-			fd_in = open(token_content->word, O_RDONLY);
-			if (fd_in < 0)
-			{
-				printf("msh: %s: Error reading file or directory\n", token_content->word);
-				return (1);
-			}
-			did_redirection = 1;
-		}
-		else if (token_content->type == LIMITOR)
-		{
-			if (do_here_doc(&fd_in, token_content->word, did_redirection) != 0)
-			{
-				printf("msh: %s: Error reading file or directory\n", token_content->word);
-				return (1);
-			}
-			did_redirection = 1;
-		}
+		if (token_content->type == OPEN_FILE
+			&& handle_open_file(&fd_in, &did_redirection,
+				token_content->word) == 1)
+			return (1);
+		else if (token_content->type == LIMITOR
+			&& do_here_doc(&fd_in, token_content->word,
+				&did_redirection) == 1)
+			return (1);
 		token = token->next;
 	}
 	if (did_redirection == 1 && dup2(fd_in, *tmp_fd_in) == -1)
