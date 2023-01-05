@@ -6,7 +6,7 @@
 #    By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2022/12/17 18:11:00 by ogonzale         ###   ########.fr        #
+#    Updated: 2023/01/05 17:37:26 by ogonzale         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,9 +43,13 @@ PARSE_FILES	:= split_cmd_line ft_split_mod split_words split_words_2 split_words
 	           split_utils split_utils_2 expand_words expand_words_2 expand_words_3\
 			   expand_words_utils
 
+EXEC_DIR	:= exec/
+EXEC_FILES	:= exec exec_utils get_exec_path
+
 MAND_DIR	:= mand/
 MAND_FILES	+= $(addprefix $(PARSE_DIR), $(PARSE_FILES))
-MAND_FILES	+= minishell signals free exec get_exec_path exec_utils utils env 
+MAND_FILES	+= $(addprefix $(EXEC_DIR), $(EXEC_FILES))
+MAND_FILES	+= minishell signals free utils env 
 
 BONUS_DIR	:= bonus/
 BONUS_FILES	:= 
