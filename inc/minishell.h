@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/03 18:04:46 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/05 18:58:42 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,13 @@ typedef struct s_environ_content
 {
 	char	*env_var;
 }			t_environ_content;
+
+typedef struct s_pipe
+{
+	int	fd[2];
+	int	did_out_redirection;
+	int	is_last;
+}		t_pipe;
 
 enum	e_type
 {
@@ -136,5 +143,13 @@ int		redir_pipe(t_list *command_cpy, t_prompt prompt, int tmp_fd[2]);
 
 int		get_exec_path(char *token, char **exec_path,
 			t_list *command, t_prompt *prompt);
+
+/* redir_in.c */
+
+int		dup_to_in(int *tmp_fd_in, t_list *command);
+
+/* redir_out.c */
+
+int		dup_to_out(int *tmp_fd_out, t_list *command, int *did_out_redirection);
 
 #endif
