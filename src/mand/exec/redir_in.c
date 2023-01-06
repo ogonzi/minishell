@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 18:54:18 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/05 19:04:29 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/06 10:36:17 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,13 @@ static int	handle_open_file(int *fd_in, int *did_redirection, char *filename)
 	return (0);
 }
 
+/**
+ * Loops through the tokens in the command, if the tokens
+ * after < or << are found (OPEN_FILE & LIMITOR) are found,
+ * the corresponding functions handle_open_file & do_here_doc
+ * are called. If a redirection is performed, fd_in is
+ * dupped to tmp_fd_in (tmp_fd[0]).
+*/
 int	dup_to_in(int *tmp_fd_in, t_list *command)
 {
 	t_list			*token;

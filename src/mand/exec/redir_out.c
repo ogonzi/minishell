@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 18:54:24 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/05 19:01:44 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/06 10:36:11 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ static int	handle_write_to_exit_file(int *fd_out, int *did_redirection,
 	return (0);
 }
 
+/**
+ * Loops through the tokens in the command, and calls
+ * handle_write_to_exit_file. If a redirection is performed,
+ * fd_out is dupped to tmp_fd_out (tmp_fd[1]).
+*/
 int	dup_to_out(int *tmp_fd_out, t_list *command, int *did_out_redirection)
 {
 	t_list			*token;
