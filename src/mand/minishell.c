@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/03 19:44:36 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/06 10:05:29 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,13 @@ static void	init_prompt(t_prompt *prompt, char *argv[], char *envp[])
 	init_env_vars(prompt, argv);
 }
 
+/**
+ * Duplicates standard input & output to tmp_fd. This is done to
+ * be able to implement redirections if necessary.
+ * Loops through each pipe, calling the function redir_pipe,
+ * which returns 0 for any pipe that isn't the last and 0 or
+ * error code if the pipe is the last.
+*/
 static int	handle_pipeline(t_prompt prompt)
 {
 	t_list	*command_cpy;
