@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/06 10:38:37 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 13:01:17 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,15 @@ int
 			terminate(ERR_CHLD, 0);
 		if (WTERMSIG(exit_status) == SIGINT)
 		{
-			write(STDOUT_FILENO, "\n", 1);
+			if (last_pipe == 1)
+				write(STDOUT_FILENO, "\n", 1);
 			if (last_pipe == 1 || (last_pipe == 0 && last_pipe_exit != 0))
 				return (130);
 		}
 		if (WTERMSIG(exit_status) == SIGQUIT)
 		{
-			write(STDOUT_FILENO, "Quit\n", 5);
+			if (last_pipe == 1)
+				write(STDOUT_FILENO, "Quit\n", 5);
 			rl_on_new_line();
 			if (last_pipe == 1 || (last_pipe == 0 && last_pipe_exit != 0))
 				return (131);
