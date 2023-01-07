@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 19:04:01 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 15:08:47 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 18:53:24 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	syntax_error(char *word)
 	i = 0;
 	while (word[i] != '\0')
 	{
-		while (word[i] != '<' && word[i] != '>' && word[i] != '\0')
+		while (ft_strchr("><;#&", word[i]) == 0 && word[i] != '\0')
 		{
 			move_to_end_of_quote(word, &i);
 			i++;
@@ -35,6 +35,12 @@ int	syntax_error(char *word)
 			return (print_error_syntax("`<'"));
 		if (word[i] == '>')
 			return (print_error_syntax("`>'"));
+		if (word[i] == ';')
+			return (print_error_syntax("`;'"));
+		if (word[i] == '#')
+			return (print_error_syntax("`newline'"));
+		if (word[i] == '&')
+			return (print_error_syntax("`&'"));
 	}
 	return (0);
 }

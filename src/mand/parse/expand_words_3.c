@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 16:03:51 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 18:21:58 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ char	*expand_env(char *word, int exit_status)
 	free(word);
 	word = NULL;
 	word = malloc(sizeof(char) * (new_length + 1));
+	if (word == NULL)
+		terminate(ERR_MEM, 1);
 	set_new_word(word, cpy_word, exit_status);
 	free(cpy_word);
 	return (word);

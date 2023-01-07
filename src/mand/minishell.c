@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/06 10:05:29 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 18:21:46 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,8 @@ int	main(int argc, char *argv[], char *envp[])
 		prompt.exit_status = handle_input(&prompt);
 		if (prompt.exit_status == -1)
 			break ;
-		prompt.exit_status = handle_pipeline(prompt);
+		if (prompt.exit_status == 0)
+			prompt.exit_status = handle_pipeline(prompt);
 		if (prompt.cmd_line != NULL)
 			free_cmd_line(&prompt.cmd_line);
 	}

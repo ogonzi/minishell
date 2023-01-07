@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/07 12:56:43 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 18:11:32 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void	do_execve(t_list *command, t_prompt prompt,
 	if (close(tmp_fd[1]) != 0)
 		terminate(ERR_CLOSE, 1);
 	set_child_sigaction();
+	printf("%s", command_array[1]);
 	if (execve(exec_path, command_array, envp) == -1)
 		terminate(ERR_EXECVE, 1);
 }
