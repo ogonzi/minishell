@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:13:38 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/02 18:56:31 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 19:04:49 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	check_syntax_error(t_list **cmd_line)
 	t_cmd_line_content	*cmd_line_content;
 	t_list				*cmd_line_cpy;
 	t_list				*word_cpy;
+	int					type;
 
 	cmd_line_cpy = *cmd_line;
 	while (cmd_line_cpy)
@@ -35,8 +36,12 @@ int	check_syntax_error(t_list **cmd_line)
 		word_cpy = cmd_line_content->word;
 		while (word_cpy)
 		{
-			if (((t_token_content *)word_cpy->content)->type
-				== SYN_ERROR)
+			type = ((t_token_content *)word_cpy->content)->type;
+			if (type == SYN_ERROR)
+				return (2);
+			if (word_cpy->next == NULL && (type == FILE_IN
+					|| type == HERE_DOC || type == FILE_OUT
+					|| type == FILE_OUT_APP) && print_error_syntax("`newline'"))
 				return (2);
 			word_cpy = word_cpy->next;
 		}
