@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:10:22 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/07 13:01:17 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 19:16:26 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int
 			if (last_pipe == 1)
 				write(STDOUT_FILENO, "\n", 1);
 			if (last_pipe == 1 || (last_pipe == 0 && last_pipe_exit != 0))
-				return (130);
+				return (TERMINATE_CTRL_C);
 		}
 		if (WTERMSIG(exit_status) == SIGQUIT)
 		{
@@ -98,7 +98,7 @@ int
 				write(STDOUT_FILENO, "Quit\n", 5);
 			rl_on_new_line();
 			if (last_pipe == 1 || (last_pipe == 0 && last_pipe_exit != 0))
-				return (131);
+				return (TERMINATE_QUIT);
 		}
 	}
 	return (last_pipe_exit);

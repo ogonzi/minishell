@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/07 12:39:06 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 19:15:42 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define UTILS_H
 
 # include "minishell.h"
+
+/* Error messages & warnings*/
 
 # define ERR_ARGS			"Incorrect number of arguments, expected 0"
 # define ERR_QUOTES			"Opening quotes aren't properly closed"
@@ -33,6 +35,17 @@
 # define ERR_UNLINK			"Function error -> unlink"
 # define ERR_CHLD			"Core dump in child"
 # define TMP_FILE_HEREDOC	"/tmp/heredoc"
+
+/* Error codes */
+
+# define CATCH_ALL			1
+# define SHELL_MISUSE		2
+# define CANNOT_EXEC_CMD	126
+# define CMD_NOT_FOUND		127
+# define INVALID_EXIT_ARG	128
+# define TERMINATE_CTRL_C	130
+# define TERMINATE_QUIT		131
+# define OUT_OF_RANGE		255
 
 /* utils.c */
 

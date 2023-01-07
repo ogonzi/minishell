@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:13:38 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/07 19:04:49 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 19:12:41 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ int	check_syntax_error(t_list **cmd_line)
 		{
 			type = ((t_token_content *)word_cpy->content)->type;
 			if (type == SYN_ERROR)
-				return (2);
+				return (SHELL_MISUSE);
 			if (word_cpy->next == NULL && (type == FILE_IN
 					|| type == HERE_DOC || type == FILE_OUT
 					|| type == FILE_OUT_APP) && print_error_syntax("`newline'"))
-				return (2);
+				return (SHELL_MISUSE);
 			word_cpy = word_cpy->next;
 		}
 		cmd_line_cpy = cmd_line_cpy->next;

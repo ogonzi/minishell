@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:33:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/16 16:55:25 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 19:16:00 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ static void	handle_child_sig(int signum)
 	if (signum == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);
-		exit(130);
+		exit(TERMINATE_CTRL_C);
 	}
 	if (signum == SIGQUIT)
 	{
 		write(STDOUT_FILENO, "Quit\n", 5);
 		rl_on_new_line();
-		exit(131);
+		exit(TERMINATE_QUIT);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:39:10 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/17 11:24:08 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 19:15:04 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,11 @@ int	get_exec_path(char *token, char **exec_path,
 	{
 		if (path_line)
 			free(path_line);
-		((t_cmd_line_content *)command->content)->exit_status = 127;
+		((t_cmd_line_content *)command->content)->exit_status = CMD_NOT_FOUND;
 		return (1);
 	}
 	if (path_line)
 		free(path_line);
-	((t_cmd_line_content *)command->content)->exit_status = 126;
+	((t_cmd_line_content *)command->content)->exit_status = CANNOT_EXEC_CMD;
 	return (1);
 }
