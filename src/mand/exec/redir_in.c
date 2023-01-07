@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 18:54:18 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/06 10:36:17 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/07 12:41:38 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ static int	heredoc_continues(char *limitor)
 		return (0);
 	}
 	if (line_is_limitor(line, limitor))
+	{
+		free(line);
 		return (0);
+	}
 	tmp_fd = open(TMP_FILE_HEREDOC, O_WRONLY | O_APPEND | O_CREAT, 0600);
 	if (tmp_fd < 0)
 		terminate(ERR_OPEN, 1);
@@ -55,8 +58,6 @@ static int	heredoc_continues(char *limitor)
 	return (1);
 }
 
-// BUG: When there is more than one heredoc input, cat << EOF << CAT,
-// weird stuff happens
 static int	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
 {
 	while (heredoc_continues(limitor))
@@ -69,7 +70,8 @@ static int	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
 		printf("msh: %s: Error reading file or directory\n", limitor);
 		return (1);
 	}
-	unlink(TMP_FILE_HEREDOC);
+	if (unlink(TMP_FILE_HEREDOC) != 0)
+		terminate(ERR_UNLINK, 1);
 	*did_redirection = 1;
 	return (0);
 }
