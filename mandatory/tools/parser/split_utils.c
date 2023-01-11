@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:07:20 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/26 19:08:30 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "minishell_utils.h"
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>

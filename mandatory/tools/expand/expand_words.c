@@ -6,15 +6,14 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 18:38:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 16:19:53 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:35:51 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "utils.h"
-#include <stdio.h>
+#include "minishell_utils.h"
 
-void	remove_quotes(char *word, int *remove_char)
+void	remove_quotes(char *word, int *remove_char, int *single_quoted)
 {
 	int	i;
 	int	single_quote_flag;
@@ -24,6 +23,7 @@ void	remove_quotes(char *word, int *remove_char)
 	{
 		if (word[i] == '\'')
 		{
+			*single_quoted = 1;
 			remove_char[i] = 1;
 			find_closing_quote(word, &i, &single_quote_flag, '\'');
 			remove_char[i] = 1;
@@ -81,28 +81,37 @@ void	alloc_remove_char(int **remove_char, char *word)
 		(*remove_char)[i] = 0;
 }
 
-int	expand_words(t_list **l_cmd_line)
+void	handle_word_expansion(char *word, int *single_quoted)
+{
+	int	*remove_char;
+
+	*single_quoted = 0;
+	alloc_remove_char(&remove_char, word);
+	expand(word, remove_char);
+	remove_quotes(word, remove_char, single_quoted);
+	format_word(word, remove_char);
+	free(remove_char);
+}
+
+int	expand_words(t_prompt *prompt)
 {
 	t_list	*l_cmd_line_cpy;
 	t_list	*l_word_cpy;
 	char	*word;
-	int		*remove_char;
+	int		single_quoted;
 
-	l_cmd_line_cpy = *l_cmd_line;
+	l_cmd_line_cpy = prompt->cmd_line;
 	while (l_cmd_line_cpy)
 	{
 		l_word_cpy = ((t_cmd_line_data *)l_cmd_line_cpy->data)->word;
 		while (l_word_cpy)
 		{
+			single_quoted = 0;
 			word = ((t_token_data *)l_word_cpy->data)->word;
-			alloc_remove_char(&remove_char, word);
-			expand(word, remove_char);
-			remove_quotes(word, remove_char);
-			format_word(word, remove_char);
-			free(remove_char);
-			if (ft_strchr(word, '$'))
+			handle_word_expansion(word, &single_quoted);
+			if (ft_strchr(word, '$') && single_quoted == 0)
 				((t_token_data *)l_word_cpy->data)->word
-					= expand_env(word);
+					= expand_env(word, prompt->exit_status);
 			l_word_cpy = l_word_cpy->next;
 		}
 		l_cmd_line_cpy = l_cmd_line_cpy->next;

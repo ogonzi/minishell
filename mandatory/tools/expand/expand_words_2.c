@@ -6,12 +6,12 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 17:59:58 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 18:37:05 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "utils.h"
+#include "minishell_utils.h"
 #include <stdio.h>
 
 void	handle_expand_env_var(char *word, int *i, int *remove_char)
@@ -23,7 +23,7 @@ void	handle_expand_env_var(char *word, int *i, int *remove_char)
 	start = *i;
 	while (ft_isalnum(word[*i]) || word[*i] == '_')
 		(*i)++;
-	env_var = ft_substr((const char *)word, start, *i - start);
+	env_var = ft_substr(word, start, *i - start);
 	if (env_var == NULL)
 		terminate(ERR_MEM, 1);
 	if (ft_strlen(env_var) > 0 && getenv(env_var) == NULL)

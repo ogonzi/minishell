@@ -6,9 +6,10 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:33:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/12 19:23:01 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include <signal.h>
 #include <stdio.h>
@@ -19,10 +20,12 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdlib.h>
-#include "utils.h"
+#include "minishell_utils.h"
+#include "ft_printf.h"
 
-
-// printf is not safe to use inside sig handlers
+/*
+ * printf is not safe to use inside sig handlers
+ */
 
 void	handle_sig(int sig)
 {
@@ -35,18 +38,18 @@ void	handle_sig(int sig)
 	}
 }
 
-void	handle_child_sig(int signum)
+static void	handle_child_sig(int signum)
 {
 	if (signum == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);
-		exit(130);
+		exit(TERMINATE_CTRL_C);
 	}
 	if (signum == SIGQUIT)
 	{
 		write(STDOUT_FILENO, "Quit\n", 5);
 		rl_on_new_line();
-		exit(131);
+		exit(TERMINATE_QUIT);
 	}
 }
 

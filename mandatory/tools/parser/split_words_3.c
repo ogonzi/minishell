@@ -6,11 +6,11 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 18:54:10 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 16:19:53 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "minishell_utils.h"
 #include "minishell.h"
 
 void	add_new_word(char *split_cmd, t_word *word, t_list **token_node,

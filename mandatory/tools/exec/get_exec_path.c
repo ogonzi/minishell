@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_exec_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogonzale <ogonzale@student.42barcel>       +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:39:10 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/10/19 12:14:38 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "utils.h"
+#include "minishell_utils.h"
 #include "minishell.h"
 #include <stdio.h>
 

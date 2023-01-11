@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split_mod.c                                     :+:      :+:    :+:   */
+/*   split_mod.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:02:25 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/11/10 17:13:43 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "utils.h"
+#include "minishell_utils.h"
 #include <stdio.h>
 
 int	all_sep(char *line, int i, char *sep)
@@ -107,3 +107,4 @@ int	ft_split_mod(char ***split_line, char *line, char *sep)
 	}
 	return (0);
 }
+

@@ -6,22 +6,19 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:53:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 23:43:05 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:07:03 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_printf_fd.h"
-#include "ft_printf.h"
-#include "utils.h"
-#include <stdio.h>
+#include "minishell.h"
+#include "minishell_utils.h"
 
 void	terminate(char *s, int system_error_flag)
 {
 	if (system_error_flag == 1)
 		perror(s);
 	else
-		ft_printf_fd(STDERR_FILENO, "%s\n", s);
+		ft_putendl_fd(s, 2);
 	exit(EXIT_FAILURE);
 }
 

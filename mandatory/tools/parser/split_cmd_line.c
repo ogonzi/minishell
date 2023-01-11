@@ -6,29 +6,29 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 18:11:15 by ogonzale          #+#    #+#             */
-/*   Updated: 2022/12/08 16:19:53 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "utils.h"
+#include "minishell_utils.h"
 #include <stdio.h>
 #include <readline/readline.h>
 
 void	set_node(char **split_line, t_list **cmd_line_node)
 {
 	int					cmd_len;
-	t_cmd_line_data	*cmd_line_data;
+	t_cmd_line_data	*cmd_line_content;
 
 	cmd_len = ft_strlen(*split_line);
-	cmd_line_data = malloc(sizeof(t_cmd_line_data));
-	if (cmd_line_data == NULL)
+	cmd_line_content = malloc(sizeof(t_cmd_line_data));
+	if (cmd_line_content == NULL)
 		terminate(ERR_MEM, 1);
-	cmd_line_data->cmd = malloc(sizeof(char) * (cmd_len + 1));
-	if (cmd_line_data->cmd == NULL)
+	cmd_line_content->cmd = malloc(sizeof(char) * (cmd_len + 1));
+	if (cmd_line_content->cmd == NULL)
 		terminate(ERR_MEM, 1);
-	ft_strlcpy(cmd_line_data->cmd, *split_line, cmd_len + 1);
-	*cmd_line_node = ft_lstnew(cmd_line_data);
+	ft_strlcpy(cmd_line_content->cmd, *split_line, cmd_len + 1);
+	*cmd_line_node = ft_lstnew(cmd_line_content);
 	if (*cmd_line_node == NULL)
 		terminate(ERR_MEM, 1);
 }
@@ -56,7 +56,7 @@ int	check_quotes(char *line)
 	return (1);
 }
 
-int	split_cmd_line(t_list **cmd_line, char *line)
+int	split_cmd_line(t_prompt *prompt, char *line)
 {
 	int					i;
 	t_list				*cmd_line_node;
@@ -66,15 +66,15 @@ int	split_cmd_line(t_list **cmd_line, char *line)
 	{
 		rl_on_new_line();
 		printf("%s\n", ERR_QUOTES);
-		return (1);
+		return (CATCH_ALL);
 	}
 	if (ft_split_mod(&split_line, line, "|") != 0)
-		return (2);
+		return (SHELL_MISUSE);
 	i = 0;
 	while (split_line[i] != NULL)
 	{
 		set_node(&split_line[i], &cmd_line_node);
-		ft_lstadd_back(cmd_line, cmd_line_node);
+		ft_lstadd_back(&prompt->cmd_line, cmd_line_node);
 		i++;
 	}
 	ft_free_twod_memory(split_line);
