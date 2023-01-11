@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:53:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 13:07:03 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:27:21 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	terminate(char *s, int system_error_flag)
 	if (system_error_flag == 1)
 		perror(s);
 	else
-		ft_putendl_fd(s, 2);
+		ft_printf_fd(STDERR_FILENO, "%s", s);
 	exit(EXIT_FAILURE);
 }
 

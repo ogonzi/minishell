@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_utils.c                                     :+:      :+:    :+:   */
+/*   expand_words_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:12:05 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:21:56 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	get_added_length(char *word, int *i, int *added_length, int exit_status)
 	}
 	if (word[*i] == '$' && word[*i + 1] == '?')
 	{
-		*added_length += ft_numsize(exit_status);
+		*added_length += ft_nbrlen(exit_status);
 		*i += 2;
 		return (1);
 	}

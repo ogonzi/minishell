@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2022/12/12 19:27:45 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/01/11 17:29:47 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ CFLAGS      = -Wall -Wextra -Werror -W
 DFLAGS		= -MT $@ -MMD -MP
 XFLAGS      = -fsanitize=address -g3
 LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib
-CPPFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include
+RL_INC		= -I/Users/$(USER)/.brew/opt/readline/include
 
 RM      = rm -f
 MK      = mkdir -p
@@ -52,6 +52,8 @@ UTL_DIR = utils/
 OBJ_DIR = .obj/
 
 PRS_DIR	= parser/
+EXE_DIR	= exec/
+EXP_DIR	= expand/
 
 LIB_DIR = library/
 LFT_DIR = $(LIB_DIR)libft/
@@ -62,19 +64,13 @@ OUT_DIR = $(LIB_DIR)liboutput/
 LIBFT	= $(LIB_DIR)libft.a
 PRINT	= $(OUT_DIR)liboutput.a
 
-INCLUDE = -I$(INC_DIR) -I$(LFT_DIR)$(INC_DIR) -I$(OUT_DIR)$(INC_DIR) $(CPPFLAGS)
+INCLUDE = -I$(INC_DIR) -I$(LFT_DIR)$(INC_DIR) -I$(OUT_DIR)$(INC_DIR) $(RL_INC)
 
 SRC_FLS	= minishell.c \
 		signals.c \
-		free.c \
-		exec.c \
-		get_exec_path.c
+		enviroment.c
 
-TUL_FLS	= expand_words.c \
-		expand_words_2.c \
-		expand_words_3.c
-
-PRS_FLS	= ft_split_mod.c \
+PRS_FLS	= split_mod.c \
 		split_cmd_line.c \
 		split_words.c \
 		split_words_2.c \
@@ -82,12 +78,26 @@ PRS_FLS	= ft_split_mod.c \
 		split_utils.c \
 		split_utils_2.c
 
+EXP_FLS	= expand_words.c \
+		expand_words_2.c \
+		expand_words_3.c \
+		expand_words_utils.c
+
+EXE_FLS	= exec.c \
+		exec_utils.c \
+		get_exec_path.c \
+		redir_in.c \
+		redir_out.c
+
 UTL_FLS	= errors.c \
-		utils.c
+		utils.c \
+		free.c
 
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(SRC_DIR), $(SRC_FLS)))
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(TUL_FLS)))
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(PRS_DIR), $(PRS_FLS))))
+SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXP_DIR), $(EXP_FLS))))
+SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXE_DIR), $(EXE_FLS))))
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(UTL_DIR), $(UTL_FLS)))
 
 OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))

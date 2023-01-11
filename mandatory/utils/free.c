@@ -6,11 +6,12 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 18:33:12 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 13:29:32 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:30:16 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "minishell_utils.h"
 
 static void	ft_free_environ_content(void *content)
 {
@@ -27,7 +28,7 @@ void	free_environ(t_list **environ)
 {
 	t_list	*tmp;
 
-	ft_lstiter(*environ, &ft_free_environ_content);
+	ft_lstforeach(*environ, &ft_free_environ_content);
 	while (*environ)
 	{
 		tmp = (*environ)->next;
@@ -50,7 +51,7 @@ static void	ft_free_words(void *content)
 
 static void	ft_free_cmd_line_content(void *content)
 {
-	t_cmd_line_data	*cmd_line_content;
+	t_cmd_line_data		*cmd_line_content;
 	t_list				*tmp;
 	t_list				*words;
 
@@ -58,7 +59,7 @@ static void	ft_free_cmd_line_content(void *content)
 	free(cmd_line_content->cmd);
 	cmd_line_content->cmd = NULL;
 	words = cmd_line_content->word;
-	ft_lstiter(words, &ft_free_words);
+	ft_lstforeach(words, &ft_free_words);
 	while (words)
 	{
 		tmp = words->next;
@@ -74,7 +75,7 @@ void	free_cmd_line(t_list **cmd_line)
 {
 	t_list	*tmp;
 
-	ft_lstiter(*cmd_line, &ft_free_cmd_line_content);
+	ft_lstforeach(*cmd_line, &ft_free_cmd_line_content);
 	while (*cmd_line)
 	{
 		tmp = (*cmd_line)->next;

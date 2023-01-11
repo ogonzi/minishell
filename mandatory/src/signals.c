@@ -6,17 +6,16 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:33:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:20:58 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <signal.h>
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <termios.h>
-#include <term.h>
+// #include <term.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdlib.h>

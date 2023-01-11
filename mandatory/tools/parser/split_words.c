@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:12:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:21:17 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,6 @@ void	split_and_classify(void *content)
 
 int	split_words(t_prompt *prompt)
 {
-	ft_lstiter(prompt->cmd_line, &split_and_classify);
+	ft_lstforeach(prompt->cmd_line, &split_and_classify);
 	return (check_syntax_error(&prompt->cmd_line));
 }

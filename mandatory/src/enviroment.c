@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   enviroment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:08:27 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/11 13:29:35 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:29:51 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*custom_getenv(char *name, t_prompt *prompt)
 	name_length = ft_strlen(name);
 	while (environ_copy)
 	{
-		env_var = ((t_environ_data *)environ_copy->content)->env_var;
+		env_var = ((t_environ_data *)environ_copy->data)->env_var;
 		if (ft_strncmp(env_var, name, name_length) == 0
 			&& env_var[name_length] == '=')
 		{

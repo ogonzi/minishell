@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 23:53:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/11 13:32:20 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 15:55:54 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_STRUCTS_H
 
 # include <stddef.h>
+# include "libft.h"
 
 typedef struct s_cmd_line_data	t_cmd_line_data;
 typedef struct s_prompt			t_prompt;

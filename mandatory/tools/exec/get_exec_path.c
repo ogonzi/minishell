@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:39:10 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:26:23 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 #include "minishell_utils.h"
 #include "minishell.h"
 #include <stdio.h>
-
-void	ft_get_paths(char ***paths, char *path_line)
-{
-	*paths = ft_split(path_line, ':');
-	if (!(*paths))
-		terminate(ERR_MEM, 1);
-}
 
 int	ft_check_access(char **exec_path, char **paths)
 {
@@ -33,7 +26,8 @@ int	ft_check_access(char **exec_path, char **paths)
 	return (0);
 }
 
-int	ft_check_script(char **exec_path, char *first_arg, char **paths)
+int	ft_check_script(char **exec_path, char *first_arg,
+					char **paths, t_list **command)
 {
 	*exec_path = ft_strdup(first_arg);
 	if (!(*exec_path))
@@ -41,7 +35,7 @@ int	ft_check_script(char **exec_path, char *first_arg, char **paths)
 	if (ft_check_access(exec_path, paths) == 1)
 	{
 		if (ft_strchr((const char *)*exec_path, '/') == NULL)
-			exit(127);
+			((t_cmd_line_data *)(*command)->data)->exit_status = 127;
 		return (1);
 	}
 	return (0);
@@ -59,33 +53,59 @@ void	ft_get_full_path(char *path, char **full_path, char *user_exec_path,
 	free(*full_path);
 }
 
-int	get_exec_path(char ***tokens, char **exec_path)
+static int	ft_check_command(char **path_line, char ***paths,
+								char *token, char **exec_path)
 {
-	char	**paths;
-	char	*path_line;
 	char	*full_path;
 	int		i;
 
-	path_line = getenv("PATH");
-	paths = NULL;
-	if (path_line != NULL)
+	if (*path_line != NULL)
 	{
-		ft_get_paths(&paths, path_line);
+		*paths = ft_split(*path_line, ':');
+		if (*paths == NULL)
+			terminate(ERR_MEM, 1);
 		i = 0;
-		while (paths[i] != NULL)
+		while ((*paths)[i] != NULL)
 		{
-			ft_get_full_path(paths[i], &full_path, *tokens[0], exec_path);
-			if (ft_check_access(exec_path, paths) == 1)
-				return (0);
+			ft_get_full_path((*paths)[i], &full_path, token, exec_path);
+			if (ft_check_access(exec_path, *paths) == 1)
+			{
+				free(*path_line);
+				return (1);
+			}
 			free(*exec_path);
-		i++;
+			i++;
 		}
 	}
-	if (ft_check_script(exec_path, *tokens[0], paths) == 1)
+	return (0);
+}
+
+int	get_exec_path(char *token, char **exec_path,
+					t_list *command, t_prompt *prompt)
+{
+	char	**paths;
+	char	*path_line;
+
+	path_line = custom_getenv("PATH", prompt);
+	if (ft_check_command(&path_line, &paths, token, exec_path) == 1)
 		return (0);
+	if (ft_check_script(exec_path, token, paths, &command) == 1)
+	{
+		if (path_line)
+			free(path_line);
+		return (0);
+	}
 	if (*paths != NULL)
 		ft_free_twod_memory(paths);
 	if (ft_strchr((const char *)*exec_path, '/') == NULL)
-		exit(127);
-	exit(126);
+	{
+		if (path_line)
+			free(path_line);
+		((t_cmd_line_data *)command->data)->exit_status = CMD_NOT_FOUND;
+		return (1);
+	}
+	if (path_line)
+		free(path_line);
+	((t_cmd_line_data *)command->data)->exit_status = CANNOT_EXEC_CMD;
+	return (1);
 }
