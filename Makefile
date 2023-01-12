@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2023/01/11 17:29:47 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/01/12 21:30:09 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRC_DIR = src/
 TUL_DIR = tools/
 UTL_DIR = utils/
 OBJ_DIR = .obj/
+BIN_DIR	= bin/
 
 PRS_DIR	= parser/
 EXE_DIR	= exec/
@@ -65,6 +66,18 @@ LIBFT	= $(LIB_DIR)libft.a
 PRINT	= $(OUT_DIR)liboutput.a
 
 INCLUDE = -I$(INC_DIR) -I$(LFT_DIR)$(INC_DIR) -I$(OUT_DIR)$(INC_DIR) $(RL_INC)
+
+# -=-=- ECHO
+# -=-=- CD
+# -=-=- PWD
+# -=-=- EXPORT
+# -=-=- UNSET
+# -=-=- EXIT
+# -=-=- ENV
+
+ENV_FLS	= env.c
+
+# -=-=- 
 
 SRC_FLS	= minishell.c \
 		signals.c \
@@ -101,7 +114,16 @@ SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXE_DIR), 
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(UTL_DIR), $(UTL_FLS)))
 
 OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
-DEPS	= $(addsuffix .d, $(basename $(OBJS)))
+
+BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(ENV_FLS)))
+
+BLT_OBJS	= $(addprefix $(OBJ_DIR), $(BLT_SRCS:.c=.o))
+
+DEPS	+= $(addsuffix .d, $(basename $(OBJS)))
+DEPS	+= $(addsuffix .d, $(basename $(BLT_OBJS)))
+
+
+
 
 # -=-=-=-=- RULE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
@@ -114,7 +136,8 @@ all:
 	@$(MAKE) -C $(LIB_DIR)
 	@$(MAKE) $(NAME)
 
-$(NAME):: $(OBJS)
+$(NAME):: $(OBJS) $(BLT_OBJS)
+	@$(MAKE) builtin
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJS) $(LIBFT) $(PRINT) $(LDFLAGS) -lreadline -o $(NAME)
 	@printf "\n\t$(WHITE)Program \033[1;31mMinishell $(WHITE)has been compiled!$(DEF_COLOR)\n"
 
@@ -123,6 +146,10 @@ $(NAME)::
 
 -include $(DEPS)
 
+builtin:
+	@$(MK) $(BIN_DIR)
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)env.o $(LIBFT) $(PRINT) -o $(BIN_DIR)env
+
 clean:
 	@$(RM) -r $(OBJ_DIR)
 	@make clean -sC $(LIB_DIR)
@@ -130,6 +157,7 @@ clean:
 
 fclean:
 	@$(RM) -r $(OBJ_DIR)
+	@$(RM) -r $(BIN_DIR)
 	@$(RM) $(NAME)
 	@$(MAKE) fclean -sC $(LIB_DIR)
 	@find . -name ".DS_Store" -delete

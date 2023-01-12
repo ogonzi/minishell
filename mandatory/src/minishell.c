@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 18:24:32 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:11:58 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	main(int argc, char *argv[], char *envp[])
 		terminate(ERR_ARGS, 0);
 	init_shell();
 	init_prompt(&prompt, argv, envp);
-	read_mnshllrc();
+	// read_mnshllrc();
 	while (1)
 	{
 		set_sigint_action();
