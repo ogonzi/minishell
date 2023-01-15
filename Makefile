@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2023/01/12 21:30:09 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/01/15 20:53:25 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,9 @@ INCLUDE = -I$(INC_DIR) -I$(LFT_DIR)$(INC_DIR) -I$(OUT_DIR)$(INC_DIR) $(RL_INC)
 # -=-=- EXPORT
 # -=-=- UNSET
 # -=-=- EXIT
+
+EXT_FLS	= exit.c
+
 # -=-=- ENV
 
 ENV_FLS	= env.c
@@ -115,15 +118,13 @@ SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(UTL_DIR), $(UTL_FLS)))
 
 OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 
+BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(EXT_FLS)))
 BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(ENV_FLS)))
 
 BLT_OBJS	= $(addprefix $(OBJ_DIR), $(BLT_SRCS:.c=.o))
 
 DEPS	+= $(addsuffix .d, $(basename $(OBJS)))
 DEPS	+= $(addsuffix .d, $(basename $(BLT_OBJS)))
-
-
-
 
 # -=-=-=-=- RULE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
@@ -149,6 +150,8 @@ $(NAME)::
 builtin:
 	@$(MK) $(BIN_DIR)
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)env.o $(LIBFT) $(PRINT) -o $(BIN_DIR)env
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)exit.o $(LIBFT) $(PRINT) -o $(BIN_DIR)exit
+
 
 clean:
 	@$(RM) -r $(OBJ_DIR)

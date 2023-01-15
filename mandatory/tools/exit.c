@@ -1,44 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/12 20:47:46 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/15 20:52:00 by cpeset-c         ###   ########.fr       */
+/*   Created: 2023/01/15 20:16:24 by cpeset-c          #+#    #+#             */
+/*   Updated: 2023/01/15 20:57:37 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_printf_fd.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ERRMSG	(char *)"No such file or directory\n"
-#define ENVCMP	(char *)"env"
+#define ERRMSG0	(char *)"bash: exit: too many arguments\n"
+#define ERRMSG1	(char *)": numeric argument required\n"
 
-int	main(int ac, char **av, char **ev)
+int	ft_while_isdigit(char *str)
 {
-	ssize_t	idx;
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (TRUE);
+		str++;
+	}
+	return (FALSE);
+}
 
-	idx = -1;
-	if (ac > 1 && ft_strcmp(ft_strlowcase(av[1]), ENVCMP))
+int	main(int ac, char **av)
+{
+	t_ll	limit;
+
+	printf("exit\n");
+	printf("%ld\n", -922337203685477580);
+	exit(0);
+	if (ac > 2)
 	{
-		ft_printf_fd(STDERR_FILENO, "env: %s: %s", av[1], ERRMSG);
-		return (1);
+		ft_printf_fd(STDERR_FILENO, "%s", ERRMSG0);
+		exit(255);
 	}
-	else if (ac > 1 && !ft_strcmp(ft_strlowcase(av[1]), ENVCMP))
-	{
-		while (ev[++idx])
-			printf("%s\n", ev[idx]);
-		return (0);
-	}
-	else
-	{
-		while (ev[++idx])
-			printf("%s\n", ev[idx]);
-		return (0);
-	}
+	limit = ft_atoll_base(av[1], STR_BASE10);
+	// if ()
+	// {
+
+	// }
 	return (1);
 }

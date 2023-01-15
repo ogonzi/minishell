@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 17:51:10 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/06 20:53:08 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/15 19:58:58 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,13 @@
 char
 	*ft_strlowcase(char	*str)
 {
-	int	i;
+	ssize_t	i;
 
-	i = 0;
-	while (str[i] != '\0')
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] >= 'A' && str[i] <= 'Z')
-		{
 			str[i] = str[i] + 32;
-		}
-		i++;
 	}
 	return (str);
 }
