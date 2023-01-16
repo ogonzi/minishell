@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:08:37 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/11 17:44:20 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/16 17:34:23 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_unt	ft_unbrlen_base(t_ull nbr, int base);
 int		ft_atoi(const char *str);
 int		ft_atoi_base(const char *str, char *str_base);
 t_ll	ft_atoll_base(const char *str, char *str_base);
+t_ull	ft_atoull_base(const char *str, char *str_base);
 char	*ft_itoa(int nbr);
 char	*ft_itoa_base(int nbr, char *str_base);
 char	*ft_lltoa_base(t_ll nbr, char *str_base);
