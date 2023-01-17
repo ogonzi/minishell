@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2023/01/15 20:53:25 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/01/17 18:21:47 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,8 @@
 
 NAME 		:= minishell
 BNAME		:= minishell_bonus
+
+BLTN		:= builtin
 
 MKFL        = Makefile
 
@@ -68,6 +70,9 @@ PRINT	= $(OUT_DIR)liboutput.a
 INCLUDE = -I$(INC_DIR) -I$(LFT_DIR)$(INC_DIR) -I$(OUT_DIR)$(INC_DIR) $(RL_INC)
 
 # -=-=- ECHO
+
+ECH_FLS	= echo.c
+
 # -=-=- CD
 # -=-=- PWD
 # -=-=- EXPORT
@@ -118,6 +123,7 @@ SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(UTL_DIR), $(UTL_FLS)))
 
 OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 
+BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(ECH_FLS)))
 BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(EXT_FLS)))
 BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(ENV_FLS)))
 
@@ -147,10 +153,11 @@ $(NAME)::
 
 -include $(DEPS)
 
-builtin:
+$(BLTN):
 	@$(MK) $(BIN_DIR)
-	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)env.o $(LIBFT) $(PRINT) -o $(BIN_DIR)env
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)echo.o $(LIBFT) $(PRINT) -o $(BIN_DIR)echo
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)exit.o $(LIBFT) $(PRINT) -o $(BIN_DIR)exit
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)env.o $(LIBFT) $(PRINT) -o $(BIN_DIR)env
 
 
 clean:
@@ -175,5 +182,5 @@ norm:
 	@clear
 	@norminette $(SRC_DIR) $(INC) $(LIBFT_DIR) | grep -v Norme -B1 || true
 	
-.PHONY:	all clean fclean re norm bonus rebonus $(LIBFT)
+.PHONY:	all clean fclean re norm $(LIBFT) $(BLTN)
 

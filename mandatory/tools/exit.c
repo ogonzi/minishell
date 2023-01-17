@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 20:16:24 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/16 17:02:12 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/17 19:06:04 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@
 #define ERRMSG0	(char *)"bash: exit: too many arguments\n"
 #define ERRMSG1	(char *)"numeric argument required\n"
 
-int	ft_while_isdigit(char *str);
-int	error_exit(int err, char *str);
+static int	ft_while_isdigit(char *str);
+static int	error_exit(int err, char *str);
 
 int	main(int ac, char **av)
 {
 	t_ll	nbr;
 
 	printf("exit\n");
+	if (ac == 1)
+		return (0);
 	if (ac > 1 && !ft_while_isdigit(av[1]))
 		return (error_exit(ERRCODE1, av[1]));
 	if (ac > 2)
@@ -40,7 +42,7 @@ int	main(int ac, char **av)
 	return ((unsigned char)nbr);
 }
 
-int	error_exit(int err, char *str)
+static int	error_exit(int err, char *str)
 {
 	if (err == ERRCODE0)
 	{
@@ -55,7 +57,7 @@ int	error_exit(int err, char *str)
 	return (1);
 }
 
-int	ft_while_isdigit(char *str)
+static int	ft_while_isdigit(char *str)
 {
 	if (ft_issign(*str))
 		str++;
