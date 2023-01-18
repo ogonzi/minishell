@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:36:03 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 13:33:09 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/18 17:12:08 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,8 @@ int		dup_to_in(int *tmp_fd_in, t_list *command);
 /* redir_out.c */
 
 int		dup_to_out(int *tmp_fd_out, t_list *command, int *did_out_redirection);
+
+// Minishell rc file
+void	read_mnshllrc(void);
+
 #endif

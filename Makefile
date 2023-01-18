@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2023/01/17 18:21:47 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/01/18 19:25:39 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,14 @@ INCLUDE = -I$(INC_DIR) -I$(LFT_DIR)$(INC_DIR) -I$(OUT_DIR)$(INC_DIR) $(RL_INC)
 ECH_FLS	= echo.c
 
 # -=-=- CD
+
+CDD_FLS	= cd.c \
+		cd_utils.c
+
 # -=-=- PWD
+
+PWD_FLS	= pwd.c
+
 # -=-=- EXPORT
 # -=-=- UNSET
 # -=-=- EXIT
@@ -89,7 +96,8 @@ ENV_FLS	= env.c
 
 SRC_FLS	= minishell.c \
 		signals.c \
-		enviroment.c
+		enviroment.c \
+		read_mnshllrc.c
 
 PRS_FLS	= split_mod.c \
 		split_cmd_line.c \
@@ -124,6 +132,8 @@ SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(UTL_DIR), $(UTL_FLS)))
 OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 
 BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(ECH_FLS)))
+BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(PWD_FLS)))
+BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(CDD_FLS)))
 BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(EXT_FLS)))
 BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(ENV_FLS)))
 
@@ -156,6 +166,8 @@ $(NAME)::
 $(BLTN):
 	@$(MK) $(BIN_DIR)
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)echo.o $(LIBFT) $(PRINT) -o $(BIN_DIR)echo
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)pwd.o $(LIBFT) $(PRINT) -o $(BIN_DIR)pwd
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)cd.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)cd_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)cd
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)exit.o $(LIBFT) $(PRINT) -o $(BIN_DIR)exit
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)env.o $(LIBFT) $(PRINT) -o $(BIN_DIR)env
 

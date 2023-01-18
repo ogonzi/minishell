@@ -1,2 +1,5 @@
-# This file is a will execute when a user opens a new shell in an interactive mode. In other words, the .mnshllrc File is a shell script to initialize a shell session.
+# This file is a will execute when a user opens a new shell in an interactive mode.
+# In other words, the .mnshllrc File is a shell script to initialize a shell session.
+
 echo "Yo this is fire"
+
