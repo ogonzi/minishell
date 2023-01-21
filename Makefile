@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2023/01/18 19:25:39 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/01/21 02:41:08 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,15 @@ CDD_FLS	= cd.c \
 PWD_FLS	= pwd.c
 
 # -=-=- EXPORT
+
+EPT_FLS	= export.c \
+		env_utils.c
+
 # -=-=- UNSET
+
+UNT_FLS	= unset.c \
+		env_utils.c
+
 # -=-=- EXIT
 
 EXT_FLS	= exit.c
@@ -134,7 +142,9 @@ OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(ECH_FLS)))
 BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(PWD_FLS)))
 BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(CDD_FLS)))
+BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(EPT_FLS)))
 BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(EXT_FLS)))
+BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(UNT_FLS)))
 BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(ENV_FLS)))
 
 BLT_OBJS	= $(addprefix $(OBJ_DIR), $(BLT_SRCS:.c=.o))
@@ -161,12 +171,14 @@ $(NAME):: $(OBJS) $(BLT_OBJS)
 $(NAME)::
 	@printf "\t$(WHITE)Nothing more to be done for program \033[1;31mMinishell$(DEF_COLOR)\n"
 
--include $(DEPS)
+-include $(DEPS)	
 
 $(BLTN):
 	@$(MK) $(BIN_DIR)
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)echo.o $(LIBFT) $(PRINT) -o $(BIN_DIR)echo
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)pwd.o $(LIBFT) $(PRINT) -o $(BIN_DIR)pwd
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)export.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)export_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)export
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)unset.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)export_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)unset
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)cd.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)cd_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)cd
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)exit.o $(LIBFT) $(PRINT) -o $(BIN_DIR)exit
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)env.o $(LIBFT) $(PRINT) -o $(BIN_DIR)env

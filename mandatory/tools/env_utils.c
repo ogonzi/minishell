@@ -1,40 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/18 17:49:39 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/21 01:55:16 by cpeset-c         ###   ########.fr       */
+/*   Created: 2023/01/20 23:54:04 by cpeset-c          #+#    #+#             */
+/*   Updated: 2023/01/21 02:41:49 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "builtins.h"
 
-char
-	*ft_strjoin(const char *s1, const char *s2)
+int	count_env(char **ev)
 {
-	char	*new;
-	ssize_t	i;
-	ssize_t	j;
-	ssize_t	len;
+	int	idx;
 
-	if (!s1)
+	idx = 0;
+	while (ev[idx])
+		idx++;
+	return (idx);
+}
+
+char	**copy_env(char **cpy, char **ev, int count)
+{
+	ssize_t	idx;
+
+	idx = -1;
+	while (++idx < count)
 	{
-		s1 = ft_strdup("");
-		if (!s1)
+		cpy[idx] = (char *)malloc(sizeof(char) + ft_strlen(ev[idx]) + 1);
+		if (!cpy)
+		{
+			ft_printf_fd(STDERR_FILENO, "Something went wrong...\n\a");
 			return (NULL);
+		}
+		cpy[idx] = ev[idx];
 	}
-	len = ft_strlen(s1) + ft_strlen(s2);
-	new = (char *)ft_calloc(len + 1, sizeof(char));
-	if (!new)
-		return (NULL);
-	i = -1;
-	j = -1;
-	while (s1[++i])
-		new[i] = s1[i];
-	while (s2[++j])
-		new[i + j] = s2[j];
-	return (new);
+	return (cpy);
 }

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 20:16:24 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/17 19:06:04 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/19 17:30:35 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int ac, char **av)
 	if (ac > 2)
 		return (error_exit(ERRCODE0, NULL));
 	nbr = ft_atoll_base(av[1], STR_BASE10);
+	printf("%lld\n", nbr);
 	if (ft_strncmp(av[1], ft_lltoa_base(nbr, STR_BASE10), ft_strlen(av[1])))
 		return (error_exit(ERRCODE1, av[1]));
 	return ((unsigned char)nbr);

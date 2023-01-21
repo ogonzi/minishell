@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 19:18:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/18 19:21:34 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/21 02:34:15 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,9 @@
 void	get_pwd(char **pwd, char **ev);
 void	get_oldpwd(char **pwd, char **ev);
 void	get_homepwd(char **pwd, char **ev);
+
+// Export Builtin
+int		count_env(char **ev);
+char	**copy_env(char **cpy, char **ev, int count);
 
 #endif
