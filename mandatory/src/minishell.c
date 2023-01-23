@@ -6,35 +6,41 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/18 15:54:56 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/23 19:01:54 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "minishell_utils.h"
 
-/*
-void	print_list(t_list *lst)
-{
-	t_list	*lst_cpy;
-	t_list	*word_cpy;
+static void	custom_getpid(t_prompt *prompt);
+static int	handle_input(t_prompt *prompt);
+static int	handle_pipeline(t_prompt prompt);
+static void	init_prompt(t_prompt *prompt, char *argv[], char *envp[]);
 
-	lst_cpy = lst;
-	while (lst_cpy)
+int	main(int argc, char *argv[], char *envp[])
+{
+	t_prompt	prompt;
+
+	if (argc != 1)
+		terminate(ERR_ARGS, 0);
+	init_prompt(&prompt, argv, envp);
+	read_banner();
+	while (1)
 	{
-		word_cpy = ((t_cmd_line_data *)lst_cpy->content)->word;
-		printf("%s\n", ((t_cmd_line_data *)lst_cpy->content)->cmd);
-		while (word_cpy)
-		{
-			printf("\t%s (%d)\n", ((t_token_data *)word_cpy->content)->word,
-				((t_token_data *)word_cpy->content)->type);
-			word_cpy = word_cpy->next;
-		}
-		lst_cpy = lst_cpy->next;
+		set_sigint_action();
+		do_sigign(SIGQUIT);
+		prompt.exit_status = handle_input(&prompt);
+		if (prompt.exit_status == -1)
+			break ;
+		if (prompt.exit_status == 0)
+			prompt.exit_status = handle_pipeline(prompt);
+		if (prompt.cmd_line != NULL)
+			free_cmd_line(&prompt.cmd_line);
 	}
-	lst_cpy = 0;
+	free_environ(&prompt.environ);
+	return (prompt.exit_status);
 }
-*/
 
 static void	custom_getpid(t_prompt *prompt)
 {
@@ -88,14 +94,14 @@ static void	init_prompt(t_prompt *prompt, char *argv[], char *envp[])
 	init_env_vars(prompt, argv);
 }
 
-/**
+static int	handle_pipeline(t_prompt prompt)
+/*
  * Duplicates standard input & output to tmp_fd. This is done to
  * be able to implement redirections if necessary.
  * Loops through each pipe, calling the function redir_pipe,
  * which returns 0 for any pipe that isn't the last and 0 or
  * error code if the pipe is the last.
 */
-static int	handle_pipeline(t_prompt prompt)
 {
 	t_list	*command_cpy;
 	int		tmp_fd[2];
@@ -120,27 +126,25 @@ static int	handle_pipeline(t_prompt prompt)
 	return (exit_status);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+/*
+void	print_list(t_list *lst)
 {
-	t_prompt	prompt;
+	t_list	*lst_cpy;
+	t_list	*word_cpy;
 
-	if (argc != 1)
-		terminate(ERR_ARGS, 0);
-	init_shell();
-	init_prompt(&prompt, argv, envp);
-	read_mnshllrc();
-	while (1)
+	lst_cpy = lst;
+	while (lst_cpy)
 	{
-		set_sigint_action();
-		do_sigign(SIGQUIT);
-		prompt.exit_status = handle_input(&prompt);
-		if (prompt.exit_status == -1)
-			break ;
-		if (prompt.exit_status == 0)
-			prompt.exit_status = handle_pipeline(prompt);
-		if (prompt.cmd_line != NULL)
-			free_cmd_line(&prompt.cmd_line);
+		word_cpy = ((t_cmd_line_data *)lst_cpy->content)->word;
+		printf("%s\n", ((t_cmd_line_data *)lst_cpy->content)->cmd);
+		while (word_cpy)
+		{
+			printf("\t%s (%d)\n", ((t_token_data *)word_cpy->content)->word,
+				((t_token_data *)word_cpy->content)->type);
+			word_cpy = word_cpy->next;
+		}
+		lst_cpy = lst_cpy->next;
 	}
-	free_environ(&prompt.environ);
-	return (prompt.exit_status);
+	lst_cpy = 0;
 }
+*/

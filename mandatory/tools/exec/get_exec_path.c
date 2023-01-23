@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:39:10 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 17:26:23 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/23 17:24:46 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_check_access(char **exec_path, char **paths)
 	if (access(*exec_path, X_OK) == 0)
 	{
 		if (*paths != NULL)
-			ft_free_twod_memory(paths);
+			ft_memfree(paths);
 		return (1);
 	}
 	return (0);
@@ -96,7 +96,7 @@ int	get_exec_path(char *token, char **exec_path,
 		return (0);
 	}
 	if (*paths != NULL)
-		ft_free_twod_memory(paths);
+		ft_memfree(paths);
 	if (ft_strchr((const char *)*exec_path, '/') == NULL)
 	{
 		if (path_line)

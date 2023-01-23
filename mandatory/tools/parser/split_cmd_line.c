@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 18:11:15 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/23 18:23:53 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 void	set_node(char **split_line, t_list **cmd_line_node)
 {
 	int					cmd_len;
-	t_cmd_line_data	*cmd_line_content;
+	t_cmd_line_data		*cmd_line_content;
 
 	cmd_len = ft_strlen(*split_line);
 	cmd_line_content = malloc(sizeof(t_cmd_line_data));
@@ -77,6 +77,6 @@ int	split_cmd_line(t_prompt *prompt, char *line)
 		ft_lstadd_back(&prompt->cmd_line, cmd_line_node);
 		i++;
 	}
-	ft_free_twod_memory(split_line);
+	ft_memfree(split_line);
 	return (0);
 }

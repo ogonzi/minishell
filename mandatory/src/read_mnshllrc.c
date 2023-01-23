@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:19:37 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/18 16:00:53 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/23 19:01:31 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define PTHFLE  (char *)"./.mnshllrc"
+#define PTHFLE  (char *)"./.stuff/banner.ans"
 #define ERRMSG  (char *)"Error while reading .mnshllrc file!\a\n"
 
 static void	protect_line(char **line, int fd);
 
-void	read_mnshllrc(void)
+void	read_banner(void)
 {
 	int		fd;
 	char	*line;

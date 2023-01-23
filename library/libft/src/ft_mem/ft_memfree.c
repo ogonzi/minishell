@@ -6,24 +6,20 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 17:41:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/06 20:46:14 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/23 17:19:58 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char
-	**ft_memfree(char **ptr, int len)
+void
+	ft_memfree(char **ptr)
 {
-	int	i;
+	ssize_t	i;
 
-	i = 0;
-	while (i < len)
-	{
+	i = -1;
+	while (ptr[++i])
 		free(ptr[i]);
-		i++;
-	}
 	free(ptr);
 	ptr = NULL;
-	return (NULL);
 }

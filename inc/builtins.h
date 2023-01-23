@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 19:18:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/21 02:34:15 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/22 19:10:20 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "libft.h"
 # include "ft_printf_fd.h"
+
+# include "builtins.h"
 
 # include <stdio.h>
 # include <dirent.h>

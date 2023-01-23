@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:12:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 17:21:17 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/23 17:24:46 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	split_and_classify(void *content)
 		}
 		i++;
 	}
-	ft_free_twod_memory(split_cmd);
+	ft_memfree(split_cmd);
 }
 
 int	split_words(t_prompt *prompt)

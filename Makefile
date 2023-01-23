@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2023/01/21 02:41:08 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/01/23 17:26:24 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -177,8 +177,8 @@ $(BLTN):
 	@$(MK) $(BIN_DIR)
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)echo.o $(LIBFT) $(PRINT) -o $(BIN_DIR)echo
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)pwd.o $(LIBFT) $(PRINT) -o $(BIN_DIR)pwd
-	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)export.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)export_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)export
-	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)unset.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)export_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)unset
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)export.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)env_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)export
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)unset.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)env_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)unset
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)cd.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)cd_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)cd
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)exit.o $(LIBFT) $(PRINT) -o $(BIN_DIR)exit
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)env.o $(LIBFT) $(PRINT) -o $(BIN_DIR)env

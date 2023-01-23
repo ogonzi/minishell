@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 13:35:23 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/23 18:52:15 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define ERR_UNLINK			"Function error -> unlink"
 # define ERR_CHLD			"Core dump in child"
 # define TMP_FILE_HEREDOC	"/tmp/heredoc"
-
+# define ERR_MRC			(char *)"There was an error while reading.\n"
 /* Error codes */
 
 # define CATCH_ALL			1
@@ -49,10 +49,8 @@
 
 /* utils.c */
 
-void	terminate(char *s, int system_error_flag);
-void	init_shell(void);
+void	terminate(char *s, int syserr);
 int		free_and_return_error_code(char **str, int err);
-void	ft_free_twod_memory(char **arr);
 
 /* exec_utils.c */
 char	**get_command_array(t_list *command);

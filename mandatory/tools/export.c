@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 20:35:53 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/21 03:04:33 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/23 17:21:37 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	print_declare_env(char **ev)
 	// cpy = sort_env(cpy); To implement sort
 	while (++idx < count)
 		printf("declare -x %s\n", cpy[idx]);
-	ft_memfree(cpy, idx);
+	ft_memfree(cpy);
 }
 
 // -=-=-=-=-=-=-=-

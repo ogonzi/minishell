@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 23:53:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/11 15:55:54 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/23 20:51:15 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,14 @@ struct s_split_data
 	int	start;
 	int	end;
 	int	num;
+};
+
+struct s_msh_env
+{
+	char	**cpy;
+	char	**envname;
+	char	**content;
+	ssize_t	nbr;
 };
 
 #endif

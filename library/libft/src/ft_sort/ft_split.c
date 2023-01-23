@@ -6,13 +6,14 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 17:44:39 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/06 21:02:54 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/01/23 17:25:33 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 static char	**ft_mem_alloc(char const *s, char c);
+static char	**ft_memfree_split(char **ptr);
 
 char
 	**ft_split(char const *s, char c)
@@ -67,7 +68,20 @@ static char
 			j++;
 		sptr[i] = (char *)malloc(sizeof(char) * (idx + 1));
 		if (!sptr[i])
-			return (ft_memfree(sptr, i));
+			return (ft_memfree_split(sptr));
 	}
 	return (sptr);
+}
+
+static char
+	**ft_memfree_split(char **ptr)
+{
+	ssize_t	i;
+
+	i = -1;
+	while (ptr[++i])
+		free(ptr[i]);
+	free(ptr);
+	ptr = NULL;
+	return (NULL);
 }
