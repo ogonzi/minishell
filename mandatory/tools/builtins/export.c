@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 20:35:53 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/23 17:21:37 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/02 18:01:18 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,40 @@ char	**export_handler(int ac, char **av, char **ev)
 	if (ac == 1)
 		print_declare_env(ev);
 	return (NULL);
+}
+
+static size_t	ft_dimlen(char **arr)
+{
+	size_t	idx;
+
+	idx = 0;
+	while (arr[idx])
+		++idx;
+	return (idx);
+}
+
+static void	sort_env(char **cpy)
+{
+	char	*temp;
+	int		i;
+	int		j;
+	int		n;
+
+	i = 0;
+	j = 0;
+	n = ft_dimlen(cpy) - 1;
+	while (++i < n)
+	{
+		while (++j < n - i + 1)
+		{
+			if (ft_strcmp(cpy[j], cpy[j + 1]) > 0)
+			{
+				temp = cpy[j];
+				cpy[j] = cpy[j + 1];
+				cpy[j + 1] = temp;
+			}
+		}
+	}
 }
 
 static void	print_declare_env(char **ev)
@@ -38,7 +72,7 @@ static void	print_declare_env(char **ev)
 	}
 	cpy[count] = NULL;
 	cpy = copy_env(cpy, ev, count);
-	// cpy = sort_env(cpy); To implement sort
+	sort_env(cpy);
 	while (++idx < count)
 		printf("declare -x %s\n", cpy[idx]);
 	ft_memfree(cpy);

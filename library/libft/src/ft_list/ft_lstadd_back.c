@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 17:13:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/06 20:41:51 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/03/31 11:54:03 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void
 {
 	t_list	*temp;
 
-	if (*lst == NULL)
+	if (!*lst)
 		*lst = new;
 	else
 	{

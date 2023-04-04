@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_structs.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 23:53:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/23 20:51:15 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/03 15:45:40 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_pipe			t_pipe;
 typedef struct s_token_data		t_token_data;
 typedef struct s_word			t_word;
 typedef struct s_split_data		t_split_data;
+typedef struct s_mshenv			t_mshenv;
 
 struct s_cmd_line_data
 {
@@ -85,14 +86,6 @@ struct s_split_data
 	int	start;
 	int	end;
 	int	num;
-};
-
-struct s_msh_env
-{
-	char	**cpy;
-	char	**envname;
-	char	**content;
-	ssize_t	nbr;
 };
 
 #endif

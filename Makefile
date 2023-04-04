@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+         #
+#    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2023/01/24 16:41:30 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/03/21 12:15:49 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ WHITE 		:= \033[0;97m
 # -=-=-=-=- CMND -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 CFLAGS      = -Wall -Wextra -Werror -W
-DFLAGS		= -MT $@ -MMD -MP
+DFLAGS		= -MT $@ -MMD
 XFLAGS      = -fsanitize=address -g3
 LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib
 RL_INC		= -I/Users/$(USER)/.brew/opt/readline/include
@@ -160,10 +160,10 @@ $(OBJ_DIR)%.o: %.c $(MKFL)
 	@printf "\r$(GREEN)\tCompiling: $(YELLOW)$< $(DEF_CLR)                   \n"
 	@$(CC) $(CFLAGS) $(DFLAGS) $(INCLUDE) -c $< -o $@
 
-all:
+all: makelib $(NAME) $(BLTN)
+
+makelib:
 	@$(MAKE) -C $(LIB_DIR)
-	@$(MAKE) $(NAME)
-	@$(MAKE) $(BLTN)
 
 $(NAME):: $(OBJS)
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJS) $(LIBFT) $(PRINT) $(LDFLAGS) -lreadline -o $(NAME)
@@ -172,7 +172,7 @@ $(NAME):: $(OBJS)
 $(NAME)::
 	@printf "\t$(WHITE)Nothing more to be done for program \033[1;31mMinishell$(DEF_COLOR)\n"
 
--include $(DEPS)	
+-include $(DEPS)
 
 $(BLTN)::  $(BLT_OBJS)
 	@$(MK) $(BIN_DIR)
