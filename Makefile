@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2023/04/05 00:17:12 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/05 00:28:52 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,10 @@ INC_DIR = inc/
 SRC_DIR = src/
 TUL_DIR = tools/
 UTL_DIR = utils/
-OBJ_DIR = .obj/
+
+OBJ_DIR = .objs/
+DEP_DIR	= .deps/
+
 BIN_DIR	= bin/
 
 PRS_DIR	= parser/
@@ -167,12 +170,12 @@ $(NAME)::
 -include $(DEPS)
 
 clean:
-	@$(RM) -r $(OBJ_DIR)
+	@$(RM) -r $(OBJ_DIR) $(DEP_DIR)
 	@make clean -sC $(LIB_DIR)
 	@echo "$(BLUE)	Minishell object and dependencies files cleaned.$(DEF_COLOR)"
 
 fclean:
-	@$(RM) -r $(OBJ_DIR)
+	@$(RM) -r $(OBJ_DIR) $(DEP_DIR)
 	@$(RM) -r $(BIN_DIR)
 	@$(RM) $(NAME)
 	@$(MAKE) fclean -sC $(LIB_DIR)

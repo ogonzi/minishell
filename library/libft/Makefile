@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/27 19:35:19 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/05 00:21:03 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/05 00:26:54 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -126,11 +126,11 @@ $(NAME)::
 -include $(DEPS)
 
 clean:
-	@$(RM) -r $(OBJ_DIR)
+	@$(RM) -r $(OBJ_DIR) $(DEP_DIR)
 	@echo "$(BLUE)	'Libft' object files cleaned.$(DEF_COLOR)"
 
 fclean:
-	@$(RM) -r $(OBJ_DIR)
+	@$(RM) -r $(OBJ_DIR) $(DEP_DIR)
 	@$(RM) $(NAME)
 	@echo "$(WHITE)	All objects, dependencies and executables removed from 'libft'.$(DEF_COLOR)"
 
