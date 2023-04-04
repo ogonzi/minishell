@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ischrinstr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:36:37 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/05 12:55:11 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:46:46 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libftprintf.h"
 
 t_bool
 	ft_ischrinstr(char *str)
 {
 	while (*str)
 	{
-		if (ft_strchr(&str[1], str[0]))
+		if (ft_pstrchr(&str[1], str[0]))
 			return (TRUE);
 		str++;
 	}

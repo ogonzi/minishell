@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_fd.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 18:36:08 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/08 17:34:23 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:37:10 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FT_PRINTF_FD_H
 
 # include "ft_data_structures.h"
-# include "../library/inc/libft.h"
+# include "../library/inc/libftprintf.h"
 # include <stdarg.h>
 
 // Function Reference

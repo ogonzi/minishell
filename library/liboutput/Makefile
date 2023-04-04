@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+         #
+#    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/18 18:29:13 by cpeset-c          #+#    #+#              #
-#    Updated: 2022/12/07 16:26:35 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/03 16:31:04 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,14 +33,15 @@ INC_DIR	= inc/
 SRC_DIR	= src/
 UTL_DIR	= util/
 LIB_DIR	= library/
-BNS_DIR	= bonus/
-OBJ_DIR	= .obj/
+
+OBJ_DIR	= .objs/
+DEP_DIR	= .deps/
 
 # -=-=-=-=-	CMND -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-CFLAGS	= -Wall -Wextra -Werror -W -O3 -Ofast
-DFLAGS	= -MT $@ -MMD -MP
-XFLAGS	= -g3 -fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -W -O3
+DFLAGS	= -MT $@ -MMD
+XFLAGS	= -fsanitize=address -g3 
 
 AR		= ar -rcs
 RM		= rm -f
@@ -49,8 +50,8 @@ CP		= cp -f
 
 # -=-=-=-=-	FILE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-LIB		= $(LIB_DIR)libft.a
-INCLUDE	= -I $(INC_DIR)
+LIB		= $(LIB_DIR)libftprintf.a
+INCLUDE	= -I./$(INC_DIR) -I./$(LIB_DIR)$(INC_DIR)
 
 # -=-=-=-=- PRINTF	-=-
 
@@ -82,18 +83,19 @@ SRCS	+= $(addprefix $(SRC_DIR), $(PFD_SRC))
 SRCS	+= $(addprefix $(UTL_DIR), $(PFD_UTL))
 
 OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
-DEPS	= $(addsuffix .d, $(basename $(OBJS)))
+DEPS	= $(addprefix $(DEP_DIR), $(addsuffix .d, $(basename $(SRCS))))
 
 # -=-=-=-=-	RULE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 $(OBJ_DIR)%.o: %.c $(MKFL)
-	@$(MK) $(dir $@)
+	@$(MK) $(dir $@) $(dir $(subst $(OBJ_DIR), $(DEP_DIR), $@))
 	@printf "\r$(GREEN)\tCompiling: $(YELLOW)$< $(DEF_CLR)                   \r"
 	@$(CC) $(CFLAGS) $(DFLAGS) $(XFLAGS) $(INCLUDE) -c $< -o $@
 
-all:
+all: makelib $(NAME)
+
+makelib:
 	@$(MAKE) -C $(LIB_DIR)
-	@$(MAKE) $(NAME)
 
 $(NAME):: $(OBJS)
 	@$(CP) $(LIB) ./$(NAME)
@@ -107,12 +109,12 @@ $(NAME)::
 
 clean:
 	@$(MAKE) clean -C $(LIB_DIR)
-	@$(RM) -r $(OBJ_DIR)
+	@$(RM) -r $(OBJ_DIR) $(DEP_DIR)
 	@echo "$(BLUE)	'Output' object files cleaned.$(DEF_COLOR)"
 
 fclean: 
 	@$(MAKE) fclean -C $(LIB_DIR)
-	@$(RM) -r $(OBJ_DIR)
+	@$(RM) -r $(OBJ_DIR) $(DEP_DIR)
 	@$(RM) $(NAME)
 	@echo "$(WHITE)	All objects, dependencies and executables removed from 'output' library.$(DEF_COLOR)"
 

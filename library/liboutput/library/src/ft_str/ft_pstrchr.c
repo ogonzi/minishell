@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_nbrlen.c                                        :+:      :+:    :+:   */
+/*   ft_pstrchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/18 19:05:51 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/01 00:07:35 by cpeset-c         ###   ########.fr       */
+/*   Created: 2022/10/18 19:19:28 by cpeset-c          #+#    #+#             */
+/*   Updated: 2023/04/03 15:51:33 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libftprintf.h"
 
-t_ll	ft_nbrlen(t_ll nbr, int base)
+char
+	*ft_pstrchr(char *s, int c)
 {
-	t_ll	len;
-
-	len = 0;
-	if (nbr <= 0)
-		len++;
-	while (nbr)
+	if (!s)
+		return (NULL);
+	while (*s)
 	{
-		nbr /= base;
-		len++;
+		if (*s == (unsigned char)c)
+			return ((char *)s);
+		s++;
 	}
-	return (len);
+	if ((unsigned char)c == '\0')
+		return ((char *)s);
+	return (NULL);
 }

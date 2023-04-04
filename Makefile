@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2023/03/21 12:15:49 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/05 00:17:12 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -140,50 +140,31 @@ SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(UTL_DIR), $(UTL_FLS)))
 
 OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 
-BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(ECH_FLS))))
-BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(PWD_FLS))))
-BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(CDD_FLS))))
-BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(EPT_FLS))))
-BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(EXT_FLS))))
-BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(UNT_FLS))))
-BLT_SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(ENV_FLS))))
-
-BLT_OBJS	= $(addprefix $(OBJ_DIR), $(BLT_SRCS:.c=.o))
-
 DEPS	+= $(addsuffix .d, $(basename $(OBJS)))
-DEPS	+= $(addsuffix .d, $(basename $(BLT_OBJS)))
 
 # -=-=-=-=- RULE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 $(OBJ_DIR)%.o: %.c $(MKFL)
-	@$(MK) $(dir $@)
-	@printf "\r$(GREEN)\tCompiling: $(YELLOW)$< $(DEF_CLR)                   \n"
-	@$(CC) $(CFLAGS) $(DFLAGS) $(INCLUDE) -c $< -o $@
+	@$(MK) $(dir $@) $(dir $(subst $(OBJ_DIR), $(DEP_DIR), $@))
+	@printf "$(WHITE)\r\tCompiling: $(YELLOW)$<$(DEF_COLOR)                           \r"
+	@$(CC) $(CFLAGS) $(DFLAGS) $(XFLAGS) $(INCLUDE) -c $< -o $@
+	@mv $(patsubst %.o, %.d, $@) $(dir $(subst $(OBJ_DIR), $(DEP_DIR), $@))
 
-all: makelib $(NAME) $(BLTN)
+all: makelib $(NAME)
 
 makelib:
 	@$(MAKE) -C $(LIB_DIR)
 
 $(NAME):: $(OBJS)
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJS) $(LIBFT) $(PRINT) $(LDFLAGS) -lreadline -o $(NAME)
+	@$(MK) $(BIN_DIR)
+	@mv $(NAME) $(BIN_DIR)$(NAME)
 	@printf "\n\t$(WHITE)Program \033[1;31mMinishell $(WHITE)has been compiled!$(DEF_COLOR)\n"
 
 $(NAME)::
 	@printf "\t$(WHITE)Nothing more to be done for program \033[1;31mMinishell$(DEF_COLOR)\n"
 
 -include $(DEPS)
-
-$(BLTN)::  $(BLT_OBJS)
-	@$(MK) $(BIN_DIR)
-	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)$(BLT_DIR)echo.o $(LIBFT) $(PRINT) -o $(BIN_DIR)echo
-	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)$(BLT_DIR)pwd.o $(LIBFT) $(PRINT) -o $(BIN_DIR)pwd
-	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)$(BLT_DIR)export.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)$(BLT_DIR)env_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)export
-	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)$(BLT_DIR)unset.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)$(BLT_DIR)env_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)unset
-	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)$(BLT_DIR)cd.o $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)$(BLT_DIR)cd_utils.o $(LIBFT) $(PRINT) -o $(BIN_DIR)cd
-	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)$(BLT_DIR)exit.o $(LIBFT) $(PRINT) -o $(BIN_DIR)exit
-	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJ_DIR)$(MND_DIR)$(TUL_DIR)$(BLT_DIR)env.o $(LIBFT) $(PRINT) -o $(BIN_DIR)env
-
 
 clean:
 	@$(RM) -r $(OBJ_DIR)

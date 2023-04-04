@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lltoa.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 19:03:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/01 00:07:16 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:46:20 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libftprintf.h"
 
 char
 	*ft_lltoa(t_ll nbr, char *str)
@@ -23,7 +23,7 @@ char
 	if (ft_ischrinstr(str) || (ft_strlen(str) < 2 && ft_strlen(str) > 16))
 		return (NULL);
 	base = ft_strlen(str);
-	len = ft_nbrlen(nbr, base);
+	len = ft_pnbrlen(nbr, base);
 	res = (char *)ft_calloc(len + 1, sizeof(char));
 	if (!res)
 		return (NULL);

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   libftprintf.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 18:36:09 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/05 12:54:25 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:46:46 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#ifndef LIBFTPRINTF_H
+# define LIBFTPRINTF_H
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -42,7 +42,7 @@ t_bool	ft_ischrinstr(char *str);
 
 // ft_math function
 t_ll	ft_absval(t_ll n);
-t_ll	ft_nbrlen(t_ll nbr, int base);
+t_ll	ft_pnbrlen(t_ll nbr, int base);
 t_unt	ft_unbrlen(t_ull nbr, int base);
 t_ll	ft_atoll(const char *str, int base);
 char	*ft_lltoa(t_ll nbr, char *str);
@@ -57,7 +57,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_strdup(const char *s1);
 
 // ft_str functions
-char	*ft_strchr(char *s, int c);
+char	*ft_pstrchr(char *s, int c);
 int		ft_strcmp(char *s1, char *s2);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char *s1, char *s2);
