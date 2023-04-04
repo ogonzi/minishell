@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/27 19:35:19 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/05 00:12:09 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/05 00:18:28 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,8 @@ WHITE		:= \033[0;97m
 
 # -=-=-=-=-	CMND -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-CFLAGS	= -Wall -Werror -Wextra -W -O3 -Ofast
-DFLAGS	= -MT $@ -MMD -MP
+CFLAGS	= -Wall -Werror -Wextra -W
+DFLAGS	= -MT $@ -MMD
 XFLAGS	= -g3 -fsanitize=address
 AR		= ar rcs
 RM		= rm -f
@@ -102,7 +102,7 @@ SRCS	+= $(addprefix $(LST_DIR), $(LST_SRC))
 SRCS	+= $(addprefix $(GNL_DIR), $(GNL_SRC))
 
 OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
-DEPS	= $(addsuffix .d, $(basename $(OBJS)))
+DEPS	= $(addprefix $(DEP_DIR), $(addsuffix .d, $(basename $(SRCS))))
 
 # -=-=-=-=-	RULE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
