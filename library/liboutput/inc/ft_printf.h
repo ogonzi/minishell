@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 18:36:08 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/03 15:50:57 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/05 00:23:02 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FT_PRINTF_H
 
 # include "ft_data_structures.h"
-# include "libftprintf.h"
+# include "../library/inc/libftprintf.h"
 # include <stdarg.h>
 
 // Function Reference

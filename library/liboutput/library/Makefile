@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/18 19:14:32 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/03 16:46:46 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/05 00:24:24 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,10 +63,10 @@ FIS_SRC	= ft_islower.c ft_isupper.c ft_isalpha.c ft_isprint.c \
 MEM_SRC	= ft_bzero.c ft_calloc.c ft_memcpy.c ft_strdup.c
 
 MTH_SRC	= ft_absval.c ft_pnbrlen.c ft_atoll.c ft_lltoa.c \
-		ft_stou.c ft_stoul.c ft_unbrlen.c ft_ulltoa.c
+		ft_stou.c ft_pstoul.c ft_unbrlen.c ft_ulltoa.c
 
 STR_SRC	= ft_pstrchr.c ft_strcmp.c ft_strlen.c ft_substr.c \
-		ft_strjoin.c
+		ft_pstrjoin.c
 
 SRCS	+= $(addprefix $(SRC_DIR), $(addprefix $(FIS_DIR), $(FIS_SRC)))
 SRCS	+= $(addprefix $(SRC_DIR), $(addprefix $(MEM_DIR), $(MEM_SRC)))

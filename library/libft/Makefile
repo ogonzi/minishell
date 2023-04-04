@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/27 19:35:19 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/05 00:18:28 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/05 00:21:03 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,13 +34,12 @@ DFLAGS	= -MT $@ -MMD
 XFLAGS	= -g3 -fsanitize=address
 AR		= ar rcs
 RM		= rm -f
-MD		= mkdir -p
+MK		= mkdir -p
 CP		= cp -f
 
 # -=-=-=-=-	PATH -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 SRC_DIR	= src/
-OBJ_DIR	= .obj/
 INC_DIR	= inc/
 
 FIS_DIR	= $(SRC_DIR)ft_is/
@@ -52,9 +51,12 @@ STR_DIR	= $(SRC_DIR)ft_str/
 LST_DIR	= $(SRC_DIR)ft_list/
 GNL_DIR	= $(SRC_DIR)ft_gnl/
 
+OBJ_DIR	= .objs/
+DEP_DIR = .deps/
+
 # -=-=-=-=-	FILE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-INCLUDE		= -I $(INC_DIR)
+INCLUDE		= -I./$(INC_DIR)
 
 FIS_SRC	= ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c \
 		ft_islower.c ft_isprint.c ft_issign.c ft_isspace.c \
@@ -132,9 +134,7 @@ fclean:
 	@$(RM) $(NAME)
 	@echo "$(WHITE)	All objects, dependencies and executables removed from 'libft'.$(DEF_COLOR)"
 
-re:
-	@$(MAKE) fclean
-	@$(MAKE)
+re: fclean all
 	@echo ""
 	@echo "$(GREEN)	Cleaned and rebuilt everything for 'libft'.$(DEF_COLOR)"
 
