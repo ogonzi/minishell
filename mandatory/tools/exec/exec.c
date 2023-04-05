@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:24:16 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 13:34:23 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/05 02:06:09 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_utils.h"
 #include "minishell.h"
 
-//TODO: Use modded ft_printf to print errors to STDERR
 //TODO: Handle execve error (free mem, error message)
 /**
  * First, the array of commands for the pipe is obtained. For example,
@@ -35,28 +34,29 @@ static void	do_execve(t_list *command, t_prompt prompt,
 	char	*exec_path;
 	char	**command_array;
 	char	**envp;
+	t_bool	flag;
 
+	flag = FALSE;
 	command_array = get_command_array(command);
 	envp = get_envp(prompt.environ);
-	if (get_exec_path(command_array[0], &exec_path, command, &prompt) != 0)
+	if (!ft_strncmp(ft_strlowcase(command_array[0]), "export", 3))
 	{
-		printf("%s: command not found\n", command_array[0]);
-		exit(((t_cmd_line_data *)command->data)->exit_status);
+		flag = TRUE;
+		printf("%s\n", "yo");
 	}
-	if (pipe_helper.did_out_redirection == 0 && pipe_helper.is_last == 0
-		&& dup2(pipe_helper.fd[1], STDOUT_FILENO) == -1)
-		terminate(ERR_DUP, 1);
-	else if (pipe_helper.did_out_redirection == 1
-		&& dup2(tmp_fd[1], STDOUT_FILENO) == -1)
-		terminate(ERR_DUP, 1);
-	if (close(pipe_helper.fd[1]) != 0)
-		terminate(ERR_CLOSE, 1);
-	if (close(tmp_fd[1]) != 0)
-		terminate(ERR_CLOSE, 1);
-	set_child_sigaction();
-	printf("%s", command_array[1]);
-	if (execve(exec_path, command_array, envp) == -1)
-		terminate(ERR_EXECVE, 1);
+	if (flag == FALSE)
+	{
+		if (get_exec_path(command_array[0], &exec_path, command, &prompt) != 0)
+		{
+			ft_printf_fd(STDERR_FILENO, "%s: command not found\n", command_array[0]);
+			exit(((t_cmd_line_data *)command->data)->exit_status);
+		}
+		check_pipe(&pipe_helper, tmp_fd);
+		set_child_sigaction();
+		// printf("%s", command_array[1]);
+		if (execve(exec_path, command_array, envp) == -1)
+			terminate(ERR_EXECVE, 1);
+	}
 }
 
 /**
@@ -149,7 +149,7 @@ static int	do_pipe(int tmp_fd[2], t_list *command,
 int	redir_pipe(t_list *command_cpy, t_prompt prompt, int tmp_fd[2])
 {
 	int		exit_status;
-	t_pipe	pipe_helper;	
+	t_pipe	pipe_helper;
 
 	exit_status = dup_to_in(&tmp_fd[0], command_cpy);
 	if (exit_status == 0)

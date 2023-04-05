@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:51:36 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/23 19:01:54 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/05 02:03:58 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ static int	handle_input(t_prompt *prompt)
 		if (err != 0)
 			return (free_and_return_error_code(&buf, err));
 	}
-	free(buf);
-	buf = NULL;
+	ft_delete(buf);
 	return (0);
 }
 
@@ -119,32 +118,9 @@ static int	handle_pipeline(t_prompt prompt)
 		exit_status = redir_pipe(command_cpy, prompt, tmp_fd);
 		command_cpy = command_cpy->next;
 	}
-	if (close(tmp_fd[0]) != 0)
+	if (close(tmp_fd[0]))
 		terminate(ERR_CLOSE, 1);
-	if (close(tmp_fd[1]) != 0)
+	if (close(tmp_fd[1]))
 		terminate(ERR_CLOSE, 1);
 	return (exit_status);
 }
-
-/*
-void	print_list(t_list *lst)
-{
-	t_list	*lst_cpy;
-	t_list	*word_cpy;
-
-	lst_cpy = lst;
-	while (lst_cpy)
-	{
-		word_cpy = ((t_cmd_line_data *)lst_cpy->content)->word;
-		printf("%s\n", ((t_cmd_line_data *)lst_cpy->content)->cmd);
-		while (word_cpy)
-		{
-			printf("\t%s (%d)\n", ((t_token_data *)word_cpy->content)->word,
-				((t_token_data *)word_cpy->content)->type);
-			word_cpy = word_cpy->next;
-		}
-		lst_cpy = lst_cpy->next;
-	}
-	lst_cpy = 0;
-}
-*/

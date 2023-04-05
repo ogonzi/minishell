@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:09:09 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/11 13:33:33 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/05 01:35:33 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,18 @@ int
 		}
 	}
 	return (last_pipe_exit);
+}
+
+void	check_pipe(t_pipe *pipe_helper, int tmp_fd[2])
+{
+	if (pipe_helper->did_out_redirection == 0 && pipe_helper->is_last == 0
+		&& dup2(pipe_helper->fd[1], STDOUT_FILENO) == -1)
+		terminate(ERR_DUP, 1);
+	else if (pipe_helper->did_out_redirection == 1
+		&& dup2(tmp_fd[1], STDOUT_FILENO) == -1)
+		terminate(ERR_DUP, 1);
+	if (close(pipe_helper->fd[1]) != 0)
+		terminate(ERR_CLOSE, 1);
+	if (close(tmp_fd[1]) != 0)
+		terminate(ERR_CLOSE, 1);
 }

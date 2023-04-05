@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:58:30 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/23 18:52:15 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/05 01:35:45 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int		free_and_return_error_code(char **str, int err);
 char	**get_command_array(t_list *command);
 char	**get_envp(t_list *environ);
 int		handle_child_exit(int exit_status, int last_pipe_exit, int last_pipe);
+void	check_pipe(t_pipe *pipe_helper, int tmp_fd[2]);
 
 /* split_utils.c */
 

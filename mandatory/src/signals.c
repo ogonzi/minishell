@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:33:07 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 17:20:58 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/05 01:51:45 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include "minishell_utils.h"
-#include "ft_printf.h"
+#include "ft_printf_fd.h"
 
 /*
  * printf is not safe to use inside sig handlers
@@ -30,7 +30,7 @@ void	handle_sig(int sig)
 {
 	if (sig == SIGINT)
 	{
-		write(STDOUT_FILENO, "\n", 1);
+		ft_printf_fd(STDOUT_FILENO, "\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();

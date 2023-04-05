@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2023/04/05 00:28:52 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/05 01:48:04 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,40 +71,9 @@ OUT_DIR = $(LIB_DIR)liboutput/
 LIBFT	= $(LIB_DIR)libft.a
 PRINT	= $(OUT_DIR)liboutput.a
 
-INCLUDE = -I$(INC_DIR) -I$(LFT_DIR)$(INC_DIR) -I$(OUT_DIR)$(INC_DIR) $(RL_INC)
-
-# -=-=- ECHO
-
-ECH_FLS	= echo.c
-
-# -=-=- CD
-
-CDD_FLS	= cd.c \
-		cd_utils.c
-
-# -=-=- PWD
+INCLUDE = -I./$(INC_DIR) -I./$(LFT_DIR)$(INC_DIR) -I./$(OUT_DIR)$(INC_DIR) $(RL_INC)
 
 PWD_FLS	= pwd.c
-
-# -=-=- EXPORT
-
-EPT_FLS	= export.c \
-		env_utils.c
-
-# -=-=- UNSET
-
-UNT_FLS	= unset.c \
-		env_utils.c
-
-# -=-=- EXIT
-
-EXT_FLS	= exit.c
-
-# -=-=- ENV
-
-ENV_FLS	= env.c
-
-# -=-=- 
 
 SRC_FLS	= minishell.c \
 		signals.c \
