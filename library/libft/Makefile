@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/27 19:35:19 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/05 01:49:49 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/05 13:37:06 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ WHITE		:= \033[0;97m
 
 # -=-=-=-=-	CMND -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-CFLAGS	= -Wall -Werror -Wextra -W
+CFLAGS	= -Wall -Werror -Wextra -W -O3
 DFLAGS	= -MT $@ -MMD
 XFLAGS	= -g3 -fsanitize=address
 AR		= ar rcs
@@ -39,8 +39,8 @@ CP		= cp -f
 
 # -=-=-=-=-	PATH -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-SRC_DIR	= src/
 INC_DIR	= inc/
+SRC_DIR	= src/
 
 FIS_DIR	= $(SRC_DIR)ft_is/
 MTH_DIR = $(SRC_DIR)ft_math/
@@ -52,7 +52,7 @@ LST_DIR	= $(SRC_DIR)ft_list/
 GNL_DIR	= $(SRC_DIR)ft_gnl/
 
 OBJ_DIR	= .objs/
-DEP_DIR = .deps/
+DEP_DIR	= .deps/
 
 # -=-=-=-=-	FILE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
@@ -65,7 +65,7 @@ FIS_SRC	= ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c \
 MTH_SRC	= ft_absval.c ft_atoi.c ft_atoi_base.c ft_factorial.c \
 		ft_find_next_prime.c ft_itoa.c ft_itoa_base.c ft_lcm.c \
 		ft_nbrlen.c ft_nbrlen_base.c ft_power.c ft_prime.c \
-		ft_sqrt.c ft_atoll_base.c ft_lltoa_base.c ft_atoull_base.c
+		ft_sqrt.c
 
 MEM_SRC	= ft_bzero.c ft_calloc.c ft_memchr.c ft_memcmp.c \
 		ft_memfree.c ft_memmove.c ft_memset.c ft_range.c \
@@ -134,7 +134,9 @@ fclean:
 	@$(RM) $(NAME)
 	@echo "$(WHITE)	All objects, dependencies and executables removed from 'libft'.$(DEF_COLOR)"
 
-re: fclean all
+re:
+	@$(MAKE) fclean
+	@$(MAKE)
 	@echo ""
 	@echo "$(GREEN)	Cleaned and rebuilt everything for 'libft'.$(DEF_COLOR)"
 

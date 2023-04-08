@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+         #
+#    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/16 16:24:27 by cpeset-c          #+#    #+#              #
-#    Updated: 2022/12/07 16:57:34 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/02/19 20:30:54 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ libft:
 	@$(MAKE) makelibft
 
 print:
-	@$(MAKE)makeprint
+	@$(MAKE) makeprint
 
 #-=-=--=-=--=-=--=-=--=-=--=-=--=-=--=-=--=-=--=-=--=-=--=-=--=-=--=-=--=-=--=- #
 
@@ -65,4 +65,4 @@ re:
 	@$(MAKE) fclean
 	@$(MAKE)
 
-.PHONY:	all libft printf gnl clean fclean re
+.PHONY:	all libft print gnl clean fclean re

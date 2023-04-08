@@ -6,81 +6,101 @@
 /*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 17:44:39 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/23 17:25:33 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/02/01 15:53:08 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <libft.h>
 
-static char	**ft_mem_alloc(char const *s, char c);
-static char	**ft_memfree_split(char **ptr);
+static char	**ft_splitfree(char **ptr, int len);
+static int	ft_wordcount(char const *s, char c, t_bool flag);
+static int	start(char *s, char c, int i);
 
 char
-	**ft_split(char const *s, char c)
+	**ft_split(char const *str, char c)
 {
-	char	**ptr;
-	int		i;
-	int		j;
 	int		idx;
+	char	**dst;
+	size_t	len;
 
-	ptr = ft_mem_alloc((char *)s, c);
-	if (!ptr || !s)
+	dst = (char **)ft_calloc((ft_wordcount((char *)str, c, TRUE) + 1),
+			sizeof(char *));
+	if (!dst)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (i < ft_str_wcount((char *)s, c))
+	idx = 0;
+	len = 0;
+	while (idx < ft_wordcount((char *)str, c, TRUE))
 	{
-		idx = 0;
-		while ((char)s[j] == c)
-			j++;
-		if ((j == 0 && (char)s[j] != c) || ((char)s[j] != c && (char)s[j]))
+		len = ft_wordcount((char *)&str[start((char *)str, c, idx)], c, FALSE);
+		dst[idx] = ft_substr((char *)str, start((char *)str, c, idx), len);
+		if (!dst[idx])
+			return (ft_splitfree(dst, idx));
+		idx++;
+	}
+	return (dst);
+}
+
+static int
+	start(char *str, char c, int idx)
+{
+	int	nbr;
+	int	aux;
+
+	nbr = 0;
+	aux = 0;
+	while (str[nbr] == c)
+		nbr++;
+	while (str[nbr])
+	{
+		if (aux == idx)
+			return (nbr);
+		while (str[nbr] != c)
+			nbr++;
+		while (str[nbr] == c)
+			nbr++;
+		aux++;
+	}
+	return (nbr);
+}
+
+static int
+	ft_wordcount(char const *str, char c, t_bool flag)
+{
+	int		count;
+
+	count = 0;
+	if (flag == FALSE)
+	{
+		while (*str && *str != c)
 		{
-			while ((char)s[j] && (char)s[j] != c)
-				ptr[i][idx++] = (char)s[j++];
-			ptr[i][idx] = '\0';
+			str++;
+			++count;
 		}
-		i++;
+		return (count);
 	}
-	ptr[i] = NULL;
-	return (ptr);
-}
-
-static char
-	**ft_mem_alloc(char const *s, char c)
-{
-	char	**sptr;
-	int		i;
-	int		j;
-	int		idx;
-
-	sptr = (char **)malloc(sizeof(char *) * (ft_str_wcount(s, c) + 1));
-	if (!sptr)
-		return (NULL);
-	i = -1;
-	j = 0;
-	while (++i < ft_str_wcount(s, c))
+	while (*str)
 	{
-		idx = 0;
-		while (s[j] == c)
-			j++;
-		while ((s[j] && s[j] != c)
-			&& ((j == 0 && s[j] != c) || (s[j] != c)) && idx++ != -1)
-			j++;
-		sptr[i] = (char *)malloc(sizeof(char) * (idx + 1));
-		if (!sptr[i])
-			return (ft_memfree_split(sptr));
+		if (*str && *str != c)
+		{
+			++count;
+			while (*str && *str != c)
+				str++;
+		}
+		else
+			str++;
 	}
-	return (sptr);
+	return (count);
 }
 
 static char
-	**ft_memfree_split(char **ptr)
+	**ft_splitfree(char **ptr, int len)
 {
-	ssize_t	i;
-
-	i = -1;
-	while (ptr[++i])
-		free(ptr[i]);
+	while (len > -1)
+	{
+		free(ptr[len]);
+		ptr[len] = NULL;
+		len--;
+	}
 	free(ptr);
 	ptr = NULL;
 	return (NULL);

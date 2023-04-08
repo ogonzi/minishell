@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstforeach.c                                    :+:      :+:    :+:   */
+/*   mnshll_builtins.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/18 17:14:47 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/05 14:02:58 by cpeset-c         ###   ########.fr       */
+/*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
+/*   Updated: 2023/03/31 11:33:16 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef MNSHLL_BUILTINS_H
+# define MNSHLL_BUILTINS_H
 
-void
-	ft_lstforeach(t_list *begin_list, void (*f)(void *))
-{
-	if (!begin_list)
-		return ;
-	while (begin_list)
-	{
-		(*f)(begin_list->data);
-		begin_list = begin_list->next;
-	}
-}
+# define MS_MAX_PATH	(unsigned long)1024
+# define MS_PATH		(char *)"/usr/local/sbin:/usr/local/bin:/usr/bin:/bin"
+
+#endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 16:54:44 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/06 20:48:19 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/02/19 20:18:24 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,7 @@ int
 
 	i = 0;
 	if (!str)
-	{	
-		if (write(fd, "(null)", 6) != 6)
-			return (-1);
-		return (6);
-	}
+		return (0);
 	while (str[i])
 		if (write(fd, &str[i++], sizeof(char)) < 0)
 			return (-1);

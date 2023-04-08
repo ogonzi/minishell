@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 18:36:09 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/05 00:24:24 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:46:46 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_ll	ft_atoll(const char *str, int base);
 char	*ft_lltoa(t_ll nbr, char *str);
 char	*ft_ulltoa(t_ull nbr, char *str);
 t_ll	ft_stou(t_ll nbr);
-t_ll	ft_pstoul(t_ll nbr);
+t_ll	ft_stoul(t_ll nbr);
 
 // ft_mem functions
 void	ft_bzero(void *s, size_t n);
@@ -60,7 +60,7 @@ char	*ft_strdup(const char *s1);
 char	*ft_pstrchr(char *s, int c);
 int		ft_strcmp(char *s1, char *s2);
 size_t	ft_strlen(const char *s);
-char	*ft_pstrjoin(char *s1, char *s2);
+char	*ft_strjoin(char *s1, char *s2);
 char	*ft_substr(char const *s, t_unt start, size_t len);
 
 #endif

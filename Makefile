@@ -5,19 +5,16 @@
 #                                                     +:+ +:+         +:+      #
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/05/18 10:00:13 by ogonzale          #+#    #+#              #
-#    Updated: 2023/04/05 01:48:04 by cpeset-c         ###   ########.fr        #
+#    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
+#    Updated: 2023/04/08 12:23:56 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # -=-=-=-=- NAME -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 NAME 		:= minishell
-BNAME		:= minishell_bonus
 
-BLTN		:= builtins
-
-MKFL        = Makefile
+MKFL        := Makefile
 
 # -=-=-=-=- CLRS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
@@ -45,22 +42,22 @@ CP      = cp -f
 
 # -=-=-=-=- PATH -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
+BIN_DIR	= bin/
+
 MND_DIR	= mandatory/
-BNS_DIR	= bonus/
+
 INC_DIR = inc/
 SRC_DIR = src/
 TUL_DIR = tools/
 UTL_DIR = utils/
-
 OBJ_DIR = .objs/
 DEP_DIR	= .deps/
 
-BIN_DIR	= bin/
-
 PRS_DIR	= parser/
+WRD_DIR	= words/
 EXE_DIR	= exec/
 EXP_DIR	= expand/
-BLT_DIR	= builtins/
+BLT_DIR	= builtin/
 
 LIB_DIR = library/
 LFT_DIR = $(LIB_DIR)libft/
@@ -71,48 +68,46 @@ OUT_DIR = $(LIB_DIR)liboutput/
 LIBFT	= $(LIB_DIR)libft.a
 PRINT	= $(OUT_DIR)liboutput.a
 
-INCLUDE = -I./$(INC_DIR) -I./$(LFT_DIR)$(INC_DIR) -I./$(OUT_DIR)$(INC_DIR) $(RL_INC)
-
-PWD_FLS	= pwd.c
+INCLUDE = -I$(MND_DIR)$(INC_DIR) -I$(LFT_DIR)$(INC_DIR) -I$(OUT_DIR)$(INC_DIR) $(RL_INC)
 
 SRC_FLS	= minishell.c \
-		signals.c \
 		enviroment.c \
-		read_mnshllrc.c
+		custom_enviroment.c \
+		signals.c
 
-PRS_FLS	= split_mod.c \
-		split_cmd_line.c \
-		split_words.c \
-		split_words_2.c \
-		split_words_3.c \
-		split_utils.c \
-		split_utils_2.c
+# BLT_FLS	= pwd.c
+
+# EXE_FLS	= exec.c
 
 EXP_FLS	= expand_words.c \
-		expand_words_2.c \
-		expand_words_3.c \
-		expand_words_utils.c
+		expand_words_tools.c \
+		expand_words_utils.c \
+		expand_words_env_utils.c
 
-EXE_FLS	= exec.c \
-		exec_utils.c \
-		get_exec_path.c \
-		redir_in.c \
-		redir_out.c
+PRS_FLS	= split.c \
+		split_utils.c \
+		split_mod.c \
+		split_mod_utils.c
 
-UTL_FLS	= errors.c \
-		utils.c \
-		free.c
+WRD_FLS	= split_words.c \
+		split_words_token.c \
+		split_words_tools.c \
+		split_words_utils.c
+
+UTL_FLS = env_utils.c \
+		mnshll_lst.c
 
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(SRC_DIR), $(SRC_FLS)))
-SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(TUL_FLS)))
+# SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(TUL_FLS)))
+# SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(BLT_FLS))))
+# SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXE_DIR), $(EXE_FLS))))
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(PRS_DIR), $(PRS_FLS))))
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXP_DIR), $(EXP_FLS))))
-SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXE_DIR), $(EXE_FLS))))
+SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(WRD_DIR), $(WRD_FLS))))
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(UTL_DIR), $(UTL_FLS)))
 
 OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
-
-DEPS	+= $(addsuffix .d, $(basename $(OBJS)))
+DEPS	= $(addprefix $(DEP_DIR), $(addsuffix .d, $(basename $(SRCS))))
 
 # -=-=-=-=- RULE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
@@ -122,7 +117,7 @@ $(OBJ_DIR)%.o: %.c $(MKFL)
 	@$(CC) $(CFLAGS) $(DFLAGS) $(XFLAGS) $(INCLUDE) -c $< -o $@
 	@mv $(patsubst %.o, %.d, $@) $(dir $(subst $(OBJ_DIR), $(DEP_DIR), $@))
 
-all: makelib $(NAME)
+all: makelib $(NAME) $(BLTN)
 
 makelib:
 	@$(MAKE) -C $(LIB_DIR)
@@ -141,24 +136,21 @@ $(NAME)::
 clean:
 	@$(RM) -r $(OBJ_DIR) $(DEP_DIR)
 	@make clean -sC $(LIB_DIR)
+	@find . -name ".DS_Store" -delete
 	@echo "$(BLUE)	Minishell object and dependencies files cleaned.$(DEF_COLOR)"
 
 fclean:
 	@$(RM) -r $(OBJ_DIR) $(DEP_DIR)
 	@$(RM) -r $(BIN_DIR)
-	@$(RM) $(NAME)
 	@$(MAKE) fclean -sC $(LIB_DIR)
 	@find . -name ".DS_Store" -delete
 	@echo "$(WHITE)	All objects, dependencies and executables removed.$(DEF_COLOR)"
 
-re:
-	@$(MAKE) fclean
-	@$(MAKE)
+re: fclean all
 	@echo "$(GREEN)Cleaned and rebuilt everything for $(NAME)project.$(DEF_COLOR)"
 
 norm:
 	@clear
 	@norminette $(SRC_DIR) $(INC) $(LIBFT_DIR) | grep -v Norme -B1 || true
 	
-.PHONY:	all clean fclean re norm $(LIBFT) $(BLTN)
-
+.PHONY:	all makelib clean fclean re norm 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_base_fd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 16:54:14 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/06 20:49:02 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/02/19 20:19:20 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int
 			ft_absval(nbr);
 		}
 		else
-			nbr = UINT_MAX + nbr + 1;
+			nbr = ft_stou(nbr);
 	}
 	if (nbr >= base)
 		if (ft_putnbr_base_fd(nbr / base, base, fd) == -1)

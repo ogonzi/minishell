@@ -3,60 +3,75 @@
 /*                                                        :::      ::::::::   */
 /*   split_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/20 16:07:20 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/11 13:29:11 by cpeset-c         ###   ########.fr       */
+/*   Created: 2023/04/03 13:07:50 by cpeset-c          #+#    #+#             */
+/*   Updated: 2023/04/08 11:19:50 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_utils.h"
-#include "libft.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "minishell.h"
+#include "mnshll_data.h"
+#include "mnshll_error.h"
 
-void	find_closing_quote(char *line, int *i, int *quote_flag, char quote)
+void	find_closing_quote(char *line, ssize_t *idx, t_bool *f_quote,
+	char quote)
 {
-	*quote_flag = 1;
-	(*i)++;
-	while (line[*i] != quote && line[*i] != '\0')
-		(*i)++;
-	if (line[*i] == quote)
-		*quote_flag = 0;
+	*f_quote = TRUE;
+	(*idx)++;
+	while (line[*idx] && line[*idx] != quote)
+		(*idx)++;
+	if (line[*idx] == quote)
+		*f_quote = FALSE;
 }
 
-int	count_splits(char **split_line)
+void	move_to_end_of_quote(char *line, ssize_t *idx)
 {
-	int	i;
+	t_bool	f_quote;
 
-	i = 0;
-	while (split_line[i] != NULL)
-		i++;
-	return (i);
+	f_quote = FALSE;
+	if (line[*idx] == '\'')
+		find_closing_quote(line, idx, &f_quote, '\'');
+	if (line[*idx] == '\"')
+		find_closing_quote(line, idx, &f_quote, '\"');
 }
 
-void	move_to_end_of_quote(char *line, int *i)
+int	syntax_error(char *word)
 {
-	int	quote_flag;
+	ssize_t	idx;
 
-	quote_flag = 0;
-	if (line[*i] == '\'')
-		find_closing_quote(line, i, &quote_flag, '\'');
-	if (line[*i] == '\"')
-		find_closing_quote(line, i, &quote_flag, '\"');
-}
-
-void	set_split(char ***split_line, t_split_data *split, char *line, int i)
-{
-	if (split->start != i)
+	idx = 0;
+	while (word[idx])
 	{
-		(*split_line)[split->num]
-			= ft_substr(line, split->start, i - split->start);
-		if ((*split_line)[split->num] == NULL)
-			terminate(ERR_MEM, 1);
-		(split->num)++;
-		split->start = i + 1;
+		while (ft_strchr("><;#&", word[idx]) == 0 && word[idx])
+		{
+			move_to_end_of_quote(word, &idx);
+			idx++;
+		}
+		if (word[idx] == '<')
+			return (ft_perror_syntax("`<'"));
+		if (word[idx] == '>')
+			return (ft_perror_syntax("`>'"));
+		if (word[idx] == ';')
+			return (ft_perror_syntax("`;'"));
+		if (word[idx] == '#')
+			return (ft_perror_syntax("`newline'"));
+		if (word[idx] == '&')
+			return (ft_perror_syntax("`&'"));
 	}
+	return (0);
+}
+
+int	ft_perror_syntax(const char *token)
+{
+	printf("%s %s\n", ERR_SYNTAX, token);
+	return (1);
+}
+
+void	set_opposite_binary(int *value)
+{
+	if (*value == 1)
+		*value = 0;
 	else
-		split->start++;
+		*value = 1;
 }

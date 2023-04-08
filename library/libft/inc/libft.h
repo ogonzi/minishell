@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:08:37 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/05 01:46:05 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/03 13:33:18 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
+# include <stdio.h>
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/uio.h>
@@ -71,28 +72,26 @@ t_unt	ft_unbrlen_base(t_ull nbr, int base);
 int		ft_atoi(const char *str);
 int		ft_atoi_base(const char *str, char *str_base);
 t_ll	ft_atoll_base(const char *str, char *str_base);
-t_ull	ft_atoull_base(const char *str, char *str_base);
 char	*ft_itoa(int nbr);
 char	*ft_itoa_base(int nbr, char *str_base);
 char	*ft_lltoa_base(t_ll nbr, char *str_base);
 char	*ft_ulltoa_base(t_ull nbr, char *str_base);
 t_ll	ft_stou(t_ll nbr);
-t_ull	ft_stoul(t_ull nbr);
 
 // FT_mem functions.
-void	*ft_memset(void *b, int c, size_t len);
 void	ft_bzero(void *s, size_t n);
+void	*ft_calloc(size_t count, size_t size);
 void	*ft_delete(void *dlt);
+void	*ft_memchr(const void *s, int c, size_t n);
+void	**ft_memfree(char **ptr);
+int		ft_memcmp(const void *s1, const void *s2, size_t n);
 void	*ft_memcpy(void *dsy, const void *src, size_t n);
 void	*ft_memmove(void *dst, const void *src, size_t len);
-int		ft_memcmp(const void *s1, const void *s2, size_t n);
-void	*ft_memchr(const void *s, int c, size_t n);
-void	*ft_calloc(size_t count, size_t size);
+void	*ft_memset(void *b, int c, size_t len);
 char	*ft_strdup(const char *s1);
 int		*ft_range(int min, int max);
 int		*ft_rrange(int start, int end);
 int		ft_ultrange(int **range, int min, int max);
-void	ft_memfree(char **ptr);
 
 // FT_put functions. These functions prints either in standart output or in fd
 int		ft_putchar(int c);
@@ -119,10 +118,10 @@ char	**ft_split(char const *s, char c);
 
 // FT_str functions. Multiple functions about strings manipulation or related.
 size_t	ft_strlen(const char *s);
-char	*ft_strchr(const char *s, int c);
+char	*ft_strchr(char const *s, int c);
 int		ft_str_wcount(char const *s, char c);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
-char	*ft_strjoin(const char *s1, const char *s2);
+char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strcpy(char *dst, char *src);
 size_t	ft_strlcpy(char *dst, const char *src, ssize_t dstsize);
 size_t	ft_strlcat(char *dest, const char *src, size_t dstsize);

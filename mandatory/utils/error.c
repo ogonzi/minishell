@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/05 16:53:26 by ogonzale          #+#    #+#             */
-/*   Updated: 2023/01/23 18:33:19 by cpeset-c         ###   ########.fr       */
+/*   Created: 2023/03/21 12:45:33 by cpeset-c          #+#    #+#             */
+/*   Updated: 2023/03/21 13:12:36 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "minishell_utils.h"
+#include "mnshll_error.h"
 
 void	terminate(char *s, int syserr)
 {
@@ -20,11 +20,4 @@ void	terminate(char *s, int syserr)
 	else
 		ft_printf_fd(STDERR_FILENO, "%s", s);
 	exit(EXIT_FAILURE);
-}
-
-int	free_and_return_error_code(char **str, int err)
-{
-	free(*str);
-	*str = NULL;
-	return (err);
 }

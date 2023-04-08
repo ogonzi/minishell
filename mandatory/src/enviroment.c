@@ -3,111 +3,136 @@
 /*                                                        :::      ::::::::   */
 /*   enviroment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 13:08:27 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/11 17:29:51 by cpeset-c         ###   ########.fr       */
+/*   Created: 2023/03/21 13:53:44 by cpeset-c          #+#    #+#             */
+/*   Updated: 2023/04/05 19:12:50 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "minishell_utils.h"
+#include "mnshll_utils.h"
+#include "mnshll_data.h"
+#include "mnshll_error.h"
+#include "mnshll_builtins.h"
 
-static void	set_environ_node(char *env_var, t_list **environ_node)
+static void	*ft_environ_node(char *env);
+
+void	custom_getpid(t_prompt *prompt)
+/*
+	This function is used to obtain the process ID (PID) of the current shell
+	prompt. It does so by forking a new process and then waiting for it to
+	finish.
+
+		1.	The pid_t data type is defined to store the process ID, and pid
+		variable is declared and initialized to the return value of fork(),
+		which creates a new process by duplicating the calling process.
+
+		2.	If fork() returns a negative value, an error occurred and terminate()
+		function is called with ERR_FORK error code and a non-zero exit status.
+			If fork() returns zero, the current process is the child process,
+		and it immediately exits with a status code of 1 by calling exit(1).
+
+		3.	The parent process waits for the child process to finish by calling
+		waitpid() with the pid of the child process, a NULL pointer for the
+		status parameter, and a flag of 0.
+
+		4. Once the child process has finished, waitpid() returns, and the pid
+		of the child process minus 1 is stored in the pid field of the t_prompt
+		struct pointed to by the prompt parameter.
+
+	Note that subtracting 1 from the child process ID (pid) is done because the
+	child process immediately exits with a status code of 1. By subtracting 1,
+	the resulting process ID is unique and can be used to identify the current
+	shell prompt.
+*/
 {
-	t_environ_data	*environ_content;
+	pid_t	pid;
 
-	environ_content = malloc(sizeof(t_environ_data));
-	if (environ_content == NULL)
-		terminate(ERR_MEM, 1);
-	environ_content->env_var = ft_strdup(env_var);
-	if (environ_content->env_var == NULL)
-		terminate(ERR_MEM, 1);
-	*environ_node = ft_lstnew(environ_content);
-	if (*environ_node == NULL)
-		terminate(ERR_MEM, 1);
+	pid = fork();
+	if (pid < 0)
+		exit(2);
+		// terminate(ERR_FORK, 1);
+	if (pid == 0)
+		exit(1);
+	waitpid(pid, NULL, 0);
+	prompt->pid = pid - 1;
 }
 
-void	set_environ(t_prompt *prompt, char *envp[])
-{
-	int		i;
-	t_list	*environ_node;
+void	set_environ(t_prompt *prompt, char **ev)
+/*
+	This function is used to initialize the environment variable list for the
+	shell. It takes a t_prompt struct pointer and a char pointer to a string
+	of environment variables separated by the '=' character.
 
-	i = 0;
-	while (envp[i] != NULL)
+	Note that the ft_environ_node() function is a helper function used to
+	create a new t_env node. It takes a char pointer to an environment
+	variable string, splits it into two separate strings for the variable
+	name and value, and returns a new t_env node with those fields populated.
+*/
+{
+	ssize_t	idx;
+	t_env	*lst;
+	t_env	*aux;
+	t_env	*tmp;
+
+	idx = -1;
+	while (ev[++idx])
 	{
-		set_environ_node(envp[i], &environ_node);
-		ft_lstadd_back(&prompt->environ, environ_node);
-		i++;
-	}
-}
-
-void	custom_setenv(char *name, char *value, t_prompt *prompt)
-{
-	char	*aux[2];
-	t_list	*environ_node;
-
-	aux[0] = ft_strjoin(name, "=");
-	if (aux[0] == NULL)
-		terminate(ERR_MEM, 1);
-	aux[1] = ft_strjoin(aux[0], value);
-	free(aux[0]);
-	set_environ_node(aux[1], &environ_node);
-	ft_lstadd_back(&prompt->environ, environ_node);
-	free(aux[1]);
-}
-
-char	*custom_getenv(char *name, t_prompt *prompt)
-{
-	t_list	*environ_copy;
-	int		name_length;
-	char	*env_var;
-	char	*value;
-
-	environ_copy = prompt->environ;
-	name_length = ft_strlen(name);
-	while (environ_copy)
-	{
-		env_var = ((t_environ_data *)environ_copy->data)->env_var;
-		if (ft_strncmp(env_var, name, name_length) == 0
-			&& env_var[name_length] == '=')
+		aux = ft_environ_node(ev[idx]);
+		if (!aux)
+			return ;
+		if (idx == 0)
 		{
-			value = ft_substr(env_var,
-					name_length + 1, ft_strlen(env_var) - name_length + 1);
-			if (value == NULL)
-				terminate(ERR_MEM, 1);
-			return (value);
+			prompt->env = aux;
+			lst = aux;
+			continue ;
 		}
-		environ_copy = environ_copy->next;
+		tmp = lst;
+		lst = aux;
+		tmp->next = lst;
 	}
-	return (0);
 }
 
-void	init_env_vars(t_prompt *prompt, char *argv[])
+static void	*ft_environ_node(char *env)
 {
-	char	*num;
-	char	*value;
+	static t_unt	idx = 0;
+	t_env			*node;
+	char			**str;
 
-	value = getcwd(NULL, 0);
-	custom_setenv("PWD", value, prompt);
-	free(value);
-	value = custom_getenv("SHLVL", prompt);
-	if (!value || ft_atoi(value) <= 0)
-		num = ft_strdup("1");
-	else
-		num = ft_itoa(ft_atoi(value) + 1);
-	if (num == NULL)
-		terminate(ERR_MEM, 1);
-	free(value);
-	custom_setenv("SHLVL", num, prompt);
-	free(num);
-	value = custom_getenv("PATH", prompt);
-	if (!value)
-		custom_setenv("PATH",
-			"/usr/local/sbin:/usr/local/bin:/usr/bin:/bin", prompt);
-	free(value);
-	value = custom_getenv("_", prompt);
-	if (!value)
-		custom_setenv("_", argv[0], prompt);
-	free(value);
+	node = malloc(sizeof(t_env));
+	if (!node)
+		return (NULL);
+	str = ft_split(env, '=');
+	if (!str)
+		return (NULL);
+	node->env_var = str[0];
+	node->env_data = str[1];
+	node->idx = ++idx;
+	node->next = NULL;
+	return (node);
+}
+
+void	set_custom_env(t_prompt *prompt, char *prog)
+/*
+	This function sets some values of the enviroment copy that we initialized
+	before to the ones we desire for the program.
+
+	See custom_export() function for more information.
+*/
+{
+	char	*val;
+	t_env	*aux;
+
+	val = ft_calloc(MS_MAX_PATH, sizeof(char));
+	if (!val)
+		return ;
+	if (getcwd(val, MS_MAX_PATH))
+		custom_export(ft_env_iter(prompt->env, "PWD"), val);
+	ft_delete(val);
+	aux = ft_env_iter(prompt->env, "SHLVL");
+	custom_export(ft_env_iter(prompt->env, "SHLVL"), aux->env_data);
+	aux = NULL;
+	custom_export(ft_env_iter(prompt->env, "PATH"), MS_PATH);
+	custom_export(ft_env_iter(prompt->env, "_"), prog);
 }
