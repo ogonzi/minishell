@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/08 12:23:56 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/09 13:00:37 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,7 +77,10 @@ SRC_FLS	= minishell.c \
 
 # BLT_FLS	= pwd.c
 
-# EXE_FLS	= exec.c
+EXE_FLS	= exec.c \
+		redir_in.c \
+		redir_out.c \
+		exec_utils.c
 
 EXP_FLS	= expand_words.c \
 		expand_words_tools.c \

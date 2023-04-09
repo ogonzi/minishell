@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:08:10 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/03 12:50:41 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/09 11:33:32 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 # define ERR_MRC			(char *)"There was an error while reading.\n"
 
 // Error codes
-# define ERROR_NUM			(int)-1
 # define CATCH_ALL			1
 # define SHELL_MISUSE		2
 # define CANNOT_EXEC_CMD	126

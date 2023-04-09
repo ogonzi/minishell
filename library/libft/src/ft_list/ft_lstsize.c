@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 17:16:50 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/06 20:42:58 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/09 13:29:43 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int
+size_t
 	ft_lstsize(t_list *lst)
 {
+	size_t	size;
 	t_list	*current;
-	int		i;
 
-	i = 0;
+	size = 0;
 	current = lst;
 	while (current)
 	{
 		current = current->next;
-		i++;
+		++size;
 	}
-	return (i);
+	return (size);
 }

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:37:32 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/08 18:33:33 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/09 11:44:00 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 
 // Expander Header
 # include "mnshll_expand.h"
+
+// Executer Header
+# include "mnshll_exec.h"
 
 // Promopt
 void	init_prompt(t_prompt *prompt, char **av, char **ev);
