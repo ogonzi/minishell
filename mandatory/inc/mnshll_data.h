@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:14:06 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/08 12:22:43 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/09 18:12:40 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ enum	e_type
 	EXIT_FILE,
 	EXIT_FILE_APP,
 	SYN_ERROR,
+	ERROR,
 };
 
 typedef struct s_cmdline		t_cmdline;

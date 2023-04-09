@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/09 13:33:36 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/09 18:28:21 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 #include "mnshll_error.h"
 
 static int	do_pipe(int tmp_fd[2], t_list *command,
+				t_prompt prompt, t_pipe pipe_helper);
+static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid);
+static void	do_child(int tmp_fd[2], t_list *command,
 				t_prompt prompt, t_pipe pipe_helper);
 
 int	redir_pipe(t_list *command_cpy, t_prompt prompt, int tmp_fd[2])
@@ -103,9 +106,9 @@ void	do_execve(t_list *command, t_prompt prompt,
 	char	**command_array;
 	char	*exec_path;
 
-	envp = copy_env(&prompt.env, ft_env_size(&prompt.env));
+	envp = copy_env(prompt.env, ft_env_size(prompt.env));
 	command_array = get_command_array(command);
-	if (get_exec_path(command_array[0], &exec_path, command, &prompt) != 0)
+	if (get_exec_path(command_array[0], &exec_path, command, &prompt))
 	{
 		printf("%s: command not found\n", command_array[0]);
 		exit(((t_cmdline *)command->data)->exit_status);
@@ -115,9 +118,9 @@ void	do_execve(t_list *command, t_prompt prompt,
 	// printf("%s", command_array[1]);
 	if (!ft_strcmp(ft_strlowcase(command_array[0]), "pwd"))
 	{
-		printf("1");
-		exit(0);
+		((t_cmdline *)command->data)->exit_status = printf("this should be the pwd\n");
+		exit(((t_cmdline *)command->data)->exit_status);
 	}
 	if (execve(exec_path, command_array, envp) == -1)
-		terminate(ERR_EXECVE, 1);
+		exit(1); // terminate(ERR_EXECVE, 1);
 }

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 22:48:43 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/08 18:05:01 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/09 18:08:00 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	split_and_classify(void *content)
 	idx = -1;
 	cmdline = content;
 	cmdline->word = NULL;
+	last_word_type = NONE;
 	ft_split_mod(&split_cmd, cmdline->cmd, " \t\n");
 	while (split_cmd[++idx])
 	{

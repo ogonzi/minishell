@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/09 13:00:37 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/09 17:08:09 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,8 @@ SRC_FLS	= minishell.c \
 EXE_FLS	= exec.c \
 		redir_in.c \
 		redir_out.c \
-		exec_utils.c
+		exec_utils.c \
+		exec_path.c
 
 EXP_FLS	= expand_words.c \
 		expand_words_tools.c \
@@ -101,9 +102,8 @@ UTL_FLS = env_utils.c \
 		mnshll_lst.c
 
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(SRC_DIR), $(SRC_FLS)))
-# SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(TUL_FLS)))
 # SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(BLT_FLS))))
-# SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXE_DIR), $(EXE_FLS))))
+SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXE_DIR), $(EXE_FLS))))
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(PRS_DIR), $(PRS_FLS))))
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXP_DIR), $(EXP_FLS))))
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(WRD_DIR), $(WRD_FLS))))

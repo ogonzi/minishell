@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:08:37 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/03 13:33:18 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/09 17:07:29 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int		ft_toupper(int c);
 
 // FT_list functions. Recopilation of libft and piscine list functions.
 t_list	*ft_lstnew(void *data);
-int		ft_lstsize(t_list *lst);
+size_t	ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *begin_list);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 void	ft_lstadd_back(t_list **lst, t_list *new);

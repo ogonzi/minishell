@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoull_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 17:33:32 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/16 17:41:15 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/09 18:24:32 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_ull
 	while (*str && (ft_isdigit(*str)))
 	{
 		res = res * base + (*str - 48);
-		printf("%llu\n", res);
 		str++;
 	}
 	return (res * neg);

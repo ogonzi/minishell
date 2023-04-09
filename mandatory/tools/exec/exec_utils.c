@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 12:57:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/09 13:32:40 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/09 17:40:36 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,14 @@ void	check_pipe(t_pipe *pipe_helper, int tmp_fd[2])
 {
 	if (pipe_helper->did_out_redirection == 0 && pipe_helper->is_last == 0
 		&& dup2(pipe_helper->fd[1], STDOUT_FILENO) == -1)
-		terminate(ERR_DUP, 1);
+		exit(1); // terminate(ERR_DUP, 1);
 	else if (pipe_helper->did_out_redirection == 1
 		&& dup2(tmp_fd[1], STDOUT_FILENO) == -1)
-		terminate(ERR_DUP, 1);
+		exit(1); // terminate(ERR_DUP, 1);
 	if (close(pipe_helper->fd[1]) != 0)
-		terminate(ERR_CLOSE, 1);
+		exit(1); // terminate(ERR_CLOSE, 1);
 	if (close(tmp_fd[1]) != 0)
-		terminate(ERR_CLOSE, 1);
+		exit(1); // terminate(ERR_CLOSE, 1);
 }
 
 char	**copy_env(t_env *env, size_t size)
@@ -135,7 +135,7 @@ static void	set_command_array(t_list *token_list, char ***command_array,
 		}
 		token_list = token_list->next;
 	}
-	while (idx <= len_list)
+	while (idx < len_list + 1)
 	{
 		(*command_array)[idx] = NULL;
 		idx++;
