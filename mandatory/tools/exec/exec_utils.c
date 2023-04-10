@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 12:57:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:53:08 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 18:13:53 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,7 @@ char	**copy_env(t_env *env, size_t size)
 	idx = 0;
 	while (cpy)
 	{
-		env_cpy[idx] = ft_strdup(ft_strjoin(ft_strjoin(cpy->env_var, "="),
-					cpy->env_data));
+		env_cpy[idx] = ft_strjoin(cpy->env_var, ft_strjoin("=", cpy->env_data));
 		if (!env_cpy)
 			terminate(ERR_MEM, EXIT_FAILURE);
 		++idx;

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:27 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 17:53:06 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 18:14:13 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_pwd(size_t ac, char **ev)
 		{
 			while (count--)
 				ev[idx]++;
-			printf("%s\n", &ev[idx][1]);
+			printf("%s\n", ev[idx]);
 			exit(EXIT_SUCCESS);
 		}
 	}
