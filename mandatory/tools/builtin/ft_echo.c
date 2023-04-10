@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/16 16:14:18 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/17 19:05:39 by cpeset-c         ###   ########.fr       */
+/*   Created: 2023/04/10 18:46:21 by cpeset-c          #+#    #+#             */
+/*   Updated: 2023/04/10 18:54:12 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_printf_fd.h"
-
-#include <stdio.h>
-
-#define FLGCMP	(char *)"-n"
+#include "minishell.h"
+#include "mnshll_utils.h"
+#include "mnshll_builtins.h"
+#include "mnshll_error.h"
 
 static void	print_arguments(int ac, char **av, t_bool flag);
 static int	check_only_n(char *str);
 
-int	main(int ac, char **av)
+void	ft_echo(int ac, char **av)
 {
 	t_bool	flag;
 
@@ -29,14 +27,14 @@ int	main(int ac, char **av)
 	{
 		if (check_only_n(av[1]))
 		{
-			if (!ft_strncmp(av[1], FLGCMP, ft_strlen(FLGCMP)))
+			if (!ft_strncmp(av[1], MS_FLGCMP, ft_strlen(MS_FLGCMP)))
 				flag = FALSE;
 		}
 		print_arguments(ac - 1, &av[1], flag);
 	}
 	if (flag == TRUE)
 		printf("\n");
-	return (0);
+	exit(0);
 }
 
 static void	print_arguments(int ac, char **av, t_bool flag)

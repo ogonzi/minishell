@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:18:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 10:44:07 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 18:56:03 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ t_env	*ft_env_iter(t_env *env, char *ref)
 			break ;
 		env = env->next;
 	}
+	if (!env)
+		return (NULL);
 	return (env);
 }
 

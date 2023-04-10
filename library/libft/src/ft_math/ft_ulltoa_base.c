@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ulltoa_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 16:53:48 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/06 20:39:25 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 19:07:20 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char
 		|| (ft_strlen(str_base) < 2 && ft_strlen(str_base) > 16))
 		return (NULL);
 	base = ft_strlen(str_base);
-	len = ft_unbrlen(nbr, base);
+	len = ft_unbrlen_base(nbr, base);
 	res = (char *)ft_calloc(len + 1, sizeof(char));
 	if (!res)
 		return (NULL);

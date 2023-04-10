@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 17:23:50 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 20:02:29 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static void	do_child(int tmp_fd[2], t_list *command,
 
 int	redir_pipe(t_list *command_cpy, t_prompt *prompt, int tmp_fd[2])
 {
+	char	**envp;
+	char	**command_array;
 	int		exit_status;
 	t_pipe	pipe_helper;
 
@@ -38,6 +40,9 @@ int	redir_pipe(t_list *command_cpy, t_prompt *prompt, int tmp_fd[2])
 		pipe_helper.is_last = 1;
 	do_sigign(SIGINT);
 	do_sigign(SIGQUIT);
+	command_array = get_command_array(command_cpy);
+	envp = copy_env(prompt->env, ft_env_size(prompt->env));
+	check_ft_builtins(prompt, ft_strcount(command_array), command_array, envp);
 	exit_status = do_pipe(tmp_fd, command_cpy, prompt, pipe_helper);
 	return (exit_status);
 }
@@ -117,7 +122,6 @@ void	do_execve(t_list *command, t_prompt *prompt,
 	}
 	check_pipe(&pipe_helper, tmp_fd);
 	set_child_sigaction();
-	check_ft_builtins(prompt, ft_strcount(command_array), command_array, envp);
 	if (execve(exec_path, command_array, envp) == ERRNUM)
 		ft_prompt_clear(prompt, ERR_EXECVE, EXIT_FAILURE);
 }

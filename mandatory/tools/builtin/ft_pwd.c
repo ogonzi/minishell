@@ -1,38 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/18 15:50:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 17:30:22 by cpeset-c         ###   ########.fr       */
+/*   Created: 2023/03/21 12:38:27 by cpeset-c          #+#    #+#             */
+/*   Updated: 2023/04/10 18:54:30 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_printf_fd.h"
+#include "minishell.h"
+#include "mnshll_builtins.h"
+#include "mnshll_error.h"
 
-#include <stdio.h>
-
-#define PWDCMP	(char *)"PWD="
-
-int	main(int ac, char **av, char **ev)
+void	ft_pwd(size_t ac, char **ev)
 {
 	ssize_t	idx;
 	ssize_t	count;
 
 	idx = -1;
-	count = ft_strlen(PWDCMP);
-	UNUSED(av);
+	count = ft_strlen(MS_PWDCMP);
 	if (ac > 1)
-	{
-		ft_printf_fd(STDERR_FILENO, "pwd: too many arguments\a\n");
-		exit (EXIT_FAILURE);
-	}
+		terminate(ERR_PWD, EXIT_FAILURE);
 	while (ev[++idx])
 	{
-		if (!ft_strncmp(ev[idx], PWDCMP, count))
+		if (!ft_strncmp(ev[idx], MS_PWDCMP, count))
 		{
 			while (count--)
 				ev[idx]++;

@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/27 19:35:19 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/10 17:02:22 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/10 19:39:35 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,8 @@ FIS_SRC	= ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c \
 MTH_SRC	= ft_absval.c ft_atoi.c ft_atoi_base.c ft_factorial.c \
 		ft_find_next_prime.c ft_itoa.c ft_itoa_base.c ft_lcm.c \
 		ft_nbrlen.c ft_nbrlen_base.c ft_power.c ft_prime.c \
-		ft_sqrt.c
+		ft_sqrt.c ft_atoull_base.c ft_ulltoa_base.c ft_unbrlen_base.c \
+		ft_atoll_base.c ft_lltoa_base.c
 
 MEM_SRC	= ft_bzero.c ft_calloc.c ft_memchr.c ft_memcmp.c \
 		ft_memfree.c ft_memmove.c ft_memset.c ft_range.c \
