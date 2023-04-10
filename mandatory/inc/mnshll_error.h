@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:08:10 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 17:32:20 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 18:22:52 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 
 // ERROR_MESSAGES FOR BUILTINS
 # define ERR_PWD			(char *)"pwd: too many arguments\a\n"
+# define ERR_ENV			(char *)"No such file or directory\n"
+
 // Error codes
 # define CATCH_ALL			1
 # define SHELL_MISUSE		2
