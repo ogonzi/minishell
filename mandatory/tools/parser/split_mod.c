@@ -6,11 +6,12 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 15:03:53 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/08 12:47:03 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:32:35 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "mnshll_parser.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
 
@@ -24,8 +25,7 @@ int	ft_split_mod(char ***split_line, char *line, char *sep)
 	nsplits = count_splits(line, sep);
 	*split_line = malloc(sizeof(char *) * (nsplits + 1));
 	if (!split_line)
-		return (FALSE);
-		//terminate()
+		terminate(ERR_MEM, EXIT_FAILURE);
 	if (get_splits(line, sep, split_line) == TRUE)
 	{
 		ft_delete(*split_line);

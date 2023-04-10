@@ -6,11 +6,12 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:55:16 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/08 11:29:47 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:33:45 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "mnshll_expand.h"
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"

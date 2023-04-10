@@ -6,11 +6,12 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:10:29 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/09 18:25:53 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:49:09 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "mnshll_exec.h"
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
@@ -44,11 +45,9 @@ t_bool	dup_to_in(int *tmp_fd_in, t_list *command)
 		token = token->next;
 	}
 	if (did_redirection == 1 && dup2(fd_in, *tmp_fd_in) == -1)
-		exit(1);
-		// terminate(ERR_DUP, 1);
+		terminate(ERR_DUP, EXIT_FAILURE);
 	if (did_redirection == 1 && close(fd_in))
-		exit(1);
-		// terminate(ERR_CLOSE, 1);
+		terminate(ERR_CLOSE, EXIT_FAILURE);
 	return (FALSE);
 }
 
@@ -56,8 +55,7 @@ static t_bool	handle_open_file(int *fd_in, int *did_redirection,
 	char *filename)
 {
 	if (*did_redirection == 1 && close(*fd_in) != 0)
-		exit(1);
-		// terminate(ERR_CLOSE, 1);
+		terminate(ERR_CLOSE, EXIT_FAILURE);
 	*fd_in = open(filename, O_RDONLY);
 	if (*fd_in < 0)
 	{
@@ -76,8 +74,7 @@ static t_bool	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
 			break ;
 	}
 	if (*did_redirection == 1 && close(*fd_in))
-		exit(1);
-		// terminate(ERR_CLOSE, 1);
+		terminate(ERR_CLOSE, EXIT_FAILURE);
 	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);
 	if (*fd_in < 0)
 	{
@@ -85,8 +82,7 @@ static t_bool	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
 		return (TRUE);
 	}
 	if (unlink(TMP_FILE_HEREDOC))
-		exit(1);
-		// terminate(ERR_UNLINK, 1);
+		terminate(ERR_UNLINK, EXIT_FAILURE);
 	*did_redirection = 1;
 	return (FALSE);
 }
@@ -100,8 +96,8 @@ static t_bool	aux_here_doc(char *limitor)
 	line = get_next_line(STDIN_FILENO);
 	if (!line)
 	{
-		printf("msh: warning: here-document delimited by end-of-file"
-			" (wanted `%s')\n", limitor);
+		ft_printf_fd(STDERR_FILENO, "msh: warning: here-document delimited\
+			by end-of-file (wanted `%s')\n", limitor);
 		return (FALSE);
 	}
 	if (line_is_limitor(line, limitor))
@@ -111,12 +107,10 @@ static t_bool	aux_here_doc(char *limitor)
 	}
 	tmp_fd = open(TMP_FILE_HEREDOC, O_WRONLY | O_APPEND | O_CREAT, 0600);
 	if (tmp_fd < 0)
-		exit(1);
-		// terminate(ERR_OPEN, 1);
+		terminate(ERR_OPEN, EXIT_FAILURE);
 	ft_printf_fd(tmp_fd, line, ft_strlen(line));
 	if (close(tmp_fd))
-		exit(1);
-		// terminate(ERR_CLOSE, 1);
+		terminate(ERR_CLOSE, EXIT_FAILURE);
 	ft_delete(line);
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:53:44 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/05 19:12:50 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:16:12 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	custom_getpid(t_prompt *prompt)
 		2.	If fork() returns a negative value, an error occurred and terminate()
 		function is called with ERR_FORK error code and a non-zero exit status.
 			If fork() returns zero, the current process is the child process,
-		and it immediately exits with a status code of 1 by calling exit(1).
 
 		3.	The parent process waits for the child process to finish by calling
 		waitpid() with the pid of the child process, a NULL pointer for the
@@ -51,8 +50,7 @@ void	custom_getpid(t_prompt *prompt)
 
 	pid = fork();
 	if (pid < 0)
-		exit(2);
-		// terminate(ERR_FORK, 1);
+		terminate(ERR_FORK, EXIT_FAILURE);
 	if (pid == 0)
 		exit(1);
 	waitpid(pid, NULL, 0);
@@ -102,10 +100,10 @@ static void	*ft_environ_node(char *env)
 
 	node = malloc(sizeof(t_env));
 	if (!node)
-		return (NULL);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	str = ft_split(env, '=');
 	if (!str)
-		return (NULL);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	node->env_var = str[0];
 	node->env_data = str[1];
 	node->idx = ++idx;
@@ -126,7 +124,7 @@ void	set_custom_env(t_prompt *prompt, char *prog)
 
 	val = ft_calloc(MS_MAX_PATH, sizeof(char));
 	if (!val)
-		return ;
+		terminate(ERR_MEM, EXIT_FAILURE);
 	if (getcwd(val, MS_MAX_PATH))
 		custom_export(ft_env_iter(prompt->env, "PWD"), val);
 	ft_delete(val);

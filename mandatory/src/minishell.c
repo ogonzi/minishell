@@ -6,11 +6,15 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 09:54:04 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:54:39 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "mnshll_parser.h"
+#include "mnshll_words.h"
+#include "mnshll_expand.h"
+#include "mnshll_exec.h"
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
@@ -23,8 +27,7 @@ int	main(int ac, char **av, char **ev)
 	t_prompt	prompt;
 
 	if (ac != 1)
-		return (1);
-		// terminate(ERR_ARGS, FALSE);
+		terminate(ERR_ARGS, EXIT_FAILURE);
 	init_prompt(&prompt, av, ev);
 	while (TRUE)
 	{
@@ -38,7 +41,7 @@ int	main(int ac, char **av, char **ev)
 		if (prompt.cmdline)
 			ft_lstclear(&prompt.cmdline, (void *)ft_delete);
 	}
-	// ft_delete_env(prompt.env);
+	ft_env_clear(&prompt.env, (void *)ft_delete);
 	return (0);
 }
 
@@ -61,7 +64,8 @@ void	init_prompt(t_prompt *prompt, char **av, char **ev)
 static int	handler_input(t_prompt *prompt)
 /*
  * If the user enters nothing, readline returns NULL, and the function prints
- * "exit" to STDOUT_FILENO and returns -1, indicating that the program should exit.
+ * "exit" to STDOUT_FILENO and returns -1, indicating that the program should
+ * exit.
 
  * If the user enters a command, the function adds it to the command history 
  * using add_history.
@@ -130,12 +134,10 @@ static int	handler_pipeline(t_prompt prompt)
 
 	tmp_fd[0] = dup(STDIN_FILENO);
 	if (tmp_fd[0] == ERRNUM)
-		exit(1);
-		// terminate(ERR_DUP, 1);
+		ft_prompt_clear(&prompt, ERR_DUP, EXIT_FAILURE);
 	tmp_fd[1] = dup(STDOUT_FILENO);
 	if (tmp_fd[1] == ERRNUM)
-		exit(1);
-		// terminate(ERR_DUP, 1);
+		ft_prompt_clear(&prompt, ERR_DUP, EXIT_FAILURE);
 	command_cpy = prompt.cmdline;
 	while (command_cpy)
 	{
@@ -143,10 +145,8 @@ static int	handler_pipeline(t_prompt prompt)
 		command_cpy = command_cpy->next;
 	}
 	if (close(tmp_fd[0]))
-		exit(1);
-		// terminate(ERR_CLOSE, 1);
+		ft_prompt_clear(&prompt, ERR_DUP, EXIT_FAILURE);
 	if (close(tmp_fd[1]))
-		exit(1);
-		// terminate(ERR_CLOSE, 1);
+		ft_prompt_clear(&prompt, ERR_DUP, EXIT_FAILURE);
 	return (exit_status);
 }

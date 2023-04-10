@@ -6,11 +6,12 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:57:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/08 11:48:04 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:35:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "mnshll_expand.h"
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
@@ -27,7 +28,7 @@ int	get_env_var_length(char *word, ssize_t *idx, t_env *env)
 		(*idx)++;
 	env_var = ft_substr(word, start, *idx - start);
 	if (!env_var)
-		exit(1); //	terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	expanded_env_var = ((t_env *)ft_env_iter(env, env_var))->env_data;
 	length_env_var = ft_strlen(expanded_env_var);
 	ft_delete(env_var);
@@ -72,7 +73,7 @@ char	*get_env_var(char *word, int *idx, t_env *env)
 		(*idx)++;
 	env_var = ft_substr(word, start, *idx - start);
 	if (!env_var)
-		exit(1); //	terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	expanded_env_var = ((t_env *)ft_env_iter(env, env_var))->env_data;
 	ft_delete(env_var);
 	return (expanded_env_var);

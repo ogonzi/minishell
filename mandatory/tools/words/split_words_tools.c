@@ -6,11 +6,13 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 23:16:52 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/08 12:13:21 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:55:45 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "mnshll_words.h"
+#include "mnshll_parser.h"
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
@@ -49,8 +51,7 @@ void	add_new_word(char *split_cmd, t_word *word, t_list **token,
 {
 	word->str = ft_substr(split_cmd, word->start, word->end - word->start);
 	if (word->str == NULL)
-		exit(1);
-		// terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	set_token_node(word->str, token, word->last_type);
 	ft_lstadd_back(&(cmdline->word), *token);
 	ft_delete(word->str);

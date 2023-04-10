@@ -6,11 +6,12 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:43:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/09 18:23:41 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:51:29 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "mnshll_exec.h"
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
@@ -60,7 +61,7 @@ static t_bool	ft_check_command(char **path_line, char ***paths,
 	{
 		*paths = ft_split(*path_line, ':');
 		if (*paths == NULL)
-			exit(1); // terminate(ERR_MEM, 1);
+			terminate(ERR_MEM, EXIT_FAILURE);
 		idx = -1;
 		while ((*paths)[++idx])
 		{
@@ -81,7 +82,7 @@ static t_bool	ft_check_script(char **exec_path, char *first_arg,
 {
 	*exec_path = ft_strdup(first_arg);
 	if (!(*exec_path))
-		exit(1); // terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	if (ft_check_access(exec_path, paths))
 	{
 		if (!ft_strchr((const char *)*exec_path, '/'))
@@ -96,10 +97,10 @@ void	ft_get_full_path(char *path, char **full_path, char *user_exec_path,
 {
 	*full_path = ft_strjoin(path, "/");
 	if (!(*full_path))
-		exit(1); // terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	*exec_path = ft_strjoin(*full_path, user_exec_path);
 	if (!(*exec_path))
-		exit(1); // terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	ft_delete(*full_path);
 }
 

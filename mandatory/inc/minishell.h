@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:37:32 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/09 11:44:00 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:26:47 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,6 @@
 # include "ft_printf_fd.h"
 
 # include "mnshll_data.h"
-
-// Parser Header
-# include "mnshll_parser.h"
-
-// Words Header
-# include "mnshll_words.h"
-
-// Expander Header
-# include "mnshll_expand.h"
-
-// Executer Header
-# include "mnshll_exec.h"
 
 // Promopt
 void	init_prompt(t_prompt *prompt, char **av, char **ev);

@@ -6,16 +6,16 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:08:10 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/09 11:33:32 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:50:30 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MNSHLL_ERROR_H
 # define MNSHLL_ERROR_H
 
-
 /* Error messages & warnings*/
-# define ERR_ARGS	(char *)"\aError: Incorrect number of arguments, expected 0!"
+# define ERR_MSG			(char *)"\aError: "
+# define ERR_ARGS			(char *)"Incorrect number of arguments, expected 0!"
 # define ERR_QUOTES			"Opening quotes aren't properly closed"
 # define ERR_SYNTAX			"-msh: Syntax error near unexpected token"
 # define ERR_GETPWD			"Function error -> getpwd"
@@ -46,5 +46,6 @@
 # define OUT_OF_RANGE		255
 
 void	terminate(char *s, int syserr);
+void	ft_prompt_clear(t_prompt *prompt, char *str, int syserr);
 
 #endif

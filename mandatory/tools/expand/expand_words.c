@@ -6,11 +6,13 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:39:23 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/08 12:51:26 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:55:03 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "mnshll_expand.h"
+#include "mnshll_parser.h"
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
@@ -47,7 +49,7 @@ void	handle_word_expansion(char *word, int *single_quoted)
 	*single_quoted = FALSE;
 	remove_char = ft_calloc(ft_strlen(word) + 1, sizeof(int));
 	if (!remove_char)
-		exit(1); // 	terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	expand(word, remove_char);
 	remove_quotes(word, remove_char, single_quoted);
 	format_word(word, remove_char);

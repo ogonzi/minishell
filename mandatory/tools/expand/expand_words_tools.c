@@ -6,11 +6,13 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:03:39 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/08 12:51:58 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:55:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "mnshll_expand.h"
+#include "mnshll_parser.h"
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
@@ -26,8 +28,7 @@ void	handle_expand_env_var(char *word, ssize_t *idx, int *remove_char)
 		(*idx)++;
 	env_var = ft_substr(word, start, *idx - start);
 	if (!env_var)
-		exit(1);
-		// terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	if (ft_strlen(env_var) > 0 && getenv(env_var) == NULL)
 	{
 		remove_char[start - 1] = 1;
@@ -73,7 +74,7 @@ void	format_word(char *word, int *remove_char)
 
 	word_cpy = ft_strdup(word);
 	if (word_cpy == NULL)
-		exit(1); // terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	word_len = ft_strlen(word);
 	idx = -1;
 	count = 0;
@@ -103,12 +104,12 @@ char	*expand_env(char *word, int exit_status, t_env *env)
 	old_length = ft_strlen(word);
 	cpy_word = ft_calloc(sizeof(char), old_length + 1);
 	if (!cpy_word)
-		exit(1); //	terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	ft_strlcpy(cpy_word, word, old_length + 1);
 	ft_delete(word);
 	word = ft_calloc(sizeof(char), new_length + 1);
 	if (!word)
-		exit(1); //	terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	set_new_word(word, cpy_word, exit_status, env);
 	ft_delete(cpy_word);
 	return (word);

@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/09 17:08:09 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/10 11:09:45 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ WHITE 		:= \033[0;97m
 
 CFLAGS      = -Wall -Wextra -Werror -W
 DFLAGS		= -MT $@ -MMD
-XFLAGS      = -fsanitize=address -g3
+XFLAGS      = -fsanitize=address -fsanitize-recover=address -g3
+LFLAGS		= -fsanitize=leak
 LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib
 RL_INC		= -I/Users/$(USER)/.brew/opt/readline/include
 
@@ -99,7 +100,7 @@ WRD_FLS	= split_words.c \
 		split_words_utils.c
 
 UTL_FLS = env_utils.c \
-		mnshll_lst.c
+		error.c
 
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(SRC_DIR), $(SRC_FLS)))
 # SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(BLT_FLS))))

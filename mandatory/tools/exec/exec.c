@@ -6,11 +6,12 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 10:28:35 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:46:17 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "mnshll_exec.h"
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
@@ -46,18 +47,18 @@ static int	do_pipe(int tmp_fd[2], t_list *command,
 	pid_t	pid;
 
 	if (pipe(pipe_helper.fd))
-		exit(1); // terminate(ERR_PIPE, 1);
+		ft_prompt_clear(&prompt, ERR_PIPE, EXIT_FAILURE);
 	pid = fork();
 	if (pid < 0)
-		exit(1); // terminate(ERR_FORK, 1);
+		ft_prompt_clear(&prompt, ERR_FORK, EXIT_FAILURE);
 	else if (pid > 0 && !pipe_helper.is_last)
 	{
 		if (dup2(pipe_helper.fd[0], tmp_fd[0]) == ERRNUM)
-			exit(1); // terminate(ERR_DUP, 1);
+			ft_prompt_clear(&prompt, ERR_DUP, EXIT_FAILURE);
 		if (close(pipe_helper.fd[0]))
-			exit(1); // terminate(ERR_CLOSE, 1);
+			ft_prompt_clear(&prompt, ERR_CLOSE, EXIT_FAILURE);
 		if (close(pipe_helper.fd[1]))
-			exit(1); // terminate(ERR_CLOSE, 1);
+			ft_prompt_clear(&prompt, ERR_CLOSE, EXIT_FAILURE);
 	}
 	else if (pid > 0 && pipe_helper.is_last == TRUE)
 		return (do_last_pipe_parent(tmp_fd, pipe_helper, pid));
@@ -72,11 +73,11 @@ static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid)
 	int	exit_status;
 
 	if (close(pipe_helper.fd[0]))
-		exit(1); // terminate(ERR_CLOSE, 1);
+		terminate(ERR_CLOSE, EXIT_FAILURE);
 	if (dup2(pipe_helper.fd[1], tmp_fd[1]) == ERRNUM)
-		exit(1); // terminate(ERR_DUP, 1);
+		terminate(ERR_DUP, EXIT_FAILURE);
 	if (close(pipe_helper.fd[1]))
-		exit(1); // terminate(ERR_CLOSE, 1);
+		terminate(ERR_CLOSE, EXIT_FAILURE);
 	last_pipe_exit = FALSE;
 	while (waitpid(pid, &exit_status, 0) != ERRNUM)
 		;
@@ -91,11 +92,11 @@ static void	do_child(int tmp_fd[2], t_list *command,
 					t_prompt prompt, t_pipe pipe_helper)
 {
 	if (close(pipe_helper.fd[0]))
-		exit(1); //terminate(ERR_CLOSE, 1);
+		terminate(ERR_CLOSE, EXIT_FAILURE);
 	if (dup2(tmp_fd[0], STDIN_FILENO) == ERRNUM)
-		exit(1); //terminate(ERR_DUP, 1);
+		terminate(ERR_DUP, EXIT_FAILURE);
 	if (close(tmp_fd[0]))
-		exit(1); //terminate(ERR_CLOSE, 1);
+		terminate(ERR_CLOSE, EXIT_FAILURE);
 	do_execve(command, prompt, tmp_fd, pipe_helper);
 }
 
@@ -115,7 +116,6 @@ void	do_execve(t_list *command, t_prompt prompt,
 	}
 	check_pipe(&pipe_helper, tmp_fd);
 	set_child_sigaction();
-	// printf("%s", command_array[1]);
 	if (!ft_strcmp(ft_strlowcase(command_array[0]), "pwd"))
 	{
 		((t_cmdline *)command->data)->exit_status = printf("this should be the pwd\n");
@@ -123,7 +123,5 @@ void	do_execve(t_list *command, t_prompt prompt,
 	}
 	else
 		if (execve(exec_path, command_array, envp) == ERRNUM)
-			exit(1); // terminate(ERR_EXECVE, 1);
-	ft_memfree(command_array);
-	ft_memfree(envp);
+			ft_prompt_clear(&prompt, ERR_EXECVE, EXIT_FAILURE);
 }

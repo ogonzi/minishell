@@ -6,11 +6,13 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 23:46:53 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/09 18:10:47 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:55:36 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "mnshll_words.h"
+#include "mnshll_parser.h"
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
@@ -27,18 +29,15 @@ void	set_token_node(char *word, t_list **token_node,
 	set_word_type(word, word_len, last_word_type);
 	token_data = (t_token *)malloc(sizeof(t_token));
 	if (!token_data)
-		exit(1);
-		// terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	token_data->word = malloc(sizeof(char) * (word_len + 1));
 	if (!token_data->word)
-		exit(1);
-		// terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	token_data->type = *last_word_type;
 	ft_strlcpy(token_data->word, word, word_len + 1);
 	*token_node = ft_lstnew(token_data);
 	if (!(*token_node))
-		exit(1);
-		// terminate(ERR_MEM, 1);
+		terminate(ERR_MEM, EXIT_FAILURE);
 }
 
 void	set_word_type(char *word, size_t word_len, enum e_type *last_word_type)

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:50:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/02 19:08:11 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:15:50 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_env	*ft_custom_env_node(char *var, char *data)
 
 	node = malloc(sizeof(t_env));
 	if (!node)
-		return (NULL);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	node->env_var = var;
 	node->env_data = data;
 	node->idx = ++idx;
@@ -56,7 +56,7 @@ static char	*get_custom_pwd(void)
 
 	val = ft_calloc(MS_MAX_PATH, sizeof(char));
 	if (!val)
-		return (NULL);
+		terminate(ERR_MEM, EXIT_FAILURE);
 	if (getcwd(val, MS_MAX_PATH))
 		return (val);
 	return (NULL);
