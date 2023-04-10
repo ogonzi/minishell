@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:08:37 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/09 17:07:29 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 17:02:06 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	**ft_split(char const *s, char c);
 
 // FT_str functions. Multiple functions about strings manipulation or related.
+size_t	ft_strcount(char **str);
 size_t	ft_strlen(const char *s);
 char	*ft_strchr(char const *s, int c);
 int		ft_str_wcount(char const *s, char c);

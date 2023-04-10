@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:08:10 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:50:30 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 17:32:20 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 # define TMP_FILE_HEREDOC	"/tmp/heredoc"
 # define ERR_MRC			(char *)"There was an error while reading.\n"
 
+// ERROR_MESSAGES FOR BUILTINS
+# define ERR_PWD			(char *)"pwd: too many arguments\a\n"
 // Error codes
 # define CATCH_ALL			1
 # define SHELL_MISUSE		2

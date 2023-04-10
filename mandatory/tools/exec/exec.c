@@ -6,12 +6,13 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 16:43:15 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 17:23:50 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "mnshll_exec.h"
+#include "mnshll_builtins.h"
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
@@ -108,6 +109,7 @@ void	do_execve(t_list *command, t_prompt *prompt,
 	char	*exec_path;
 
 	command_array = get_command_array(command);
+	envp = copy_env(prompt->env, ft_env_size(prompt->env));
 	if (get_exec_path(command_array[0], &exec_path, command, prompt))
 	{
 		printf("%s: command not found\n", command_array[0]);
@@ -115,10 +117,7 @@ void	do_execve(t_list *command, t_prompt *prompt,
 	}
 	check_pipe(&pipe_helper, tmp_fd);
 	set_child_sigaction();
-	// check_ft_builtins(&prompt, command_array, envp);
-	ft_delete(ft_env_iter(prompt->env, "_")->env_data);
-	ft_env_iter(prompt->env, "_")->env_data = ft_strdup(command_array[0]);
-	envp = copy_env(prompt->env, ft_env_size(prompt->env));
+	check_ft_builtins(prompt, ft_strcount(command_array), command_array, envp);
 	if (execve(exec_path, command_array, envp) == ERRNUM)
 		ft_prompt_clear(prompt, ERR_EXECVE, EXIT_FAILURE);
 }

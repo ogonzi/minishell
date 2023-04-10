@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 16:33:59 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 17:12:09 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	handler_input(t_prompt *prompt)
 	buf = readline("msh> ");
 	if (!buf)
 	{
-		ft_printf_fd(STDOUT_FILENO, "exit\n");
+		write(STDOUT_FILENO, "exit\n", 5);
 		return (-1);
 	}
 	if (ft_strlen(buf) != 0)

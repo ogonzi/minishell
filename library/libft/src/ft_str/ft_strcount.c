@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mnshll_builtins.h                                  :+:      :+:    :+:   */
+/*   ft_strcount.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 17:51:32 by cpeset-c         ###   ########.fr       */
+/*   Created: 2023/04/10 17:01:01 by cpeset-c          #+#    #+#             */
+/*   Updated: 2023/04/10 17:01:53 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MNSHLL_BUILTINS_H
-# define MNSHLL_BUILTINS_H
+#include "libft.h"
 
-# define MS_MAX_PATH	(unsigned long)1024
-# define MS_PATH		(char *)"/usr/local/sbin:/usr/local/bin:/usr/bin:/bin"
-# define MS_PWDCMP		(char *)"PWD"
+size_t	ft_strcount(char **str)
+{
+	size_t	idx;
 
-// Built-In Functions
-void	check_ft_builtins(t_prompt *prompt, size_t	ac, char **av, char **ev);
-void	ft_pwd(size_t ac, char **ev);
-
-#endif
+	idx = 0;
+	while (str[idx])
+		++idx;
+	return (idx);
+}

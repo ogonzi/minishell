@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/27 19:35:19 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/05 13:37:06 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/10 17:02:22 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,7 @@ STR_SRC	= ft_str_wcount.c ft_strcapitalize.c ft_strchr.c ft_strrchr.c \
 		ft_strcmp.c ft_strcpy.c ft_strcspn.c ft_strjoin.c \
 		ft_strlcat.c ft_strlcpy.c ft_strlen.c  ft_strncmp.c \
 		ft_strnstr.c ft_strtrim.c ft_strupcase.c ft_strlowcase.c \
-		ft_substr.c ft_tolower.c ft_toupper.c
+		ft_substr.c ft_tolower.c ft_toupper.c ft_strcount.c
 
 LST_SRC	= ft_lstadd_back.c ft_lstadd_front.c ft_lstat.c ft_lstclear.c \
 		ft_lstdelone.c ft_lstfind.c ft_lstforeach.c ft_lstforeach_if.c \

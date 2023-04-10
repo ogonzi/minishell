@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/10 11:09:45 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/10 17:27:57 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,8 @@ SRC_FLS	= minishell.c \
 		custom_enviroment.c \
 		signals.c
 
-# BLT_FLS	= pwd.c
+BLT_FLS	= builtins.c \
+		pwd.c
 
 EXE_FLS	= exec.c \
 		redir_in.c \
@@ -103,12 +104,12 @@ UTL_FLS = env_utils.c \
 		error.c
 
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(SRC_DIR), $(SRC_FLS)))
-# SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(BLT_FLS))))
-SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXE_DIR), $(EXE_FLS))))
-SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(PRS_DIR), $(PRS_FLS))))
-SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXP_DIR), $(EXP_FLS))))
-SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(WRD_DIR), $(WRD_FLS))))
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(UTL_DIR), $(UTL_FLS)))
+SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(PRS_DIR), $(PRS_FLS))))
+SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(WRD_DIR), $(WRD_FLS))))
+SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXP_DIR), $(EXP_FLS))))
+SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(EXE_DIR), $(EXE_FLS))))
+SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(TUL_DIR), $(addprefix $(BLT_DIR), $(BLT_FLS))))
 
 OBJS	= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 DEPS	= $(addprefix $(DEP_DIR), $(addsuffix .d, $(basename $(SRCS))))

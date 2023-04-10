@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 15:50:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/01/18 16:33:02 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 17:30:22 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int ac, char **av, char **ev)
 	if (ac > 1)
 	{
 		ft_printf_fd(STDERR_FILENO, "pwd: too many arguments\a\n");
-		return (1);
+		exit (EXIT_FAILURE);
 	}
 	while (ev[++idx])
 	{
@@ -37,8 +37,8 @@ int	main(int ac, char **av, char **ev)
 			while (count--)
 				ev[idx]++;
 			printf("%s\n", ev[idx]);
-			return (0);
+			exit(EXIT_SUCCESS);
 		}
 	}
-	return (1);
+	exit(EXIT_FAILURE);
 }
