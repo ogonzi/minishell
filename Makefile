@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/10 18:24:16 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/10 18:49:04 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,8 @@ SRC_FLS	= minishell.c \
 
 BLT_FLS	= builtins.c \
 		pwd.c \
-		env.c
+		env.c \
+		echo.c \
 
 EXE_FLS	= exec.c \
 		redir_in.c \

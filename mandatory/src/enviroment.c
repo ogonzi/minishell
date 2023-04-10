@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:53:44 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 16:40:13 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 18:45:36 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void	set_custom_env(t_prompt *prompt, char *prog)
 */
 {
 	char	*val;
+	int		num;
 	t_env	*aux;
 
 	val = ft_calloc(MS_MAX_PATH, sizeof(char));
@@ -129,8 +130,11 @@ void	set_custom_env(t_prompt *prompt, char *prog)
 		custom_export(ft_env_iter(prompt->env, "PWD"), val);
 	ft_delete(val);
 	aux = ft_env_iter(prompt->env, "SHLVL");
-	custom_export(ft_env_iter(prompt->env, "SHLVL"), aux->env_data);
+	num = ft_atoi(aux->env_data) + 1;
+	val = ft_itoa(num);
+	custom_export(ft_env_iter(prompt->env, "SHLVL"), val);
 	aux = NULL;
+	ft_delete(val);
 	custom_export(ft_env_iter(prompt->env, "PATH"), MS_PATH);
 	custom_export(ft_env_iter(prompt->env, "_"),
 		ft_strjoin(ft_env_iter(prompt->env, "PWD")->env_data,
