@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:54:39 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 16:33:59 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "mnshll_error.h"
 
 static int	handler_input(t_prompt *prompt);
-static int	handler_pipeline(t_prompt prompt);
+static int	handler_pipeline(t_prompt *prompt);
 
 int	main(int ac, char **av, char **ev)
 {
@@ -37,7 +37,7 @@ int	main(int ac, char **av, char **ev)
 		if (prompt.exit_status == ERRNUM)
 			break ;
 		if (prompt.exit_status == 0)
-			prompt.exit_status = handler_pipeline(prompt);
+			prompt.exit_status = handler_pipeline(&prompt);
 		if (prompt.cmdline)
 			ft_lstclear(&prompt.cmdline, (void *)ft_delete);
 	}
@@ -52,7 +52,7 @@ void	init_prompt(t_prompt *prompt, char **av, char **ev)
 	prompt->error_status = 0;
 	prompt->exit_status = 0;
 	custom_getpid(prompt);
-	if (!*ev)
+	if (!(*ev))
 		custom_void_env(prompt, av[0]);
 	else
 	{
@@ -104,7 +104,7 @@ static int	handler_input(t_prompt *prompt)
 	return (0);
 }
 
-static int	handler_pipeline(t_prompt prompt)
+static int	handler_pipeline(t_prompt *prompt)
 /*
  * Here's a breakdown of the handler_pipeline() function:
 
@@ -134,19 +134,19 @@ static int	handler_pipeline(t_prompt prompt)
 
 	tmp_fd[0] = dup(STDIN_FILENO);
 	if (tmp_fd[0] == ERRNUM)
-		ft_prompt_clear(&prompt, ERR_DUP, EXIT_FAILURE);
+		ft_prompt_clear(prompt, ERR_DUP, EXIT_FAILURE);
 	tmp_fd[1] = dup(STDOUT_FILENO);
 	if (tmp_fd[1] == ERRNUM)
-		ft_prompt_clear(&prompt, ERR_DUP, EXIT_FAILURE);
-	command_cpy = prompt.cmdline;
+		ft_prompt_clear(prompt, ERR_DUP, EXIT_FAILURE);
+	command_cpy = prompt->cmdline;
 	while (command_cpy)
 	{
 		exit_status = redir_pipe(command_cpy, prompt, tmp_fd);
 		command_cpy = command_cpy->next;
 	}
 	if (close(tmp_fd[0]))
-		ft_prompt_clear(&prompt, ERR_DUP, EXIT_FAILURE);
+		ft_prompt_clear(prompt, ERR_DUP, EXIT_FAILURE);
 	if (close(tmp_fd[1]))
-		ft_prompt_clear(&prompt, ERR_DUP, EXIT_FAILURE);
+		ft_prompt_clear(prompt, ERR_DUP, EXIT_FAILURE);
 	return (exit_status);
 }

@@ -1,20 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mnshll_builtins.h                                  :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 16:10:35 by cpeset-c         ###   ########.fr       */
+/*   Created: 2023/04/10 16:56:38 by cpeset-c          #+#    #+#             */
+/*   Updated: 2023/04/10 16:56:44 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MNSHLL_BUILTINS_H
-# define MNSHLL_BUILTINS_H
-
-# define MS_MAX_PATH	(unsigned long)1024
-# define MS_PATH		(char *)"/usr/local/sbin:/usr/local/bin:/usr/bin:/bin"
-# define MS_PWDCMP		(char *)"PWD"
-
-#endif
+#include "minishell.h"
+#include "mnshll_builtins.h"
+#include "mnshll_utils.h"
+#include "mnshll_data.h"
+#include "mnshll_error.h"

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:43:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:51:29 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 16:17:51 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_bool	get_exec_path(char *token, char **exec_path,
 	char	**paths;
 	char	*path_line;
 
-	path_line = ft_env_iter(prompt->env, "PATH")->env_data;
+	path_line = ft_strdup(ft_env_iter(prompt->env, "PATH")->env_data);
 	if (ft_check_command(&path_line, &paths, token, exec_path))
 		return (FALSE);
 	if (ft_check_script(exec_path, token, paths, &command))

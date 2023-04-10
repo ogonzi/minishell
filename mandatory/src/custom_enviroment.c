@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:50:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:15:50 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 16:38:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	custom_void_env(t_prompt *prompt, char *prog)
 		else if (idx == 2)
 			prompt->env->next = ft_custom_env_node("SHLVL", "1");
 		else if (idx == 1)
-			prompt->env->next->next = ft_custom_env_node("_", prog);
+			prompt->env->next->next = ft_custom_env_node("_",
+					ft_strtrim(prog, "."));
 	}
 }
 

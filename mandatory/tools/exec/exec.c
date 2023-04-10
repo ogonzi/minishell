@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:46:17 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 16:43:15 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 #include "mnshll_error.h"
 
 static int	do_pipe(int tmp_fd[2], t_list *command,
-				t_prompt prompt, t_pipe pipe_helper);
+				t_prompt *prompt, t_pipe pipe_helper);
 static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid);
 static void	do_child(int tmp_fd[2], t_list *command,
-				t_prompt prompt, t_pipe pipe_helper);
+				t_prompt *prompt, t_pipe pipe_helper);
 
-int	redir_pipe(t_list *command_cpy, t_prompt prompt, int tmp_fd[2])
+int	redir_pipe(t_list *command_cpy, t_prompt *prompt, int tmp_fd[2])
 {
 	int		exit_status;
 	t_pipe	pipe_helper;
@@ -42,23 +42,23 @@ int	redir_pipe(t_list *command_cpy, t_prompt prompt, int tmp_fd[2])
 }
 
 static int	do_pipe(int tmp_fd[2], t_list *command,
-				t_prompt prompt, t_pipe pipe_helper)
+				t_prompt *prompt, t_pipe pipe_helper)
 {
 	pid_t	pid;
 
 	if (pipe(pipe_helper.fd))
-		ft_prompt_clear(&prompt, ERR_PIPE, EXIT_FAILURE);
+		ft_prompt_clear(prompt, ERR_PIPE, EXIT_FAILURE);
 	pid = fork();
 	if (pid < 0)
-		ft_prompt_clear(&prompt, ERR_FORK, EXIT_FAILURE);
+		ft_prompt_clear(prompt, ERR_FORK, EXIT_FAILURE);
 	else if (pid > 0 && !pipe_helper.is_last)
 	{
 		if (dup2(pipe_helper.fd[0], tmp_fd[0]) == ERRNUM)
-			ft_prompt_clear(&prompt, ERR_DUP, EXIT_FAILURE);
+			ft_prompt_clear(prompt, ERR_DUP, EXIT_FAILURE);
 		if (close(pipe_helper.fd[0]))
-			ft_prompt_clear(&prompt, ERR_CLOSE, EXIT_FAILURE);
+			ft_prompt_clear(prompt, ERR_CLOSE, EXIT_FAILURE);
 		if (close(pipe_helper.fd[1]))
-			ft_prompt_clear(&prompt, ERR_CLOSE, EXIT_FAILURE);
+			ft_prompt_clear(prompt, ERR_CLOSE, EXIT_FAILURE);
 	}
 	else if (pid > 0 && pipe_helper.is_last == TRUE)
 		return (do_last_pipe_parent(tmp_fd, pipe_helper, pid));
@@ -89,7 +89,7 @@ static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid)
 }
 
 static void	do_child(int tmp_fd[2], t_list *command,
-					t_prompt prompt, t_pipe pipe_helper)
+					t_prompt *prompt, t_pipe pipe_helper)
 {
 	if (close(pipe_helper.fd[0]))
 		terminate(ERR_CLOSE, EXIT_FAILURE);
@@ -100,28 +100,25 @@ static void	do_child(int tmp_fd[2], t_list *command,
 	do_execve(command, prompt, tmp_fd, pipe_helper);
 }
 
-void	do_execve(t_list *command, t_prompt prompt,
+void	do_execve(t_list *command, t_prompt *prompt,
 					int tmp_fd[2], t_pipe pipe_helper)
 {
 	char	**envp;
 	char	**command_array;
 	char	*exec_path;
 
-	envp = copy_env(prompt.env, ft_env_size(prompt.env));
 	command_array = get_command_array(command);
-	if (get_exec_path(command_array[0], &exec_path, command, &prompt))
+	if (get_exec_path(command_array[0], &exec_path, command, prompt))
 	{
 		printf("%s: command not found\n", command_array[0]);
 		exit(((t_cmdline *)command->data)->exit_status);
 	}
 	check_pipe(&pipe_helper, tmp_fd);
 	set_child_sigaction();
-	if (!ft_strcmp(ft_strlowcase(command_array[0]), "pwd"))
-	{
-		((t_cmdline *)command->data)->exit_status = printf("this should be the pwd\n");
-		exit(((t_cmdline *)command->data)->exit_status);
-	}
-	else
-		if (execve(exec_path, command_array, envp) == ERRNUM)
-			ft_prompt_clear(&prompt, ERR_EXECVE, EXIT_FAILURE);
+	// check_ft_builtins(&prompt, command_array, envp);
+	ft_delete(ft_env_iter(prompt->env, "_")->env_data);
+	ft_env_iter(prompt->env, "_")->env_data = ft_strdup(command_array[0]);
+	envp = copy_env(prompt->env, ft_env_size(prompt->env));
+	if (execve(exec_path, command_array, envp) == ERRNUM)
+		ft_prompt_clear(prompt, ERR_EXECVE, EXIT_FAILURE);
 }

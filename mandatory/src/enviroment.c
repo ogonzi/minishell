@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:53:44 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:16:12 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 16:40:13 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,7 @@ void	set_custom_env(t_prompt *prompt, char *prog)
 	custom_export(ft_env_iter(prompt->env, "SHLVL"), aux->env_data);
 	aux = NULL;
 	custom_export(ft_env_iter(prompt->env, "PATH"), MS_PATH);
-	custom_export(ft_env_iter(prompt->env, "_"), prog);
+	custom_export(ft_env_iter(prompt->env, "_"),
+		ft_strjoin(ft_env_iter(prompt->env, "PWD")->env_data,
+			ft_strtrim(prog, ".")));
 }

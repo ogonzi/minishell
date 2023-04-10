@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 11:43:14 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/09 17:10:39 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/10 16:29:02 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 // Minishell Executer Functions
 
 // Executer Functions
-int		redir_pipe(t_list *command_cpy, t_prompt prompt, int tmp_fd[2]);
-void	do_execve(t_list *command, t_prompt prompt,
+int		redir_pipe(t_list *command_cpy, t_prompt *prompt, int tmp_fd[2]);
+void	do_execve(t_list *command, t_prompt *prompt,
 			int tmp_fd[2], t_pipe pipe_helper);
 
 // Redir-In Executer Functions
