@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:46:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 18:54:12 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 13:00:26 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 static void	print_arguments(int ac, char **av, t_bool flag);
 static int	check_only_n(char *str);
 
-void	ft_echo(int ac, char **av)
+int	ft_echo(int ac, char **av)
 {
 	t_bool	flag;
 
@@ -34,7 +34,7 @@ void	ft_echo(int ac, char **av)
 	}
 	if (flag == TRUE)
 		printf("\n");
-	exit(0);
+	return (EXIT_SUCCESS);
 }
 
 static void	print_arguments(int ac, char **av, t_bool flag)

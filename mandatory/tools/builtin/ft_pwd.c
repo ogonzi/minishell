@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:27 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 18:54:30 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 12:59:38 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "mnshll_builtins.h"
 #include "mnshll_error.h"
 
-void	ft_pwd(size_t ac, char **ev)
+int	ft_pwd(size_t ac, char **ev)
 {
 	ssize_t	idx;
 	ssize_t	count;
@@ -30,8 +30,8 @@ void	ft_pwd(size_t ac, char **ev)
 			while (count--)
 				ev[idx]++;
 			printf("%s\n", ev[idx]);
-			exit(EXIT_SUCCESS);
+			return (EXIT_SUCCESS);
 		}
 	}
-	exit(EXIT_FAILURE);
+	return (EXIT_FAILURE);
 }

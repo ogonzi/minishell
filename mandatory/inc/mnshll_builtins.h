@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 19:04:36 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 12:58:38 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@
 # define MS_FLGCMP		(char *)"-n"
 
 // Built-In Functions
-void	check_ft_builtins(t_prompt *prompt, size_t	ac, char **av, char **ev);
+int		check_ft_builtins(t_prompt *prompt, size_t	ac, char **av, char **ev);
 
-void	ft_pwd(size_t ac, char **ev);
-void	ft_env(int ac, char **av, char **ev);
+int		ft_pwd(size_t ac, char **ev);
+int		ft_env(int ac, char **av, char **ev);
 void	ft_exit(int ac, char **av);
-void	ft_echo(int ac, char **ev);
+int		ft_echo(int ac, char **ev);
+int		ft_export(int ac, char **av, char **ev, t_prompt *prompt);
 
 #endif

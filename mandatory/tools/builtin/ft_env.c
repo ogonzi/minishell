@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:20:03 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 18:54:22 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 12:59:59 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static void	error_env(char *str);
 
-void	ft_env(int ac, char **av, char **ev)
+int	ft_env(int ac, char **av, char **ev)
 {
 	ssize_t	idx;
 	ssize_t	count;
@@ -39,7 +39,7 @@ void	ft_env(int ac, char **av, char **ev)
 		error_env(av[count - 1]);
 	while (ev[++idx])
 		printf("%s\n", ev[idx]);
-	exit(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
 
 static void	error_env(char *str)

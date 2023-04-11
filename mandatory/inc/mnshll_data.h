@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:14:06 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/09 18:12:40 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 13:13:37 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ struct s_prompt
 {
 	t_list	*cmdline;
 	t_env	*env;
+	t_env	*export;
 	pid_t	pid;
 	int		error_status;
 	int		exit_status;
