@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 17:17:43 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 17:57:58 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 20:38:58 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,37 @@
 #include "mnshll_data.h"
 #include "mnshll_error.h"
 
-void	mns_export(t_env **env, char *data, t_bool flag)
+void	before_export(t_env **env, char *data, t_bool flag)
+{
+	char	**str;
+	t_env	*new_node;
+
+	str = ft_split_once(data, '=');
+	if (!str)
+		terminate(ERR_MEM, 1);
+	new_node = ft_env_iter(*env, str[0]);
+	if (new_node)
+	{
+		ft_delete(new_node->env_data);
+		if (flag)
+			new_node->env_data = ft_strdup(str[1]);
+		else
+			new_node->env_data = ft_strdup("");
+		if (!new_node->env_data)
+			terminate(ERR_MEM, 1);
+		return ;
+	}
+	else
+		mns_export(env, flag, str);
+}
+
+void	mns_export(t_env **env, t_bool flag, char **str)
 {
 	t_env	*new_node;
-	char	**str;
 
 	new_node = (t_env *)malloc(sizeof(t_env));
 	if (!new_node)
 		terminate(ERR_MEM, 1);
-	str = ft_split_once(data, '=');
 	new_node->env_var = str[0];
 	if (flag)
 		new_node->env_data = str[1];
@@ -36,7 +58,6 @@ void	mns_export(t_env **env, char *data, t_bool flag)
 	}
 	new_node->idx = 0;
 	new_node->next = NULL;
-
 	ft_env_addback(env, new_node);
 }
 
