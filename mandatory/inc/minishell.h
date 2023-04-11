@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:37:32 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:26:47 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 16:40:53 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ void	init_prompt(t_prompt *prompt, char **av, char **ev);
 
 // Init Prompt Functions
 void	custom_getpid(t_prompt *prompt);
-void	set_environ(t_prompt *prompt, char **ev);
-void	set_custom_env(t_prompt *prompt, char *prog);
+void	set_environ(t_env **env, char **ev);
+void	set_custom_env(t_env **env, char *prog);
+void	custom_void_env(t_env **env, char *prog);
 
 // Signal Functions
 void	set_sigint_action(void);

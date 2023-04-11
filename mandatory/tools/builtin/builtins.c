@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:56:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 13:00:49 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 16:15:30 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	check_ft_builtins(t_prompt *prompt, size_t	ac, char **av, char **ev)
 	else if (!ft_strncmp(ft_strlowcase(av[0]), "echo", ft_strlen(av[0])))
 		return (ft_echo(ac, av));
 	else if (!ft_strncmp(ft_strlowcase(av[0]), "export", ft_strlen(av[0])))
-		return (ft_export(ac, av, ev, prompt));
+		return (ft_export(ac, av, prompt));
 	else if (!ft_strncmp(ft_strlowcase(av[0]), "unset", ft_strlen(av[0])))
 		printf("here shoud be unset\n");
 	else if (!ft_strncmp(ft_strlowcase(av[0]), "cd", ft_strlen(av[0])))

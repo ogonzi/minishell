@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:18:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 18:56:03 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 18:34:34 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,55 +26,49 @@ void	custom_export(t_env *env, char *data)
 	env->env_data = aux;
 }
 
-t_env	*ft_env_iter(t_env *env, char *ref)
-/*
- * This function is used to iterate over a linked list of environment variables
- * and find a specific one by its reference name. It takes two parameters: a pointer
- * to the head of the linked list env, and a string ref representing the name of
- * the environment variable to be found.
-*/
+char	**ft_split_once(char const *s, char c)
 {
-	if (!env || !ref)
+	size_t	i;
+	char	**result;
+
+	result = (char **)ft_calloc(3, sizeof(char *));
+	if (!result || !s)
 		return (NULL);
-	while (env)
+	i = 0;
+	while (s[i] && s[i] != c)
+		i++;
+	result[0] = ft_substr(s, 0, i);
+	if (!result[0])
+		return (ft_delete(result[0]));
+	if (!s[i])
+		result[1] = NULL;
+	else
 	{
-		if (!ft_strcmp(env->env_var, ref))
-			break ;
-		env = env->next;
+		result[1] = ft_substr(s, i + 1, ft_strlen(s + i + 1));
+		if (!result[1])
+		{
+			ft_delete(result[0]);
+			return (ft_delete(result));
+		}
 	}
-	if (!env)
-		return (NULL);
-	return (env);
+	return (result);
 }
 
-size_t	ft_env_size(t_env *env)
+char	*ft_strtrim_charset_end(char *str, char *end)
 {
-	size_t	idx;
-	t_env	*cpy;
+	size_t	str_len;
+	size_t	end_len;
 
-	idx = 0;
-	cpy = env;
-	while (cpy)
+	if (!str || !end)
+		return (NULL);
+	str_len = ft_strlen(str);
+	end_len = ft_strlen(end);
+	if (end_len > str_len)
+		return (NULL);
+	if (ft_strcmp(str + str_len - end_len, end) == 0)
 	{
-		cpy = cpy->next;
-		++idx;
+		str[str_len - end_len] = '\0';
+		return (str);
 	}
-	return (idx);
-}
-
-void	ft_env_clear(t_env **env, void (*del)(void *))
-{
-	t_env	*aux;
-
-	if (!(*env))
-		return ;
-	while (*env)
-	{
-		aux = (*env)->next;
-		del((*env)->env_data);
-		del((*env)->env_var);
-		del(*env);
-		*env = aux;
-	}
-	*env = NULL;
+	return (ft_strdup(str));
 }

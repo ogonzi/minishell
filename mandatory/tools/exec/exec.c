@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 12:58:07 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 16:48:46 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,16 @@ void	do_execve(t_list *command, t_prompt *prompt,
 
 	command_array = get_command_array(command);
 	envp = copy_env(prompt->env, ft_env_size(prompt->env));
+	if (!ft_env_iter(prompt->env, "PATH"))
+	{
+		ft_printf_fd(STDERR_FILENO, "%s: command not found\n",
+			command_array[0]);
+		exit(CMD_NOT_FOUND);
+	}
 	if (get_exec_path(command_array[0], &exec_path, command, prompt))
 	{
-		printf("%s: command not found\n", command_array[0]);
+		ft_printf_fd(STDERR_FILENO, "%s: command not found\n",
+			command_array[0]);
 		exit(((t_cmdline *)command->data)->exit_status);
 	}
 	check_pipe(&pipe_helper, tmp_fd);

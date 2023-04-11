@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/11 12:48:31 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/11 17:41:43 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,6 +82,7 @@ BLT_FLS	= builtins.c \
 		ft_exit.c \
 		ft_echo.c \
 		ft_export.c \
+		ft_export_utils.c \
 
 EXE_FLS	= exec.c \
 		redir_in.c \
@@ -105,6 +106,7 @@ WRD_FLS	= split_words.c \
 		split_words_utils.c
 
 UTL_FLS = env_utils.c \
+		env_lst.c \
 		error.c
 
 SRCS	+= $(addprefix $(MND_DIR), $(addprefix $(SRC_DIR), $(SRC_FLS)))

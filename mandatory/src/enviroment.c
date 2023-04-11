@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:53:44 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 18:45:36 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 17:34:54 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	custom_getpid(t_prompt *prompt)
 	prompt->pid = pid - 1;
 }
 
-void	set_environ(t_prompt *prompt, char **ev)
+void	set_environ(t_env **env, char **ev)
 /*
 	This function is used to initialize the environment variable list for the
 	shell. It takes a t_prompt struct pointer and a char pointer to a string
@@ -82,7 +82,7 @@ void	set_environ(t_prompt *prompt, char **ev)
 			return ;
 		if (idx == 0)
 		{
-			prompt->env = aux;
+			*env = aux;
 			lst = aux;
 			continue ;
 		}
@@ -111,7 +111,7 @@ static void	*ft_environ_node(char *env)
 	return (node);
 }
 
-void	set_custom_env(t_prompt *prompt, char *prog)
+void	set_custom_env(t_env **env, char *prog)
 /*
 	This function sets some values of the enviroment copy that we initialized
 	before to the ones we desire for the program.
@@ -127,16 +127,16 @@ void	set_custom_env(t_prompt *prompt, char *prog)
 	if (!val)
 		terminate(ERR_MEM, EXIT_FAILURE);
 	if (getcwd(val, MS_MAX_PATH))
-		custom_export(ft_env_iter(prompt->env, "PWD"), val);
+		custom_export(ft_env_iter(*env, "PWD"), val);
 	ft_delete(val);
-	aux = ft_env_iter(prompt->env, "SHLVL");
+	aux = ft_env_iter(*env, "SHLVL");
 	num = ft_atoi(aux->env_data) + 1;
 	val = ft_itoa(num);
-	custom_export(ft_env_iter(prompt->env, "SHLVL"), val);
+	custom_export(ft_env_iter(*env, "SHLVL"), val);
 	aux = NULL;
 	ft_delete(val);
-	custom_export(ft_env_iter(prompt->env, "PATH"), MS_PATH);
-	custom_export(ft_env_iter(prompt->env, "_"),
-		ft_strjoin(ft_env_iter(prompt->env, "PWD")->env_data,
+	custom_export(ft_env_iter(*env, "PATH"), MS_PATH);
+	custom_export(ft_env_iter(*env, "_"),
+		ft_strjoin(ft_env_iter(*env, "PWD")->env_data,
 			ft_strtrim(prog, ".")));
 }

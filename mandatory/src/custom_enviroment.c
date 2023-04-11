@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:50:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 16:38:11 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 16:42:45 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 static t_env	*ft_custom_env_node(char *var, char *data);
 static char		*get_custom_pwd(void);
 
-void	custom_void_env(t_prompt *prompt, char *prog)
+void	custom_void_env(t_env **env, char *prog)
 {
 	ssize_t	idx;
 
@@ -27,11 +27,11 @@ void	custom_void_env(t_prompt *prompt, char *prog)
 	while (--idx)
 	{
 		if (idx == 3)
-			prompt->env = ft_custom_env_node("PWD", get_custom_pwd());
+			*env = ft_custom_env_node("PWD", get_custom_pwd());
 		else if (idx == 2)
-			prompt->env->next = ft_custom_env_node("SHLVL", "1");
+			(*env)->next = ft_custom_env_node("SHLVL", "1");
 		else if (idx == 1)
-			prompt->env->next->next = ft_custom_env_node("_",
+			(*env)->next->next = ft_custom_env_node("_",
 					ft_strtrim(prog, "."));
 	}
 }

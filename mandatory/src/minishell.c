@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 17:12:09 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/11 16:43:53 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,16 @@ void	init_prompt(t_prompt *prompt, char **av, char **ev)
 	prompt->exit_status = 0;
 	custom_getpid(prompt);
 	if (!(*ev))
-		custom_void_env(prompt, av[0]);
+	{
+		custom_void_env(&prompt->env, av[0]);
+		custom_void_env(&prompt->export, av[0]);
+	}
 	else
 	{
-		set_environ(prompt, ev);
-		set_custom_env(prompt, av[0]);
+		set_environ(&prompt->env, ev);
+		set_environ(&prompt->export, ev);
+		set_custom_env(&prompt->env, av[0]);
+		set_custom_env(&prompt->export, av[0]);
 	}
 }
 
