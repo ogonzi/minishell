@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 12:20:03 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:15:59 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,7 @@ int		ft_cd(int ac, char **av, t_prompt *prompt);
 void	get_pwd(char **pwd, t_prompt **prompt);
 void	get_homepwd(char **pwd, t_prompt **prompt);
 void	get_oldpwd(char **pwd, t_prompt **prompt);
+void	ft_swap_content(char **a, char **b);
+void	export_oldpwd(t_prompt **prompt);
 
 #endif

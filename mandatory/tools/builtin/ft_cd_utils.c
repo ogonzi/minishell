@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:32:13 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 12:51:22 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:20:53 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	get_pwd(char **pwd, t_prompt **prompt)
 		}
 		else
 			export_oldpwd(prompt);
-		ft_env_iter((*prompt)->env, "PWD")->env_data = *pwd;
 	}
 }
 
@@ -116,8 +115,8 @@ void	get_oldpwd(char **pwd, t_prompt **prompt)
 		*pwd = ft_strdup(cpy->env_data);
 		if (!(*pwd))
 			terminate(ERR_MEM, 1);
-		ft_env_iter((*prompt)->env, "PWD")->env_data = *pwd;
-		ft_swap_content(&cpy->env_data, &aux->env_data);
+		ft_swap_content(&ft_env_iter((*prompt)->env, "OLDPWD")->env_data,
+			&ft_env_iter((*prompt)->env, "PWD")->env_data);
 		ft_swap_content(&ft_env_iter((*prompt)->export, "OLDPWD")->env_data,
 			&ft_env_iter((*prompt)->export, "PWD")->env_data);
 		printf("%s\n", *pwd);
