@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/11 19:59:47 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/12 11:33:15 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,9 @@ BLT_FLS	= builtins.c \
 		ft_echo.c \
 		ft_export.c \
 		ft_export_utils.c \
-		ft_unset.c
+		ft_unset.c \
+		ft_cd.c \
+		ft_cd_utils.c
 
 EXE_FLS	= exec.c \
 		redir_in.c \

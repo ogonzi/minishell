@@ -6,13 +6,14 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:46:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 13:00:26 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 11:10:47 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "mnshll_utils.h"
 #include "mnshll_builtins.h"
+#include "mnshll_data.h"
 #include "mnshll_error.h"
 
 static void	print_arguments(int ac, char **av, t_bool flag);
