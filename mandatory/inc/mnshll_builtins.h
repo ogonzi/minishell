@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 16:25:56 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 18:39:37 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ int		get_rootpwd(t_prompt **prompt);
 
 // CD Tools Built-In Functions
 void	ft_swap_content(char **a, char **b);
-void	export_oldpwd(t_prompt **prompt);
-void	export_pwd(t_prompt **prompt);
+void	export_oldpwd(t_env *env);
+void	export_pwd(t_env *env);
+void	before_export_oldpwd(t_prompt **prompt);
+void	before_export_pwd(t_prompt **prompt);
 
 #endif

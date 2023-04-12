@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/12 16:20:02 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/12 18:07:40 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -168,4 +168,4 @@ norm:
 	@clear
 	@norminette $(SRC_DIR) $(INC) $(LIBFT_DIR) | grep -v Norme -B1 || true
 	
-.PHONY:	all makelib clean fclean re norm 
+.PHONY:	all makelib clean fclean re norm

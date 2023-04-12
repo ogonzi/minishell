@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:32:13 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 16:42:24 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 18:43:42 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	get_pwd(char **pwd, t_prompt **prompt)
 
 	aux = ft_env_iter((*prompt)->env, "PWD");
 	if (!aux)
-		export_pwd(prompt);
+		before_export_pwd(prompt);
 	*pwd = ft_strdup(aux->env_data);
 	if (!(*pwd))
 		terminate(ERR_MEM, 1);
@@ -34,13 +34,13 @@ void	get_pwd(char **pwd, t_prompt **prompt)
 			&ft_env_iter((*prompt)->export, "PWD")->env_data);
 	}
 	else
-		export_oldpwd(prompt);
+		before_export_oldpwd(prompt);
 }
 
 void	get_homepwd(char **pwd, t_prompt **prompt)
 {
 	if (!ft_env_iter((*prompt)->env, "PWD"))
-		export_pwd(prompt);
+		before_export_pwd(prompt);
 	if (!ft_env_iter((*prompt)->env, "HOME"))
 	{
 		*pwd = NULL;
@@ -59,7 +59,7 @@ void	get_homepwd(char **pwd, t_prompt **prompt)
 				&ft_env_iter((*prompt)->export, "PWD")->env_data);
 		}
 		else
-			export_oldpwd(prompt);
+			before_export_oldpwd(prompt);
 		ft_env_iter((*prompt)->env, "PWD")->env_data = *pwd;
 		ft_env_iter((*prompt)->export, "PWD")->env_data = *pwd;
 	}
@@ -80,7 +80,7 @@ void	get_oldpwd(char **pwd, t_prompt **prompt)
 	else
 	{
 		if (!aux)
-			export_pwd(prompt);
+			before_export_pwd(prompt);
 		*pwd = ft_strdup(cpy->env_data);
 		if (!(*pwd))
 			terminate(ERR_MEM, 1);
@@ -107,7 +107,7 @@ int	get_rootpwd(t_prompt **prompt)
 			&ft_env_iter((*prompt)->export, "PWD")->env_data);
 	}
 	else
-		export_oldpwd(prompt);
+		before_export_oldpwd(prompt);
 	ft_env_iter((*prompt)->env, "PWD")->env_data = pwd;
 	ft_env_iter((*prompt)->export, "PWD")->env_data = pwd;
 	if (!chdir(pwd))

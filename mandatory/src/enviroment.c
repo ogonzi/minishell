@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:53:44 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 16:56:10 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 18:46:16 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ void	set_custom_env(t_env **env, char *prog)
 	char	*val;
 	int		num;
 	t_env	*aux;
+	char	*joined;
+	char	*trimmed;
 
 	val = ft_calloc(MS_MAX_PATH, sizeof(char));
 	if (!val)
@@ -137,8 +139,10 @@ void	set_custom_env(t_env **env, char *prog)
 	custom_export(ft_env_iter(*env, "SHLVL"), val);
 	aux = NULL;
 	ft_delete(val);
+	trimmed = ft_strtrim(prog, ".");
+	joined = ft_strjoin(ft_env_iter(*env, "PWD")->env_data, trimmed);
 	custom_export(ft_env_iter(*env, "PATH"), MS_PATH);
-	custom_export(ft_env_iter(*env, "_"),
-		ft_strjoin(ft_env_iter(*env, "PWD")->env_data,
-			ft_strtrim(prog, ".")));
+	custom_export(ft_env_iter(*env, "_"), joined);
+	ft_delete(trimmed);
+	ft_delete(joined);
 }
