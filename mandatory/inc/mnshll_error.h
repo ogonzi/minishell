@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:08:10 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 12:18:47 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:38:28 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define ERR_EXP			(char *)"not a valid identifier\n"
 # define ERR_CDPWD			(char *)"PWD not set\n"
 # define ERR_OLDPWD			(char *)"OLDPWD not set\n"
-
+# define ERR_HOME			(char *)"HOME not set\n"
 // Error codes
 # define CATCH_ALL			1
 # define SHELL_MISUSE		2

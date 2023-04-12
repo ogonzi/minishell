@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:10:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 13:19:18 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:28:25 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 #include "mnshll_data.h"
 #include "mnshll_error.h"
 
-static int	do_homepwd(t_prompt **prompt);
-static int	do_rootpwd(t_prompt **prompt);
-static int	do_oldpwd(t_prompt **prompt);
 static int	aux_ft_cd(t_prompt *prompt, char **av, DIR *dp,
 				struct dirent *dirpwd);
+static int	do_homepwd(t_prompt **prompt);
+static int	do_oldpwd(t_prompt **prompt);
+static int	do_pwd(t_prompt **prompt, char *pwd);
 
 int	ft_cd(int ac, char **av, t_prompt *prompt)
 {
@@ -31,15 +31,18 @@ int	ft_cd(int ac, char **av, t_prompt *prompt)
 	dirpwd = NULL;
 	if (ac == 1)
 		return (do_homepwd(&prompt));
-	else if ((av[1][0] == '~' && !av[1][1]) ||
-			(av[1][0] == '~' && av[1][1] == '/' && !av[1][2]))
-		return (do_homepwd(&prompt));
-	else if (av[1][0] == '/' && !av[1][1])
-		return (do_rootpwd(&prompt));
-	else if (av[1][0] == '-' && !av[1][1])
-		return (do_oldpwd(&prompt));
 	else
-		return (aux_ft_cd(prompt, av, dp, dirpwd));
+	{
+		if ((av[1][0] == '~' && !av[1][1]) ||
+				(av[1][0] == '~' && av[1][1] == '/' && !av[1][2]))
+			return (do_homepwd(&prompt));
+		else if (av[1][0] == '/' && !av[1][1])
+			return (get_rootpwd(&prompt));
+		else if (av[1][0] == '-' && !av[1][1])
+			return (do_oldpwd(&prompt));
+		else
+			return (aux_ft_cd(prompt, av, dp, dirpwd));
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -55,16 +58,14 @@ static int	aux_ft_cd(t_prompt *prompt, char **av, DIR *dp,
 	dirpwd = readdir(dp);
 	while (dirpwd)
 	{
-		if (!ft_strncmp(av[1], dirpwd->d_name, ft_strlen(av[1])))
+		if (!ft_strncmp(av[1], dirpwd->d_name, ft_strlen(av[1]))
+			|| !ft_strncmp(av[1], ft_strjoin(dirpwd->d_name, "/"),
+				ft_strlen(av[1])))
 		{
 			pwd = ft_strjoin(pwd, ft_strjoin(ft_strdup("/"), dirpwd->d_name));
 			if (!pwd)
 				terminate(ERR_MEM, 1);
-			ft_env_iter((prompt)->env, "PWD")->env_data = pwd;
-			ft_env_iter((prompt)->export, "PWD")->env_data = pwd;
-			if (chdir(pwd))
-				return (EXIT_FAILURE);
-			break ;
+			do_pwd(&prompt, pwd);
 		}
 		dirpwd = readdir(dp);
 	}
@@ -83,34 +84,20 @@ static int	do_homepwd(t_prompt **prompt)
 	return (EXIT_FAILURE);
 }
 
-static int	do_rootpwd(t_prompt **prompt)
-{
-	char	*pwd;
-
-	pwd = ft_strdup("/");
-	if (!pwd)
-		ft_prompt_clear((*prompt), ERR_MEM, EXIT_FAILURE);
-	if (ft_env_iter((*prompt)->env, "OLDPWD"))
-	{
-		ft_swap_content(&ft_env_iter((*prompt)->env, "OLDPWD")->env_data,
-			&ft_env_iter((*prompt)->env, "PWD")->env_data);
-		ft_swap_content(&ft_env_iter((*prompt)->export, "OLDPWD")->env_data,
-			&ft_env_iter((*prompt)->export, "PWD")->env_data);
-	}
-	else
-		export_oldpwd(prompt);
-	ft_env_iter((*prompt)->env, "PWD")->env_data = pwd;
-	ft_env_iter((*prompt)->export, "PWD")->env_data = pwd;
-	if (!chdir(pwd))
-		return (EXIT_SUCCESS);
-	return (EXIT_FAILURE);
-}
-
 static int	do_oldpwd(t_prompt **prompt)
 {
 	char	*pwd;
 
 	get_oldpwd(&pwd, prompt);
+	if (!chdir(pwd))
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
+}
+
+static int	do_pwd(t_prompt **prompt, char *pwd)
+{
+	ft_env_iter((*prompt)->env, "PWD")->env_data = pwd;
+	ft_env_iter((*prompt)->export, "PWD")->env_data = pwd;
 	if (!chdir(pwd))
 		return (EXIT_SUCCESS);
 	return (EXIT_FAILURE);

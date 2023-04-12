@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:50:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 16:42:45 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:08:02 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include "mnshll_error.h"
 
 static t_env	*ft_custom_env_node(char *var, char *data);
-static char		*get_custom_pwd(void);
 
 void	custom_void_env(t_env **env, char *prog)
 {
@@ -51,7 +50,7 @@ static t_env	*ft_custom_env_node(char *var, char *data)
 	return (node);
 }
 
-static char	*get_custom_pwd(void)
+char	*get_custom_pwd(void)
 {
 	char	*val;
 

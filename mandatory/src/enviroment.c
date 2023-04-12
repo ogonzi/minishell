@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:53:44 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 17:34:54 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:56:10 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	set_environ(t_env **env, char **ev)
 	idx = -1;
 	while (ev[++idx])
 	{
+		if (!ft_strncmp(ev[idx], "OLDPWD", 6))
+			continue ;
 		aux = ft_environ_node(ev[idx]);
 		if (!aux)
 			return ;
