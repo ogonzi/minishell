@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:32:13 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 18:43:42 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 19:48:09 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,28 +60,21 @@ void	get_homepwd(char **pwd, t_prompt **prompt)
 		}
 		else
 			before_export_oldpwd(prompt);
-		ft_env_iter((*prompt)->env, "PWD")->env_data = *pwd;
-		ft_env_iter((*prompt)->export, "PWD")->env_data = *pwd;
 	}
 }
 
 void	get_oldpwd(char **pwd, t_prompt **prompt)
 {
-	t_env	*cpy;
-	t_env	*aux;
-
-	cpy = ft_env_iter((*prompt)->env, "OLDPWD");
-	aux = ft_env_iter((*prompt)->env, "PWD");
-	if (!cpy)
+	if (!ft_env_iter((*prompt)->env, "OLDPWD"))
 	{
 		*pwd = NULL;
 		ft_printf_fd(STDERR_FILENO, "msh: cd: %s", ERR_OLDPWD);
 	}
 	else
 	{
-		if (!aux)
+		if (!ft_env_iter((*prompt)->env, "PWD"))
 			before_export_pwd(prompt);
-		*pwd = ft_strdup(cpy->env_data);
+		*pwd = ft_strdup(ft_env_iter((*prompt)->env, "OLDPWD")->env_data);
 		if (!(*pwd))
 			terminate(ERR_MEM, 1);
 		ft_swap_content(&ft_env_iter((*prompt)->env, "OLDPWD")->env_data,
@@ -96,6 +89,8 @@ int	get_rootpwd(t_prompt **prompt)
 {
 	char	*pwd;
 
+	if (!ft_env_iter((*prompt)->env, "PWD"))
+		before_export_pwd(prompt);
 	pwd = ft_strdup("/");
 	if (!pwd)
 		ft_prompt_clear((*prompt), ERR_MEM, EXIT_FAILURE);
@@ -108,9 +103,29 @@ int	get_rootpwd(t_prompt **prompt)
 	}
 	else
 		before_export_oldpwd(prompt);
-	ft_env_iter((*prompt)->env, "PWD")->env_data = pwd;
-	ft_env_iter((*prompt)->export, "PWD")->env_data = pwd;
 	if (!chdir(pwd))
+	{
+		ft_env_iter((*prompt)->env, "PWD")->env_data = pwd;
+		ft_env_iter((*prompt)->export, "PWD")->env_data = pwd;
 		return (EXIT_SUCCESS);
+	}
 	return (EXIT_FAILURE);
+}
+
+void	aux_ft_cd(t_cd_vals *data, t_prompt *prompt)
+{
+	while (data->dirpwd)
+	{
+		if (!ft_strncmp(data->segments[data->idx], data->dirpwd->d_name,
+				ft_strlen(data->segments[data->idx])))
+		{
+			data->pwd = ft_strjoin(data->pwd, ft_strjoin(ft_strdup("/"),
+						data->segments[data->idx]));
+			if (!data->pwd)
+				terminate(ERR_MEM, EXIT_FAILURE);
+			do_pwd(&prompt, data->pwd);
+			break ;
+		}
+		data->dirpwd = readdir(data->dp);
+	}
 }

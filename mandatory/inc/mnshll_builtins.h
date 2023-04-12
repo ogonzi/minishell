@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 18:39:37 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 19:48:00 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,15 @@
 # define MS_ENVCMP		(char *)"env"
 # define MS_FLGCMP		(char *)"-n"
 # define MS_EXPCMP		(char *)"=\"\""
+
+typedef struct s_cd_vals
+{
+	char			**segments;
+	int				idx;
+	DIR				*dp;
+	struct dirent	*dirpwd;
+	char			*pwd;
+}t_cd_vals;
 
 // Built-In Functions
 int		check_ft_builtins(t_prompt *prompt, size_t	ac, char **av, char **ev);
@@ -51,12 +60,14 @@ int		ft_unset(int ac, char **av, t_prompt *prompt);
 
 // CD Built-In Function
 int		ft_cd(int ac, char **av, t_prompt *prompt);
+int	do_pwd(t_prompt **prompt, char *pwd);
 
 // CD Utils Built-In Functions
 void	get_pwd(char **pwd, t_prompt **prompt);
 void	get_homepwd(char **pwd, t_prompt **prompt);
 void	get_oldpwd(char **pwd, t_prompt **prompt);
 int		get_rootpwd(t_prompt **prompt);
+void	aux_ft_cd(t_cd_vals *data, t_prompt *prompt);
 
 // CD Tools Built-In Functions
 void	ft_swap_content(char **a, char **b);

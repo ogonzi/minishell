@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 17:21:48 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 17:40:45 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 19:01:40 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,13 @@ void	ft_env_clear(t_env **env, void (*del)(void *))
 	while (*env)
 	{
 		aux = (*env)->next;
-		del((*env)->env_data);
-		del((*env)->env_var);
+		if ((*env)->env_data)
+			del((*env)->env_data);
+		if ((*env)->env_var)
+			del((*env)->env_var);
 		del(*env);
 		*env = aux;
 	}
-	*env = NULL;
 }
 
 void	ft_env_addback(t_env **env, t_env *new)

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 16:43:53 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 19:04:04 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	main(int ac, char **av, char **ev)
 			ft_lstclear(&prompt.cmdline, (void *)ft_delete);
 	}
 	ft_env_clear(&prompt.env, (void *)ft_delete);
+	ft_delete(prompt.export);
 	return (0);
 }
 

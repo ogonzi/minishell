@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:45:33 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:56:13 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/12 19:00:56 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	ft_prompt_clear(t_prompt *prompt, char *str, int syserr)
 		ft_lstclear(&prompt->cmdline, (void *)ft_delete);
 	if (prompt->env)
 		ft_env_clear(&prompt->env, (void *)ft_delete);
+	if (prompt->export)
+		ft_env_clear(&prompt->export, (void *)ft_delete);
 	ft_delete(prompt);
 	if (str && syserr)
 		terminate(str, syserr);
