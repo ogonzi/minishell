@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:10:51 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:50:06 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 16:20:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static t_bool	handle_write_to_exit_file(int *fd_out, t_bool *did_redirection,
 	if (token_content->type == EXIT_FILE
 		|| token_content->type == EXIT_FILE_APP)
 	{
-		if (*did_redirection == TRUE && close(*fd_out))
+		if (*did_redirection == TRUE && close(*fd_out) != 0)
 			terminate(ERR_CLOSE, EXIT_FAILURE);
 		if (token_content->type == EXIT_FILE)
 			*fd_out = open(token_content->word,
