@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 13:07:50 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:30:22 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:01:24 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	syntax_error(char *word)
 
 int	ft_perror_syntax(const char *token)
 {
-	printf("%s %s\n", ERR_SYNTAX, token);
+	ft_printf_fd(STDERR_FILENO, "%s %s\n", ERR_SYNTAX, token);
 	return (EXIT_FAILURE);
 }
 

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:10:29 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 16:28:29 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:01:01 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ static t_bool	handle_open_file(int *fd_in, int *did_redirection,
 	*fd_in = open(filename, O_RDONLY);
 	if (*fd_in < 0)
 	{
-		printf("msh: %s: Error reading file or directory\n", filename);
+		ft_printf_fd(STDERR_FILENO, "msh: %s: Error reading file or \
+		directory\n", filename);
 		return (TRUE);
 	}
 	*did_redirection = 1;
@@ -76,7 +77,8 @@ static t_bool	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
 	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);
 	if (*fd_in < 0)
 	{
-		printf("msh: %s: Error reading file or directory\n", limitor);
+		ft_printf_fd(STDERR_FILENO, "msh: %s: Error reading file or \
+		directory\n", limitor);
 		return (TRUE);
 	}
 	if (unlink(TMP_FILE_HEREDOC) != 0)

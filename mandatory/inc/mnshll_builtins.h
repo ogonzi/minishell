@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 15:05:25 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 18:22:39 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ typedef struct s_cd_vals
 }t_cd_vals;
 
 // Built-In Functions
-int		check_ft_builtins(t_prompt *prompt, size_t	ac, char **av, char **ev);
+int		check_ft_builtins(t_prompt *prompt, t_pipe pipe_helper,
+			int tmp_fd[2], char **av);
+int		ft_builtins(t_prompt *prompt, size_t ac, char **av, char **ev);
 
 // PWD Built-In Function
 int		ft_pwd(size_t ac, t_prompt *prompt);
