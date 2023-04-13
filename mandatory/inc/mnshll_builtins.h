@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 18:22:39 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 20:09:46 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int		ft_export(int ac, char **av, t_prompt *prompt);
 void	before_export(t_env **env, char *data, t_bool flag);
 void	mns_export(t_env **env, t_bool flag, char **str);
 void	bubble_sort(char **arr, int size);
+char	*aux_print_declare_env_join(t_env *cpy);
 
 // UNSET Built-In Function
 int		ft_unset(int ac, char **av, t_prompt *prompt);

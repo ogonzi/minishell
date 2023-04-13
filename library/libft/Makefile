@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/27 19:35:19 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/13 11:50:47 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/13 18:55:02 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,8 @@ MTH_SRC	= ft_absval.c ft_atoi.c ft_atoi_base.c ft_factorial.c \
 
 MEM_SRC	= ft_bzero.c ft_calloc.c ft_memchr.c ft_memcmp.c \
 		ft_memfree.c ft_memmove.c ft_memset.c ft_range.c \
-		ft_rrange.c ft_strdup.c ft_ultrange.c ft_delete.c
+		ft_rrange.c ft_strdup.c ft_ultrange.c ft_delete.c \
+		ft_memjoin.c
 
 PUT_SRC	= ft_putchar.c ft_putchar_fd.c ft_putnbr.c ft_putnbr_fd.c \
 		ft_putnbr_base_fd.c ft_putstr.c ft_putstr_fd.c

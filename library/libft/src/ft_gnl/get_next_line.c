@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 11:35:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/06 20:44:19 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 18:56:19 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char
 			return (NULL);
 		}
 		buff[reading] = '\0';
-		buffer = ft_strjoin(buffer, buff);
+		buffer = ft_memjoin(buffer, buff);
 	}
 	free(buff);
 	return (buffer);

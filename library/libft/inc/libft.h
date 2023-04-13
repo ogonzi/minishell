@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:08:37 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 19:03:11 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 18:55:40 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ char	*ft_strdup(const char *s1);
 int		*ft_range(int min, int max);
 int		*ft_rrange(int start, int end);
 int		ft_ultrange(int **range, int min, int max);
+char	*ft_memjoin(char *s1, char *s2);
 
 // FT_put functions. These functions prints either in standart output or in fd
 int		ft_putchar(int c);

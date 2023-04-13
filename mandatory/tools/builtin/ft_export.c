@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 12:31:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 15:33:07 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 20:09:56 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,7 @@ static int	print_declare_env(ssize_t size, t_prompt *prompt)
 	{
 		if (cpy->env_var && cpy->env_data)
 		{
-			cpy_env[idx] = ft_strjoin(cpy->env_var,
-					ft_strjoin("=", ft_strjoin("\"",
-							ft_strjoin(cpy->env_data, "\""))));
+			cpy_env[idx] = aux_print_declare_env_join(cpy);
 			if (!cpy_env[idx])
 				ft_prompt_clear(prompt, ERR_MEM, 1);
 			++idx;
@@ -80,13 +78,15 @@ static int	print_declare_env(ssize_t size, t_prompt *prompt)
 static void	aux_print_declare_env(char **cpy_env, ssize_t size)
 {
 	ssize_t	idx;
+	char	*str;
 
 	bubble_sort(cpy_env, size);
 	idx = -1;
 	while (++idx < size)
 	{
-		printf("declare -x %s\n",
-			ft_strtrim_charset_end(cpy_env[idx], MS_EXPCMP));
+		str = ft_strtrim_charset_end(cpy_env[idx], MS_EXPCMP);
+		printf("declare -x %s\n", str);
+		ft_delete(str);
 	}
 	ft_memfree(cpy_env);
 }
