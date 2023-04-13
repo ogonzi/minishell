@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:50:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 16:08:02 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 12:02:02 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*get_custom_pwd(void)
 {
 	char	*val;
 
-	val = ft_calloc(MS_MAX_PATH, sizeof(char));
+	val = (char *)ft_calloc(MS_MAX_PATH, sizeof(char));
 	if (!val)
 		terminate(ERR_MEM, EXIT_FAILURE);
 	if (getcwd(val, MS_MAX_PATH))

@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/12 18:07:40 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/13 15:34:18 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,8 +32,8 @@ WHITE 		:= \033[0;97m
 
 CFLAGS      = -Wall -Wextra -Werror -W
 DFLAGS		= -MT $@ -MMD
-XFLAGS      = -fsanitize=address -fsanitize-recover=address -g3
-LFLAGS		= -fsanitize=leak
+XFLAGS      = #-fsanitize=address -fsanitize-recover=address -g3
+LFLAGS		= #-fsanitize=leak
 LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib
 RL_INC		= -I/Users/$(USER)/.brew/opt/readline/include
 
@@ -86,7 +86,8 @@ BLT_FLS	= builtins.c \
 		ft_unset.c \
 		ft_cd.c \
 		ft_cd_utils.c \
-		ft_cd_tools.c
+		ft_cd_tools.c \
+		ft_cd_auxiliar.c
 
 EXE_FLS	= exec.c \
 		redir_in.c \
@@ -109,7 +110,7 @@ WRD_FLS	= split_words.c \
 		split_words_tools.c \
 		split_words_utils.c
 
-UTL_FLS = env_utils.c \
+UTL_FLS = mnshll_utils.c \
 		env_lst.c \
 		error.c
 

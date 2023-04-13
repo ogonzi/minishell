@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 19:04:04 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:47:06 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ int	main(int ac, char **av, char **ev)
 		if (prompt.exit_status == 0)
 			prompt.exit_status = handler_pipeline(&prompt);
 		if (prompt.cmdline)
-			ft_lstclear(&prompt.cmdline, (void *)ft_delete);
+			ft_cmdline_clear(&prompt.cmdline, (void *)ft_delete);
 	}
+	printf("here am i");
 	ft_env_clear(&prompt.env, (void *)ft_delete);
-	ft_delete(prompt.export);
+	ft_env_clear(&prompt.export, (void *)ft_delete);
 	return (0);
 }
 

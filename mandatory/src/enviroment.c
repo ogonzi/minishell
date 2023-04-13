@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:53:44 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 18:46:16 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 12:50:14 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,29 @@ static void	*ft_environ_node(char *env)
 	str = ft_split(env, '=');
 	if (!str)
 		terminate(ERR_MEM, EXIT_FAILURE);
-	node->env_var = str[0];
-	node->env_data = str[1];
+	node->env_var = check_string(str[0]);
+	node->env_data = check_string(str[1]);
 	node->idx = ++idx;
 	node->next = NULL;
+	ft_memfree(str);
 	return (node);
+}
+
+char	*check_string(char *str)
+{
+	char	*aux;
+
+	if (!str)
+	{
+		aux = ft_strdup("");
+		if (!aux)
+			terminate(ERR_MEM, EXIT_FAILURE);
+		return (aux);
+	}
+	aux = ft_strdup(str);
+	if (!aux)
+		terminate(ERR_MEM, EXIT_FAILURE);
+	return (aux);
 }
 
 void	set_custom_env(t_env **env, char *prog)

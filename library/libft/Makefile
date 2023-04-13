@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/27 19:35:19 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/10 19:39:35 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/13 11:50:47 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ WHITE		:= \033[0;97m
 
 CFLAGS	= -Wall -Werror -Wextra -W -O3
 DFLAGS	= -MT $@ -MMD
-XFLAGS	= -g3 -fsanitize=address
+XFLAGS	= -g3 #-fsanitize=address
 AR		= ar rcs
 RM		= rm -f
 MK		= mkdir -p

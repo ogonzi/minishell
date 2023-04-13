@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:10:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 19:48:23 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:49:58 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static int	before_ft_cd(t_prompt *prompt, char **av)
 	t_cd_vals	data;
 
 	get_pwd(&data.pwd, &prompt);
+	check_valid_path(data.pwd, av[1]);
 	data.segments = ft_split(av[1], '/');
 	if (!data.segments)
 		terminate(ERR_MEM, EXIT_FAILURE);
@@ -57,6 +58,8 @@ static int	before_ft_cd(t_prompt *prompt, char **av)
 		aux_ft_cd(&data, prompt);
 		closedir(data.dp);
 	}
+	ft_delete(data.pwd);
+	ft_memfree(data.segments);
 	return (EXIT_SUCCESS);
 }
 
@@ -67,10 +70,12 @@ static int	do_homepwd(t_prompt **prompt)
 	get_homepwd(&pwd, prompt);
 	if (!chdir(pwd))
 	{
-		ft_env_iter((*prompt)->env, "PWD")->env_data = pwd;
-		ft_env_iter((*prompt)->export, "PWD")->env_data = pwd;
+		ft_env_iter((*prompt)->env, "PWD")->env_data = ft_strdup(pwd);
+		ft_env_iter((*prompt)->export, "PWD")->env_data = ft_strdup(pwd);
+		ft_delete(pwd);
 		return (EXIT_SUCCESS);
 	}
+	ft_delete(pwd);
 	return (EXIT_FAILURE);
 }
 
@@ -81,10 +86,12 @@ static int	do_oldpwd(t_prompt **prompt)
 	get_oldpwd(&pwd, prompt);
 	if (!chdir(pwd))
 	{
-		ft_env_iter((*prompt)->env, "PWD")->env_data = pwd;
-		ft_env_iter((*prompt)->export, "PWD")->env_data = pwd;
+		ft_env_iter((*prompt)->env, "PWD")->env_data = ft_strdup(pwd);
+		ft_env_iter((*prompt)->export, "PWD")->env_data = ft_strdup(pwd);
+		ft_delete(pwd);
 		return (EXIT_SUCCESS);
 	}
+	ft_delete(pwd);
 	return (EXIT_FAILURE);
 }
 
@@ -92,8 +99,8 @@ int	do_pwd(t_prompt **prompt, char *pwd)
 {
 	if (!chdir(pwd))
 	{
-		ft_env_iter((*prompt)->env, "PWD")->env_data = pwd;
-		ft_env_iter((*prompt)->export, "PWD")->env_data = pwd;
+		ft_env_iter((*prompt)->env, "PWD")->env_data = ft_strdup(pwd);
+		ft_env_iter((*prompt)->export, "PWD")->env_data = ft_strdup(pwd);
 		return (EXIT_SUCCESS);
 	}
 	return (EXIT_FAILURE);

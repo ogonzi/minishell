@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:54:03 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 19:38:32 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 14:22:27 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,3 @@ static void	error_exit(int err, char *str)
 	}
 	exit(EXIT_FAILURE);
 }
-
-// static int	ft_while_isdigit(char *str)
-// {
-// 	if (ft_issign(*str))
-// 		str++;
-// 	while (*str)
-// 	{
-// 		if (!ft_isdigit(*str))
-// 			return (FALSE);
-// 		str++;
-// 	}
-// 	return (TRUE);
-// }

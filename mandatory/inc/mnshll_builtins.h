@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 19:48:00 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:05:25 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_cd_vals
 int		check_ft_builtins(t_prompt *prompt, size_t	ac, char **av, char **ev);
 
 // PWD Built-In Function
-int		ft_pwd(size_t ac, char **ev);
+int		ft_pwd(size_t ac, t_prompt *prompt);
 
 // ENV Built-In Function
 int		ft_env(int ac, char **av, char **ev);
@@ -60,20 +60,24 @@ int		ft_unset(int ac, char **av, t_prompt *prompt);
 
 // CD Built-In Function
 int		ft_cd(int ac, char **av, t_prompt *prompt);
-int	do_pwd(t_prompt **prompt, char *pwd);
+int		do_pwd(t_prompt **prompt, char *pwd);
 
 // CD Utils Built-In Functions
 void	get_pwd(char **pwd, t_prompt **prompt);
 void	get_homepwd(char **pwd, t_prompt **prompt);
 void	get_oldpwd(char **pwd, t_prompt **prompt);
 int		get_rootpwd(t_prompt **prompt);
-void	aux_ft_cd(t_cd_vals *data, t_prompt *prompt);
 
 // CD Tools Built-In Functions
 void	ft_swap_content(char **a, char **b);
 void	export_oldpwd(t_env *env);
 void	export_pwd(t_env *env);
+
+// CD Auxiliar Built-In Functions
 void	before_export_oldpwd(t_prompt **prompt);
 void	before_export_pwd(t_prompt **prompt);
+void	aux_ft_cd(t_cd_vals *data, t_prompt *prompt);
+int		is_valid_path(char *path);
+int		check_valid_path(char *path, char *str);
 
 #endif

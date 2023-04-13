@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 12:57:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 18:43:01 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 13:03:42 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,27 +84,26 @@ void	check_pipe(t_pipe *pipe_helper, int tmp_fd[2])
 char	**copy_env(t_env *env, size_t size)
 {
 	char	**env_cpy;
-	t_env	*cpy;
 	ssize_t	idx;
+	char	*aux;
 
-	env_cpy = malloc(sizeof(char *) * (size + 1));
+	env_cpy = ft_calloc(sizeof(char *), (size + 1));
 	if (!env_cpy)
 		terminate(ERR_MEM, EXIT_FAILURE);
-	cpy = env;
 	idx = 0;
-	while (cpy)
+	while (env)
 	{
-		if (cpy->env_var && cpy->env_data)
+		if (env->env_var && env->env_data)
 		{
-			env_cpy[idx] = ft_strjoin(cpy->env_var,
-					ft_strjoin("=", cpy->env_data));
+			aux = ft_strjoin("=", env->env_data);
+			env_cpy[idx] = ft_strjoin(env->env_var, aux);
 			if (!env_cpy[idx])
 				terminate(ERR_MEM, EXIT_FAILURE);
-		++idx;
+			ft_delete(aux);
+			++idx;
 		}
-		cpy = cpy->next;
+		env = env->next;
 	}
-	env_cpy[idx] = NULL;
 	return (env_cpy);
 }
 

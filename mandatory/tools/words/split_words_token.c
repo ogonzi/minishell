@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 23:46:53 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:55:36 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 12:04:16 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	set_token_node(char *word, t_list **token_node,
 	token_data = (t_token *)malloc(sizeof(t_token));
 	if (!token_data)
 		terminate(ERR_MEM, EXIT_FAILURE);
-	token_data->word = malloc(sizeof(char) * (word_len + 1));
+	token_data->word = ft_calloc(sizeof(char), (word_len + 1));
 	if (!token_data->word)
 		terminate(ERR_MEM, EXIT_FAILURE);
 	token_data->type = *last_word_type;

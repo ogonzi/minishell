@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/18 18:29:13 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/03 16:31:04 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/13 11:51:10 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ DEP_DIR	= .deps/
 
 CFLAGS	= -Wall -Wextra -Werror -W -O3
 DFLAGS	= -MT $@ -MMD
-XFLAGS	= -fsanitize=address -g3 
+XFLAGS	= -g3 #-fsanitize=address
 
 AR		= ar -rcs
 RM		= rm -f

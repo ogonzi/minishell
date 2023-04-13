@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 17:17:43 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 20:38:58 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 12:52:27 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,9 @@ void	before_export(t_env **env, char *data, t_bool flag)
 	{
 		ft_delete(new_node->env_data);
 		if (flag)
-			new_node->env_data = ft_strdup(str[1]);
+			new_node->env_data = check_string(str[1]);
 		else
-			new_node->env_data = ft_strdup("");
-		if (!new_node->env_data)
-			terminate(ERR_MEM, 1);
+			new_node->env_data = check_string("");
 		return ;
 	}
 	else
@@ -47,18 +45,15 @@ void	mns_export(t_env **env, t_bool flag, char **str)
 	new_node = (t_env *)malloc(sizeof(t_env));
 	if (!new_node)
 		terminate(ERR_MEM, 1);
-	new_node->env_var = str[0];
+	new_node->env_var = check_string(str[0]);
 	if (flag)
-		new_node->env_data = str[1];
+		new_node->env_data = check_string(str[1]);
 	else
-	{
-		new_node->env_data = ft_strdup("");
-		if (!new_node->env_data)
-			terminate(ERR_MEM, 1);
-	}
+		new_node->env_data = check_string("");
 	new_node->idx = 0;
 	new_node->next = NULL;
 	ft_env_addback(env, new_node);
+	ft_memfree(str);
 }
 
 void	bubble_sort(char **arr, int size)

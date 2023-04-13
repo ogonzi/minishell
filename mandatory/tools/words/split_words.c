@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 22:48:43 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:55:25 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:44:40 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
+
+typedef struct s_classify
+{
+	enum e_type	last_word_type;
+	t_cmdline	*cmdline;
+	t_list		*token;
+	ssize_t		idx;
+	char		**split_cmd;
+	char		*aux;
+}t_classify;
 
 void	split_and_classify(void *content);
 
@@ -51,27 +61,27 @@ void	split_and_classify(void *content)
  * frees the memory allocated for the split_cmd array using ft_memfree.
 */
 {
-	enum e_type	last_word_type;
-	t_cmdline	*cmdline;
-	t_list		*token;
-	ssize_t		idx;
-	char		**split_cmd;
+	t_classify	class;
 
-	idx = -1;
-	cmdline = content;
-	cmdline->word = NULL;
-	last_word_type = NONE;
-	ft_split_mod(&split_cmd, cmdline->cmd, " \t\n");
-	while (split_cmd[++idx])
+	class.idx = -1;
+	class.cmdline = content;
+	class.cmdline->word = NULL;
+	class.last_word_type = NONE;
+	ft_split_mod(&class.split_cmd, class.cmdline->cmd, " \t\n");
+	while (class.split_cmd[++class.idx])
 	{
-		if (redirection_conditions(split_cmd[idx]))
-			handle_redirection_split(split_cmd[idx], &token,
-				&last_word_type, cmdline);
+		class.aux = ft_strdup(class.split_cmd[class.idx]);
+		if (!class.aux)
+			terminate(ERR_MEM, EXIT_FAILURE);
+		if (redirection_conditions(class.aux))
+			handle_redirection_split(class.aux, &class.token,
+				&class.last_word_type, class.cmdline);
 		else
 		{
-			set_token_node(split_cmd[idx], &token, &last_word_type);
-			ft_lstadd_back(&(cmdline->word), token);
+			set_token_node(class.aux, &class.token, &class.last_word_type);
+			ft_lstadd_back(&(class.cmdline->word), class.token);
 		}
+		ft_delete(class.aux);
 	}
-	ft_memfree(split_cmd);
+	ft_memfree(class.split_cmd);
 }

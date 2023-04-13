@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:53:56 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 18:33:35 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:33:43 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 void	custom_export(t_env *env, char *data);
 char	**ft_split_once(char const *s, char c);
 char	*ft_strtrim_charset_end(char *str, char *end);
+void	ft_cmdline_clear(t_list **lst, void (*del)(void *));
+void	ft_token_clear(t_list **lst, void (*del)(void *));
 
 // List Utils Functions
 t_env	*ft_env_iter(t_env *env, char *ref);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   mnshll_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:18:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 18:34:34 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:46:49 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@ void	custom_export(t_env *env, char *data)
 
 	aux = ft_strdup(data);
 	if (!aux)
-		return ;
+		terminate(ERR_MEM, EXIT_FAILURE);
 	ft_delete(env->env_data);
-	env->env_data = aux;
+	env->env_data = ft_strdup(aux);
+	if (!env->env_data)
+		terminate(ERR_MEM, EXIT_FAILURE);
+	ft_delete(aux);
 }
 
 char	**ft_split_once(char const *s, char c)
@@ -71,4 +74,41 @@ char	*ft_strtrim_charset_end(char *str, char *end)
 		return (str);
 	}
 	return (ft_strdup(str));
+}
+
+void	ft_cmdline_clear(t_list **lst, void (*del)(void *))
+{
+	t_list		*temp;
+	t_cmdline	*cmdline;	
+
+	if (!(*lst))
+		return ;
+	while (*lst)
+	{
+		temp = (*lst)->next;
+		cmdline = (t_cmdline *)(*lst)->data;
+		del(cmdline->cmd);
+		ft_token_clear(&cmdline->word, del);
+		ft_lstdelone(*lst, del);
+		*lst = temp;
+	}
+	*lst = NULL;
+}
+
+void	ft_token_clear(t_list **lst, void (*del)(void *))
+{
+	t_list	*temp;
+	t_token	*token;
+
+	if (!(*lst))
+		return ;
+	while (*lst)
+	{
+		temp = (*lst)->next;
+		token = (t_token *)(*lst)->data;
+		del(token->word);
+		ft_lstdelone(*lst, del);
+		*lst = temp;
+	}
+	*lst = NULL;
 }

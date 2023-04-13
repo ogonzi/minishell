@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:10:29 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:49:09 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:22:03 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,14 @@ t_bool	dup_to_in(int *tmp_fd_in, t_list *command)
 	t_list	*token;
 	t_token	*token_content;
 	int		fd_in;
-	int		did_redirection;
+	t_bool	did_redirection;
 
 	token = ((t_cmdline *)command->data)->word;
-	did_redirection = 0;
+	did_redirection = FALSE;
 	while (token)
 	{
 		token_content = token->data;
+		printf("---->%u<------\n", token_content->type);
 		if (token_content->type == OPEN_FILE
 			&& handle_open_file(&fd_in, &did_redirection,
 				token_content->word) == 1)

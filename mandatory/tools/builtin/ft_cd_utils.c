@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:32:13 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 19:48:09 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:07:40 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,27 +105,10 @@ int	get_rootpwd(t_prompt **prompt)
 		before_export_oldpwd(prompt);
 	if (!chdir(pwd))
 	{
-		ft_env_iter((*prompt)->env, "PWD")->env_data = pwd;
-		ft_env_iter((*prompt)->export, "PWD")->env_data = pwd;
+		ft_env_iter((*prompt)->env, "PWD")->env_data = ft_strdup(pwd);
+		ft_env_iter((*prompt)->export, "PWD")->env_data = ft_strdup(pwd);
+		ft_delete(pwd);
 		return (EXIT_SUCCESS);
 	}
 	return (EXIT_FAILURE);
-}
-
-void	aux_ft_cd(t_cd_vals *data, t_prompt *prompt)
-{
-	while (data->dirpwd)
-	{
-		if (!ft_strncmp(data->segments[data->idx], data->dirpwd->d_name,
-				ft_strlen(data->segments[data->idx])))
-		{
-			data->pwd = ft_strjoin(data->pwd, ft_strjoin(ft_strdup("/"),
-						data->segments[data->idx]));
-			if (!data->pwd)
-				terminate(ERR_MEM, EXIT_FAILURE);
-			do_pwd(&prompt, data->pwd);
-			break ;
-		}
-		data->dirpwd = readdir(data->dp);
-	}
 }

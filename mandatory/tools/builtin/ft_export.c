@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 12:31:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 18:35:05 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:33:07 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,9 @@ static int	print_declare_env(ssize_t size, t_prompt *prompt)
 static void	aux_print_declare_env(char **cpy_env, ssize_t size)
 {
 	ssize_t	idx;
-	ssize_t	cnt;
 
 	bubble_sort(cpy_env, size);
 	idx = -1;
-	cnt = -1;
 	while (++idx < size)
 	{
 		printf("declare -x %s\n",

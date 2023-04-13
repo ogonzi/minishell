@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:37:32 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 16:07:58 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 12:50:05 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	set_environ(t_env **env, char **ev);
 void	set_custom_env(t_env **env, char *prog);
 void	custom_void_env(t_env **env, char *prog);
 char	*get_custom_pwd(void);
+char	*check_string(char *str);
 
 // Signal Functions
 void	set_sigint_action(void);

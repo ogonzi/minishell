@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 16:48:46 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/13 12:58:08 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	redir_pipe(t_list *command_cpy, t_prompt *prompt, int tmp_fd[2])
 	envp = copy_env(prompt->env, ft_env_size(prompt->env));
 	exit_status = check_ft_builtins(prompt, ft_strcount(command_array),
 			command_array, envp);
+	ft_memfree(command_array);
+	ft_memfree(envp);
 	if (exit_status == -1)
 		exit_status = do_pipe(tmp_fd, command_cpy, prompt, pipe_helper);
 	return (exit_status);
