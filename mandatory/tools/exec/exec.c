@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 18:22:29 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/14 19:40:05 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,25 @@ int	redir_pipe(t_list *command_cpy, t_prompt *prompt, int tmp_fd[2])
 
 static int	do_pipe(int tmp_fd[2], t_list *command,
 				t_prompt *prompt, t_pipe pipe_helper)
+/*
+ * First, the function creates a pipe using the pipe() system call and stores
+ * the read and write file descriptors in pipe_helper.fd.
+
+ * Next, it forks a child process using the fork() system call.
+ * If the child process is created successfully, it will execute the do_child()
+ * function, which sets up the necessary file descriptors and executes the
+ * command using the do_execve() function.
+
+ * If the parent process is created successfully and this is not the last pipe
+ * in the sequence, it will set up the necessary file descriptors and close any
+ * unnecessary file descriptors for the parent process using dup2() and close().
+
+ * If the parent process is created successfully and this is the last pipe in
+ * the sequence, it will return the result of the do_last_pipe_parent()
+ * function.
+
+ * If do_pipe() is successful, it will return FALSE.
+*/
 {
 	pid_t	pid;
 
@@ -96,6 +115,19 @@ static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid)
 
 static void	do_child(int tmp_fd[2], t_list *command,
 					t_prompt *prompt, t_pipe pipe_helper)
+/*
+ * The function is responsible for performing several operations on file
+ * descriptors and then executing the command using do_execve().
+
+ * First, the function closes the read end of the pipe using 
+ * close(pipe_helper.fd[0]). Next, it duplicates the read end of the temporary
+ * pipe tmp_fd[0] to the standard input file descriptor (STDIN_FILENO) using
+ * dup2(tmp_fd[0], STDIN_FILENO). Then, it closes the read end of the temporary
+ * pipe using close(tmp_fd[0]).
+
+ * Finally, it calls the do_execve() function to execute the command in the
+ * child process.
+*/
 {
 	if (close(pipe_helper.fd[0]))
 		terminate(ERR_CLOSE, EXIT_FAILURE);
@@ -108,6 +140,18 @@ static void	do_child(int tmp_fd[2], t_list *command,
 
 void	do_execve(t_list *command, t_prompt *prompt,
 					int tmp_fd[2], t_pipe pipe_helper)
+/*
+ * The function then checks if there is a pipe involved in the command using
+ * the check_pipe function. If there is, it sets up the appropriate file
+ * descriptors using the tmp_fd array.
+
+ * The function sets up a signal handler for the child process using the
+ * set_child_sigaction function.
+
+ * Finally, the function executes the command using the execve system call,
+ * passing in the full path of the executable, the array of arguments, and
+ * the environment variables. 
+*/
 {
 	char	**envp;
 	char	**command_array;

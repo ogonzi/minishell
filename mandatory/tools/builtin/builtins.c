@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:56:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 18:22:43 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/14 19:45:30 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	check_ft_builtins(t_prompt *prompt, t_pipe pipe_helper,
 				if (close(pipe_helper.fd[1]))
 					terminate(ERR_CLOSE, EXIT_FAILURE);
 			}
-			ft_printf_fd(pipe_helper.fd[1], "here should go a builtin\n");
+			ft_printf_fd(STDOUT_FILENO, "here should go a builtin\n");
 			return (0);
 		}
 	}

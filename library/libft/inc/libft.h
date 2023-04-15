@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:08:37 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 18:55:40 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 01:43:55 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ typedef struct s_list
 	void				*data;
 	struct s_list		*next;
 }						t_list;
+
+typedef struct s_gnldata
+{
+	char	*buffer[OPEN_MAX];
+}				t_gnldata;
 
 // FT_GNL funtion. The get next line 42 project.
 char	*get_next_line(int fd);
