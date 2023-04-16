@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mnshll_data.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:14:06 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 18:24:03 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/15 16:27:15 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ struct s_pipe
 	int	fd[2];
 	int	did_out_redirection;
 	int	is_last;
+	int	is_first;
 };
 
 struct s_token

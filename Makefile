@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
+#    By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/13 15:34:18 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/15 17:10:52 by ogonzale         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ WHITE 		:= \033[0;97m
 
 CFLAGS      = -Wall -Wextra -Werror -W
 DFLAGS		= -MT $@ -MMD
-XFLAGS      = #-fsanitize=address -fsanitize-recover=address -g3
+XFLAGS      = -g #-fsanitize=address -fsanitize-recover=address -g3
 LFLAGS		= #-fsanitize=leak
 LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib
 RL_INC		= -I/Users/$(USER)/.brew/opt/readline/include

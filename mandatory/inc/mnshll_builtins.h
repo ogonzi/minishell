@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mnshll_builtins.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 20:09:46 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/15 16:43:56 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ typedef struct s_cd_vals
 }t_cd_vals;
 
 // Built-In Functions
-int		check_ft_builtins(t_prompt *prompt, t_pipe pipe_helper,
-			int tmp_fd[2], char **av);
+int		check_ft_builtins1(t_prompt *prompt, char **av, char **ev);
+int		check_ft_builtins2(t_prompt *prompt, t_pipe pipe_helper, char **av, char **ev);
 int		ft_builtins(t_prompt *prompt, size_t ac, char **av, char **ev);
 
 // PWD Built-In Function

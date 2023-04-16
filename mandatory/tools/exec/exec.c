@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 18:22:29 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 10:17:35 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,32 @@ static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid);
 static void	do_child(int tmp_fd[2], t_list *command,
 				t_prompt *prompt, t_pipe pipe_helper);
 
-int	redir_pipe(t_list *command_cpy, t_prompt *prompt, int tmp_fd[2])
+int	redir_pipe(t_list *command_cpy, t_prompt *prompt, int tmp_fd[2], int is_first)
 {
 	char	**command_array;
+	char	**envp;
 	int		exit_status;
 	t_pipe	pipe_helper;
-
+	
+	pipe_helper.is_first = is_first;	
 	exit_status = dup_to_in(&tmp_fd[0], command_cpy);
 	if (exit_status == 0)
 		exit_status = dup_to_out(&tmp_fd[1], command_cpy,
 				&pipe_helper.did_out_redirection);
 	if (exit_status == 0 && command_cpy->next)
-		pipe_helper.is_last = 0;
+		pipe_helper.is_last = FALSE;
 	else if (exit_status == 0)
-		pipe_helper.is_last = 1;
+		pipe_helper.is_last = TRUE;
 	do_sigign(SIGINT);
 	do_sigign(SIGQUIT);
-	command_array = get_command_array(command_cpy);
-	exit_status = check_ft_builtins(prompt, pipe_helper, tmp_fd, command_array);
-	ft_memfree(command_array);
-	if (exit_status == -1)
-		exit_status = do_pipe(tmp_fd, command_cpy, prompt, pipe_helper);
+	if (pipe_helper.is_first && pipe_helper.is_last) {
+		command_array = get_command_array(command_cpy);
+		envp = copy_env(prompt->env, ft_env_size(prompt->env));
+		check_ft_builtins2(prompt, pipe_helper, command_array, envp);
+		ft_memfree(command_array);
+		ft_memfree(envp);
+	}
+	exit_status = do_pipe(tmp_fd, command_cpy, prompt, pipe_helper);
 	return (exit_status);
 }
 
@@ -89,7 +94,7 @@ static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid)
 		;
 	last_pipe_exit = handle_child_exit(exit_status, last_pipe_exit, 1);
 	exit_status = 0;
-	while (waitpid(WAIT_ANY, &exit_status, 0) != ERRNUM)
+	while (waitpid(-1, &exit_status, 0) != ERRNUM)
 		;
 	return (handle_child_exit(exit_status, last_pipe_exit, 0));
 }
@@ -112,23 +117,30 @@ void	do_execve(t_list *command, t_prompt *prompt,
 	char	**envp;
 	char	**command_array;
 	char	*exec_path;
+	int		exit_value;
 
 	command_array = get_command_array(command);
 	envp = copy_env(prompt->env, ft_env_size(prompt->env));
-	if (!ft_env_iter(prompt->env, "PATH"))
-	{
-		ft_printf_fd(STDERR_FILENO, "%s: command not found\n",
-			command_array[0]);
-		exit(CMD_NOT_FOUND);
-	}
-	if (get_exec_path(command_array[0], &exec_path, command, prompt))
-	{
-		ft_printf_fd(STDERR_FILENO, "%s: command not found\n",
-			command_array[0]);
-		exit(((t_cmdline *)command->data)->exit_status);
-	}
 	check_pipe(&pipe_helper, tmp_fd);
-	set_child_sigaction();
-	if (execve(exec_path, command_array, envp) == ERRNUM)
-		ft_prompt_clear(prompt, ERR_EXECVE, EXIT_FAILURE);
+	exit_value = check_ft_builtins1(prompt, command_array, envp);
+	if (exit_value == -1) {
+		if (!ft_env_iter(prompt->env, "PATH"))
+		{
+			ft_printf_fd(STDERR_FILENO, "%s: command not found\n",
+						 command_array[0]);
+			exit(CMD_NOT_FOUND);
+		}
+		if (get_exec_path(command_array[0], &exec_path, command, prompt))
+		{
+			ft_printf_fd(STDERR_FILENO, "%s: command not found\n",
+						 command_array[0]);
+			exit(((t_cmdline *)command->data)->exit_status);
+		}
+		set_child_sigaction();
+		if (execve(exec_path, command_array, envp) == ERRNUM)
+			ft_prompt_clear(prompt, ERR_EXECVE, EXIT_FAILURE);
+	}
+	ft_memfree(command_array);
+	ft_memfree(envp);
+	exit(exit_value);
 }

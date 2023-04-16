@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 16:43:31 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 10:12:10 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int ac, char **av, char **ev)
 		set_sigint_action();
 		do_sigign(SIGQUIT);
 		prompt.exit_status = handler_input(&prompt);
-		if (prompt.exit_status == ERRNUM)
+		if (prompt.exit_status == -2)
 			break ;
 		if (prompt.exit_status == 0)
 			prompt.exit_status = handler_pipeline(&prompt);
@@ -93,7 +93,7 @@ static int	handler_input(t_prompt *prompt)
 	if (!buf)
 	{
 		write(STDOUT_FILENO, "exit\n", 5);
-		return (-1);
+		return (-2);
 	}
 	if (ft_strlen(buf) != 0)
 	{
@@ -137,6 +137,7 @@ static int	handler_pipeline(t_prompt *prompt)
 	t_list	*command_cpy;
 	int		tmp_fd[2];
 	int		exit_status;
+	int		is_first;
 
 	tmp_fd[0] = dup(STDIN_FILENO);
 	if (tmp_fd[0] == ERRNUM)
@@ -145,14 +146,16 @@ static int	handler_pipeline(t_prompt *prompt)
 	if (tmp_fd[1] == ERRNUM)
 		ft_prompt_clear(prompt, ERR_DUP, EXIT_FAILURE);
 	command_cpy = prompt->cmdline;
+	is_first = TRUE;
 	while (command_cpy)
 	{
-		exit_status = redir_pipe(command_cpy, prompt, tmp_fd);
+		exit_status = redir_pipe(command_cpy, prompt, tmp_fd, is_first);
 		command_cpy = command_cpy->next;
+		is_first = FALSE;
 	}
 	if (close(tmp_fd[0]))
-		ft_prompt_clear(prompt, ERR_DUP, EXIT_FAILURE);
+		ft_prompt_clear(prompt, ERR_CLOSE, EXIT_FAILURE);
 	if (close(tmp_fd[1]))
-		ft_prompt_clear(prompt, ERR_DUP, EXIT_FAILURE);
+		ft_prompt_clear(prompt, ERR_CLOSE, EXIT_FAILURE);
 	return (exit_status);
 }
