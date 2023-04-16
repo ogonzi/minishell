@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:50:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 12:02:02 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 05:50:57 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,16 @@ static t_env	*ft_custom_env_node(char *var, char *data);
 
 void	custom_void_env(t_env **env, char *prog)
 {
-	ssize_t	idx;
+	char	*aux;
 
-	idx = 4;
-	while (--idx)
-	{
-		if (idx == 3)
-			*env = ft_custom_env_node("PWD", get_custom_pwd());
-		else if (idx == 2)
-			(*env)->next = ft_custom_env_node("SHLVL", "1");
-		else if (idx == 1)
-			(*env)->next->next = ft_custom_env_node("_",
-					ft_strtrim(prog, "."));
-	}
+	(*env) = ft_custom_env_node(ft_strdup("PWD"), get_custom_pwd());
+	(*env)->next = ft_custom_env_node(ft_strdup("SHLVL"), ft_strdup("1"));
+	aux = ft_strtrim(prog, ".");
+	if (!aux)
+		terminate(ERR_MEM, EXIT_FAILURE);
+	(*env)->next->next = ft_custom_env_node(ft_strdup("_"),
+			ft_strjoin(get_custom_pwd(), aux));
+	ft_delete(aux);
 }
 
 static t_env	*ft_custom_env_node(char *var, char *data)
