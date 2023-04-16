@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:14:06 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 18:24:03 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 15:55:08 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ struct s_pipe
 	int	fd[2];
 	int	did_out_redirection;
 	int	is_last;
+	int	is_first;
 };
 
 struct s_token

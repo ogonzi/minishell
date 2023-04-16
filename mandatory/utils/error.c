@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:45:33 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 15:32:04 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 16:26:54 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ void	terminate(char *str, int syserr)
 	exit(syserr);
 }
 
+int	ft_print_error(char *str, int syserr)
+{
+	ft_printf_fd(STDERR_FILENO, "msh: %s: %s", ERR_MSG, str);
+	return (syserr);
+}
+
 void	ft_prompt_clear(t_prompt *prompt, char *str, int syserr)
 {
 	if (prompt->cmdline)
@@ -31,4 +37,17 @@ void	ft_prompt_clear(t_prompt *prompt, char *str, int syserr)
 	ft_delete(prompt);
 	if (str && syserr)
 		terminate(str, syserr);
+}
+
+void	aux_clean_cmd_env(char ***cmd, char ***env)
+{
+	ft_memfree((*cmd));
+	ft_memfree((*env));
+}
+
+void	cmd_not_found(char *cmd)
+{
+	ft_printf_fd(STDERR_FILENO, "msh: %s: command not found\n",
+		cmd);
+	exit(CMD_NOT_FOUND);
 }

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:56:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/14 19:45:30 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 17:18:44 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,47 +16,57 @@
 #include "mnshll_data.h"
 #include "mnshll_error.h"
 
-int	check_ft_builtins(t_prompt *prompt, t_pipe pipe_helper,
-	int tmp_fd[2], char **av)
+int	check_ft_builtins1(t_prompt *prompt, char **av, char **ev)
 {
-	char	*builtcmp[7];
+	char	*builtcmp1[1];
+	char	*builtcmp2[5];
 	int		idx;
 
-	builtcmp[0] = "pwd";
-	builtcmp[1] = "env";
-	builtcmp[2] = "exit";
-	builtcmp[3] = "echo";
-	builtcmp[4] = "export";
-	builtcmp[5] = "unset";
-	builtcmp[6] = "cd";
+	builtcmp1[0] = "pwd";
+	builtcmp2[4] = "echo";
+	builtcmp2[0] = "exit";
+	builtcmp2[1] = "export";
+	builtcmp2[2] = "unset";
+	builtcmp2[3] = "cd";
 	idx = -1;
-	while (++idx < 7)
+	while (++idx < 1)
 	{
-		if (!ft_strncmp(ft_strlowcase(av[0]), builtcmp[idx], ft_strlen(av[0])))
-		{
-			if (pipe(pipe_helper.fd))
-				ft_prompt_clear(prompt, ERR_PIPE, EXIT_FAILURE);
-			if (!pipe_helper.is_last)
-			{
-				if (dup2(pipe_helper.fd[0], tmp_fd[0]) == ERRNUM)
-					ft_prompt_clear(prompt, ERR_DUP, EXIT_FAILURE);
-				if (close(pipe_helper.fd[0]))
-					ft_prompt_clear(prompt, ERR_CLOSE, EXIT_FAILURE);
-				if (close(pipe_helper.fd[1]))
-					ft_prompt_clear(prompt, ERR_CLOSE, EXIT_FAILURE);
-			}
-			else
-			{
-				if (close(pipe_helper.fd[0]))
-					terminate(ERR_CLOSE, EXIT_FAILURE);
-				if (dup2(pipe_helper.fd[1], tmp_fd[1]) == ERRNUM)
-					terminate(ERR_DUP, EXIT_FAILURE);
-				if (close(pipe_helper.fd[1]))
-					terminate(ERR_CLOSE, EXIT_FAILURE);
-			}
-			ft_printf_fd(STDOUT_FILENO, "here should go a builtin\n");
-			return (0);
-		}
+		if (!ft_strncmp(ft_strlowcase(av[0]), builtcmp1[idx], ft_strlen(av[0])))
+			return (ft_builtins(prompt, ft_strcount(av), av, ev));
+	}
+	idx = -1;
+	while (++idx < 6)
+	{
+		if (!ft_strncmp(ft_strlowcase(av[0]), builtcmp2[idx], ft_strlen(av[0])))
+			return (-2);
+	}
+	return (-1);
+}
+
+int	check_ft_builtins2(t_prompt *prompt, t_pipe pipe_helper,
+	char **av, char **ev)
+{
+	char	*builtcmp[6];
+	int		idx;
+	size_t	ac;
+
+	if (!av[0])
+		cmd_not_found("");
+	builtcmp[0] = "exit";
+	builtcmp[1] = "export";
+	builtcmp[2] = "unset";
+	builtcmp[3] = "cd";
+	builtcmp[4] = "env";
+	builtcmp[5] = "echo";
+	ac = 0;
+	while (av[ac])
+		ac++;
+	idx = -1;
+	while (++idx < 6)
+	{
+		if (!ft_strncmp(ft_strlowcase(av[0]), builtcmp[idx], ft_strlen(av[0]))
+			&& pipe_helper.is_first == TRUE)
+			return (ft_builtins(prompt, ac, av, ev));
 	}
 	return (-1);
 }

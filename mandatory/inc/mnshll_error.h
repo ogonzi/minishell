@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:08:10 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/12 16:38:28 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 16:19:05 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@
 # define OUT_OF_RANGE		255
 
 void	terminate(char *s, int syserr);
+int		ft_print_error(char *str, int syserr);
 void	ft_prompt_clear(t_prompt *prompt, char *str, int syserr);
+void	aux_clean_cmd_env(char ***cmd, char ***env);
+void	cmd_not_found(char *cmd);
 
 #endif
