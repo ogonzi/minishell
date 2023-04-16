@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:54:03 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 14:22:27 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 17:48:59 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	ft_exit(int ac, char **av)
 	printf("exit\n");
 	if (ac == 1)
 		exit(0);
+	if (!av[1][0])
+		error_exit(ERRCODE1, NULL);
 	if (ac > 2)
 		error_exit(ERRCODE0, NULL);
 	nbr = ft_atoll_base(av[1], STR_BASE10);
