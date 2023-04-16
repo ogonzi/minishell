@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:56:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 17:18:44 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 22:51:34 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,19 @@
 
 int	check_ft_builtins1(t_prompt *prompt, char **av, char **ev)
 {
-	char	*builtcmp1[1];
-	char	*builtcmp2[5];
+	char	*builtcmp1[3];
+	char	*builtcmp2[4];
 	int		idx;
 
 	builtcmp1[0] = "pwd";
-	builtcmp2[4] = "echo";
+	builtcmp1[1] = "env";
+	builtcmp1[2] = "echo";
 	builtcmp2[0] = "exit";
 	builtcmp2[1] = "export";
 	builtcmp2[2] = "unset";
 	builtcmp2[3] = "cd";
 	idx = -1;
-	while (++idx < 1)
+	while (++idx < 3)
 	{
 		if (!ft_strncmp(ft_strlowcase(av[0]), builtcmp1[idx], ft_strlen(av[0])))
 			return (ft_builtins(prompt, ft_strcount(av), av, ev));
@@ -46,9 +47,8 @@ int	check_ft_builtins1(t_prompt *prompt, char **av, char **ev)
 int	check_ft_builtins2(t_prompt *prompt, t_pipe pipe_helper,
 	char **av, char **ev)
 {
-	char	*builtcmp[6];
+	char	*builtcmp[5];
 	int		idx;
-	size_t	ac;
 
 	if (!av[0])
 		cmd_not_found("");
@@ -56,17 +56,13 @@ int	check_ft_builtins2(t_prompt *prompt, t_pipe pipe_helper,
 	builtcmp[1] = "export";
 	builtcmp[2] = "unset";
 	builtcmp[3] = "cd";
-	builtcmp[4] = "env";
-	builtcmp[5] = "echo";
-	ac = 0;
-	while (av[ac])
-		ac++;
+	builtcmp[3] = "env";
 	idx = -1;
-	while (++idx < 6)
+	while (++idx < 4)
 	{
 		if (!ft_strncmp(ft_strlowcase(av[0]), builtcmp[idx], ft_strlen(av[0]))
 			&& pipe_helper.is_first == TRUE)
-			return (ft_builtins(prompt, ac, av, ev));
+			return (ft_builtins(prompt, ft_strcount(av), av, ev));
 	}
 	return (-1);
 }

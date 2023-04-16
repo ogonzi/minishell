@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 17:20:03 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 22:50:07 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid)
 		;
 	last_pipe_exit = handle_child_exit(exit_status, last_pipe_exit, 1);
 	exit_status = 0;
-	while (waitpid(WAIT_ANY, &exit_status, 0) != ERRNUM)
+	while (waitpid(-1, &exit_status, 0) != ERRNUM)
 		;
 	return (handle_child_exit(exit_status, last_pipe_exit, 0));
 }
@@ -166,8 +166,8 @@ void	do_execve(t_list *command, t_prompt *prompt,
 
 	command_array = get_command_array(command);
 	envp = copy_env(prompt->env, ft_env_size(prompt->env));
-	exit_value = check_ft_builtins1(prompt, command_array, envp);
 	check_pipe(&pipe_helper, tmp_fd);
+	exit_value = check_ft_builtins1(prompt, command_array, envp);
 	if (exit_value == -1)
 	{
 		if (!ft_env_iter(prompt->env, "PATH") || command_array[0][0] == '/')
