@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:46:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 17:08:13 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/16 19:20:20 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	print_arguments(int ac, char **av, t_bool flag)
 			flag = TRUE;
 			continue ;
 		}
-		ft_printf_fd(STDOUT_FILENO, "%s", av[idx]);
+		printf("%s", av[idx]);
 		idx++;
 		if (idx != ac)
 			printf(" ");
