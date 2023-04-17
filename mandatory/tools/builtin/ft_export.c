@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 12:31:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 20:09:56 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/17 20:10:42 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static void	aux_print_declare_env(char **cpy_env, ssize_t size)
 	{
 		str = ft_strtrim_charset_end(cpy_env[idx], MS_EXPCMP);
 		printf("declare -x %s\n", str);
-		ft_delete(str);
 	}
 	ft_memfree(cpy_env);
 }

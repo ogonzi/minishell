@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:18:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 15:46:49 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/17 20:10:35 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*ft_strtrim_charset_end(char *str, char *end)
 		str[str_len - end_len] = '\0';
 		return (str);
 	}
-	return (ft_strdup(str));
+	return (str);
 }
 
 void	ft_cmdline_clear(t_list **lst, void (*del)(void *))
