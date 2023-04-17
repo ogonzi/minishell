@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:03:39 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:55:11 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/17 17:04:23 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ void	remove_quotes(char *word, int *remove_char, int *single_quoted)
 	idx = -1;
 	while (word[++idx])
 	{
-		if (word[idx] == '\'')
+		if (word[idx] == '\'' && word[idx + 1] != '\'')
 		{
 			*single_quoted = 1;
 			remove_char[idx] = 1;
 			find_closing_quote(word, &idx, &f_single_quote, '\'');
 			remove_char[idx] = 1;
 		}
-		if (word[idx] == '\"')
+		if (word[idx] == '\"' && word[idx + 1] != '\"')
 		{
 			remove_char[idx] = 1;
 			find_closing_quote(word, &idx, &f_single_quote, '\"');
