@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 12:57:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 13:03:42 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:11:22 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	handle_child_exit(int exit_status, int last_pipe_exit, int last_pipe)
 	if (WIFSIGNALED(exit_status))
 	{
 		if (WCOREDUMP(exit_status))
-			terminate(ERR_CHLD, EXIT_FAILURE);
+			terminate(ERR_CHLD, EXIT_SUCCESS);
 		if (WTERMSIG(exit_status) == SIGINT)
 		{
 			if (last_pipe == TRUE)

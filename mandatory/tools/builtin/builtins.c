@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:56:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 22:51:34 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:38:48 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 int	check_ft_builtins1(t_prompt *prompt, char **av, char **ev)
 {
 	char	*builtcmp1[3];
-	char	*builtcmp2[4];
+	char	*builtcmp2[5];
 	int		idx;
 
 	builtcmp1[0] = "pwd";
-	builtcmp1[1] = "env";
-	builtcmp1[2] = "echo";
+	builtcmp1[1] = "echo";
+	builtcmp1[2] = "env";
 	builtcmp2[0] = "exit";
 	builtcmp2[1] = "export";
 	builtcmp2[2] = "unset";
@@ -36,7 +36,7 @@ int	check_ft_builtins1(t_prompt *prompt, char **av, char **ev)
 			return (ft_builtins(prompt, ft_strcount(av), av, ev));
 	}
 	idx = -1;
-	while (++idx < 6)
+	while (++idx < 5)
 	{
 		if (!ft_strncmp(ft_strlowcase(av[0]), builtcmp2[idx], ft_strlen(av[0])))
 			return (-2);
@@ -47,7 +47,7 @@ int	check_ft_builtins1(t_prompt *prompt, char **av, char **ev)
 int	check_ft_builtins2(t_prompt *prompt, t_pipe pipe_helper,
 	char **av, char **ev)
 {
-	char	*builtcmp[5];
+	char	*builtcmp[4];
 	int		idx;
 
 	if (!av[0])
@@ -56,7 +56,6 @@ int	check_ft_builtins2(t_prompt *prompt, t_pipe pipe_helper,
 	builtcmp[1] = "export";
 	builtcmp[2] = "unset";
 	builtcmp[3] = "cd";
-	builtcmp[3] = "env";
 	idx = -1;
 	while (++idx < 4)
 	{

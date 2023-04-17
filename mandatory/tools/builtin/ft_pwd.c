@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:27 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 15:53:29 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:01:58 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_pwd(size_t ac, t_prompt *prompt)
 	str = ft_strdup(ft_env_iter(prompt->env, "PWD")->env_data);
 	if (!str)
 		ft_prompt_clear(prompt, ERR_MEM, EXIT_FAILURE);
-	printf(STDIN_FILENO, "%s\n", str);
+	printf("%s\n", str);
 	ft_delete(str);
 	return (EXIT_SUCCESS);
 }
