@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/17 15:45:00 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/17 19:47:41 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,28 +102,21 @@ static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid)
 {
 	int	last_pipe_exit;
 	int	exit_status;
-	int	child_status;
 
-	if (close(pipe_helper.fd[0]))
-		terminate(ERR_CLOSE, EXIT_FAILURE);
-	if (dup2(pipe_helper.fd[1], tmp_fd[1]) == ERRNUM)
-		terminate(ERR_DUP, EXIT_FAILURE);
-	if (close(pipe_helper.fd[1]))
-		terminate(ERR_CLOSE, EXIT_FAILURE);
-	last_pipe_exit = FALSE;
-	while (waitpid(pid, &exit_status, 0) != pid)
+	if (close(pipe_helper.fd[1]) != 0)
+		terminate(ERR_CLOSE, 1);
+	if (dup2(pipe_helper.fd[0], tmp_fd[0]) == ERRNUM)
+		terminate(ERR_DUP, 1);
+	if (close(pipe_helper.fd[0]) != 0)
+		terminate(ERR_CLOSE, 1);
+	last_pipe_exit = 0;
+	while (waitpid(pid, &exit_status, 0) != ERRNUM)
 		;
 	last_pipe_exit = handle_child_exit(exit_status, last_pipe_exit, 1);
 	exit_status = 0;
-	child_status = waitpid(-1, &exit_status, WNOHANG);
-	while ((child_status) != ERRNUM)
-	{
-		if (child_status == 0)
-			break ;
-		handle_child_exit(exit_status, last_pipe_exit, 0);
-		child_status = waitpid(-1, &exit_status, WNOHANG);
-	}
-	return (last_pipe_exit);
+	while (waitpid(WAIT_ANY, &exit_status, WNOHANG) != ERRNUM)
+		;
+	return (handle_child_exit(exit_status, last_pipe_exit, 0));
 }
 
 static void	do_child(int tmp_fd[2], t_list *command,
