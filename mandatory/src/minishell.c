@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 15:58:54 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/17 13:45:08 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	main(int ac, char **av, char **ev)
 
 void	init_prompt(t_prompt *prompt, char **av, char **ev)
 {
+	read_banner();
 	prompt->cmdline = NULL;
 	prompt->env = NULL;
 	prompt->error_status = 0;

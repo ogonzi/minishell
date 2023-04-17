@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:53:56 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 15:33:43 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/17 13:40:40 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include "ft_printf_fd.h"
 
 # include "mnshll_data.h"
+
+// Banner Read
+void	read_banner(void);
 
 // Enviroment Utils Functions
 void	custom_export(t_env *env, char *data);
