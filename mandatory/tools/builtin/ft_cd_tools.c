@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:06:40 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 15:05:35 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:48:40 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,19 @@ void	ft_swap_content(char **a, char **b)
 void	export_oldpwd(t_env *env)
 {
 	t_env	*new;
+	char	*aux;
 
+	aux = ft_strdup(get_custom_pwd());
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		terminate(ERR_MEM, 1);
 	new->env_var = ft_strdup("OLDPWD");
-	new->env_data = get_custom_pwd();
+	if (!new->env_var)
+		terminate(ERR_MEM, EXIT_FAILURE);
+	new->env_data = ft_strdup(aux);
+	if (!new->env_data)
+		terminate(ERR_MEM, EXIT_FAILURE);
+	ft_delete(aux);
 	new->next = NULL;
 	env->next = new;
 }
@@ -41,12 +48,19 @@ void	export_oldpwd(t_env *env)
 void	export_pwd(t_env *env)
 {
 	t_env	*new;
+	char	*aux;
 
+	aux = ft_strdup(get_custom_pwd());
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		terminate(ERR_MEM, 1);
 	new->env_var = ft_strdup("PWD");
-	new->env_data = ft_strdup(get_custom_pwd());
+	if (!new->env_var)
+		terminate(ERR_MEM, EXIT_FAILURE);
+	new->env_data = ft_strdup(aux);
+	if (!new->env_data)
+		terminate(ERR_MEM, EXIT_FAILURE);
+	ft_delete(aux);
 	new->next = NULL;
 	env->next = new;
 }
