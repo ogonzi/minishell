@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:56:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/17 15:38:48 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:32:50 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,19 @@ int	check_ft_builtins2(t_prompt *prompt, t_pipe pipe_helper,
 
 int	ft_builtins(t_prompt *prompt, size_t ac, char **av, char **ev)
 {
-	if (!ft_strncmp(ft_strlowcase(av[0]), "pwd", ft_strlen(av[0])))
+	if (!ft_strncmp(ft_strlowcase(av[0]), "pwd", ft_strlen("pwd")))
 		return (ft_pwd(ac, prompt));
-	else if (!ft_strncmp(ft_strlowcase(av[0]), "env", ft_strlen(av[0])))
+	else if (!ft_strncmp(ft_strlowcase(av[0]), "env", ft_strlen("env")))
 		return (ft_env(ac, av, ev));
-	else if (!ft_strncmp(ft_strlowcase(av[0]), "exit", ft_strlen(av[0])))
-		ft_exit(ac, av);
-	else if (!ft_strncmp(ft_strlowcase(av[0]), "echo", ft_strlen(av[0])))
+	else if (!ft_strncmp(ft_strlowcase(av[0]), "echo", ft_strlen("echo")))
 		return (ft_echo(ac, av));
-	else if (!ft_strncmp(ft_strlowcase(av[0]), "export", ft_strlen(av[0])))
+	else if (!ft_strncmp(av[0], "exit", ft_strlen("exit")))
+		ft_exit(ac, av);
+	else if (!ft_strncmp(av[0], "export", ft_strlen("export")))
 		return (ft_export(ac, av, prompt));
-	else if (!ft_strncmp(ft_strlowcase(av[0]), "unset", ft_strlen(av[0])))
+	else if (!ft_strncmp(av[0], "unset", ft_strlen("unset")))
 		return (ft_unset(ac, av, prompt));
-	else if (!ft_strncmp(ft_strlowcase(av[0]), "cd", ft_strlen(av[0])))
+	else if (!ft_strncmp(av[0], "cd", ft_strlen("cd")))
 		return (ft_cd(ac, av, prompt));
 	return (-1);
 }

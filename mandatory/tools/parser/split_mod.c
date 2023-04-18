@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 15:03:53 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:32:35 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/18 16:34:29 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_split_mod(char ***split_line, char *line, char *sep)
 	size_t	nsplits;
 
 	nsplits = count_splits(line, sep);
-	*split_line = malloc(sizeof(char *) * (nsplits + 1));
+	*split_line = ft_calloc(sizeof(char *), (nsplits + 1));
 	if (!split_line)
 		terminate(ERR_MEM, EXIT_FAILURE);
 	if (get_splits(line, sep, split_line) == TRUE)

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:39:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:29:54 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/18 16:34:20 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	split_cmd_line(t_prompt *prompt, char *line)
 	char	**split_line;
 	t_list	*cmd_line_node;
 
+	split_line = NULL;
 	if (check_quotes(line) == TRUE)
 	{
 		rl_on_new_line();
@@ -55,7 +56,8 @@ int	split_cmd_line(t_prompt *prompt, char *line)
 		set_node(&split_line[idx], &cmd_line_node);
 		ft_lstadd_back(&prompt->cmdline, cmd_line_node);
 	}
-	ft_memfree(split_line);
+	if (*split_line)
+		ft_memfree(split_line);
 	return (0);
 }
 

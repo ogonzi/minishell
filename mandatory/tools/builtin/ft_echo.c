@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:46:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 19:20:20 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:20:43 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,22 @@ static void	print_arguments(int ac, char **av, t_bool flag)
 	{
 		if (flag == FALSE)
 		{
-			idx++;
-			flag = TRUE;
+			if (!ft_strncmp(av[idx], MS_FLGCMP, ft_strlen(MS_FLGCMP)))
+			{
+				flag = FALSE;
+				idx++;
+			}
+			else
+				flag = TRUE;
 			continue ;
 		}
-		printf("%s", av[idx]);
+		else
+		{
+			printf("%s", av[idx]);
+			if (idx + 1 != ac)
+				printf(" ");
+		}
 		idx++;
-		if (idx != ac)
-			printf(" ");
 	}
 }
 
@@ -67,7 +75,5 @@ static int	check_only_n(char *str)
 		idx++;
 	while (str[idx] == 'n')
 		idx++;
-	if (str[idx])
-		return (FALSE);
-	return (TRUE);
+	return (str[idx] == '\0');
 }

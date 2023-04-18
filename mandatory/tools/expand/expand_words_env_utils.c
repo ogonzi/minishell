@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:57:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 16:56:21 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:39:53 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,15 @@ int	get_env_var_length(char *word, ssize_t *idx, t_env *env)
 	char	*expanded_env_var;
 
 	start = *idx;
+	env_var = NULL;
 	while (ft_isalnum(word[*idx]) || word[*idx] == '_')
 		(*idx)++;
-	env_var = ft_substr(word, start, *idx - start);
-	if (!env_var)
-		terminate(ERR_MEM, EXIT_FAILURE);
+	if (word)
+	{
+		env_var = ft_substr(word, start, *idx - start);
+		if (!env_var)
+			terminate(ERR_MEM, EXIT_FAILURE);
+	}
 	expanded_env_var = ((t_env *)ft_env_iter(env, env_var))->env_data;
 	length_env_var = ft_strlen(expanded_env_var);
 	ft_delete(env_var);

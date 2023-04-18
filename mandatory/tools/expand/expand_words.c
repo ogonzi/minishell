@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:39:23 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/10 12:55:03 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:35:06 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	expand_words(t_prompt *prompt)
 	char	*word;
 	int		single_quoted;
 
+	word = NULL;
 	l_cmd_line_cpy = prompt->cmdline;
 	while (l_cmd_line_cpy)
 	{
