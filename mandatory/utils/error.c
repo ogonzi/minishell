@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:45:33 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 16:26:54 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/18 18:33:37 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	terminate(char *str, int syserr)
 {
-	ft_printf_fd(STDERR_FILENO, "%s%s", ERR_MSG, str);
+	ft_printf_fd(STDERR_FILENO, "%s%s\n", ERR_MSG, str);
 	exit(syserr);
 }
 

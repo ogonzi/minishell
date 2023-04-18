@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:57:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/18 17:39:53 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/18 18:51:03 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,21 @@ int	get_env_var_length(char *word, ssize_t *idx, t_env *env)
 	char	*env_var;
 	int		length_env_var;
 	char	*expanded_env_var;
+	t_env	*env_data;
 
 	start = *idx;
 	env_var = NULL;
-	while (ft_isalnum(word[*idx]) || word[*idx] == '_')
-		(*idx)++;
-	if (word)
-	{
-		env_var = ft_substr(word, start, *idx - start);
-		if (!env_var)
-			terminate(ERR_MEM, EXIT_FAILURE);
-	}
-	expanded_env_var = ((t_env *)ft_env_iter(env, env_var))->env_data;
+	while ((ft_isalnum(word[*idx]) || word[*idx] == '_'))
+			(*idx)++;
+	env_var = ft_substr(word, start, *idx - start);
+	if (!env_var)
+		terminate(ERR_MEM, EXIT_FAILURE);
+	env_data = ft_env_iter(env, env_var);
+	if (!env_data)
+		return ((int)ft_delete(env_var));
+	expanded_env_var = env_data->env_data;
+	if (!expanded_env_var)
+		return ((int)ft_delete(env_var));
 	length_env_var = ft_strlen(expanded_env_var);
 	ft_delete(env_var);
 	return (length_env_var);
@@ -55,6 +58,8 @@ void	set_new_word(char *word, char *cpy_word, int exit_status, t_env *env)
 		{
 			i++;
 			expanded_env_var = get_env_var(cpy_word, &i, env);
+			if (!expanded_env_var)
+				terminate (ERR_MEM, EXIT_FAILURE);
 			k = 0;
 			while (expanded_env_var[k] != '\0')
 				copy_char_to_word(word, expanded_env_var, &k, &j);
@@ -71,6 +76,7 @@ char	*get_env_var(char *word, int *idx, t_env *env)
 	int		start;
 	char	*env_var;
 	char	*expanded_env_var;
+	t_env	*env_ptr;
 
 	start = *idx;
 	while (ft_isalnum(word[*idx]) || word[*idx] == '_')
@@ -78,7 +84,10 @@ char	*get_env_var(char *word, int *idx, t_env *env)
 	env_var = ft_substr(word, start, *idx - start);
 	if (!env_var)
 		terminate(ERR_MEM, EXIT_FAILURE);
-	expanded_env_var = ((t_env *)ft_env_iter(env, env_var))->env_data;
+	env_ptr = (t_env *)ft_env_iter(env, env_var);
+	if (!env_ptr)
+		return (ft_delete(env_var));
+	expanded_env_var = env_ptr->env_data;
 	ft_delete(env_var);
 	return (expanded_env_var);
 }
