@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:32:13 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 06:07:52 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:51:54 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,9 @@
 
 void	get_pwd(char **pwd, t_prompt **prompt)
 {
-	t_env	*aux;
-
-	aux = ft_env_iter((*prompt)->env, "PWD");
-	if (!aux)
+	if (!ft_env_iter((*prompt)->env, "PWD"))
 		before_export_pwd(prompt);
-	*pwd = ft_strdup(aux->env_data);
+	*pwd = get_custom_pwd();
 	if (!(*pwd))
 		terminate(ERR_MEM, 1);
 	if (ft_env_iter((*prompt)->env, "OLDPWD"))

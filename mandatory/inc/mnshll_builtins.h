@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 16:04:37 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:41:18 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int		check_ft_builtins2(t_prompt *prompt, t_pipe pipe_helper,
 int		ft_builtins(t_prompt *prompt, size_t ac, char **av, char **ev);
 
 // PWD Built-In Function
-int		ft_pwd(size_t ac, t_prompt *prompt);
+int		ft_pwd(size_t ac);
 
 // ENV Built-In Function
 int		ft_env(int ac, char **av, char **ev);

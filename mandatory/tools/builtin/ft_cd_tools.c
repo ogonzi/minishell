@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:06:40 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/18 17:48:40 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:45:52 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	export_pwd(t_env *env)
 	t_env	*new;
 	char	*aux;
 
-	aux = ft_strdup(get_custom_pwd());
+	aux = get_custom_pwd();
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		terminate(ERR_MEM, 1);

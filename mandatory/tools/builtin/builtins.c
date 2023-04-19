@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:56:38 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/18 17:32:50 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:41:07 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	check_ft_builtins2(t_prompt *prompt, t_pipe pipe_helper,
 int	ft_builtins(t_prompt *prompt, size_t ac, char **av, char **ev)
 {
 	if (!ft_strncmp(ft_strlowcase(av[0]), "pwd", ft_strlen("pwd")))
-		return (ft_pwd(ac, prompt));
+		return (ft_pwd(ac));
 	else if (!ft_strncmp(ft_strlowcase(av[0]), "env", ft_strlen("env")))
 		return (ft_env(ac, av, ev));
 	else if (!ft_strncmp(ft_strlowcase(av[0]), "echo", ft_strlen("echo")))
