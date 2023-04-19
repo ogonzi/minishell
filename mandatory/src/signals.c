@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 19:42:24 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/17 18:32:21 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 00:30:13 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ static void	handle_child_sig(int signum)
 	if (signum == SIGINT)
 	{
 		ft_printf_fd(STDOUT_FILENO, "\n");
+		rl_on_new_line();
+		unlink(TMP_FILE_HEREDOC);
 		exit(TERMINATE_CTRL_C);
 	}
 	if (signum == SIGQUIT)

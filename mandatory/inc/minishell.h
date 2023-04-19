@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:37:32 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/19 20:18:32 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 00:14:33 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,5 @@ char	*check_string(char *str);
 void	set_sigint_action(void);
 void	set_child_sigaction(void);
 void	do_sigign(int signum);
-void	set_sigint_action_heredoc(void);
 
 #endif

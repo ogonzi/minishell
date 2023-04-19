@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:10:29 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/19 23:38:10 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 00:30:06 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,12 @@ static t_bool	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
 				break ;
 		exit(EXIT_SUCCESS);
 	}
+	waitpid(pid, NULL, 0);
 	if (*did_redirection == 1 && close(*fd_in) != 0)
 		terminate(ERR_CLOSE, EXIT_FAILURE);
 	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);
 	if (*fd_in < 0)
-	{
-		ft_printf_fd(STDERR_FILENO, "msh: %s: Error reading file or \
-		directory\n", limitor);
-		return (TRUE);
-	}
+		return (ft_print_error(ERR_OPEN, EXIT_FAILURE));
 	if (unlink(TMP_FILE_HEREDOC) != 0)
 		terminate(ERR_UNLINK, EXIT_FAILURE);
 	*did_redirection = 1;
@@ -102,10 +99,14 @@ static t_bool	aux_here_doc(char *limitor)
 	char	*line;
 	int		tmp_fd;
 
-	write(STDOUT_FILENO, "> ", 2);
+	if (isatty(STDIN_FILENO))
+		ft_printf_fd(STDOUT_FILENO, "> ");
 	line = get_next_line(STDIN_FILENO);
 	if (!line)
+	{
+		write(STDOUT_FILENO, "\n", 1);
 		return (FALSE);
+	}
 	if (line_is_limitor(line, limitor))
 	{
 		ft_delete(line);
@@ -114,7 +115,7 @@ static t_bool	aux_here_doc(char *limitor)
 	tmp_fd = open(TMP_FILE_HEREDOC, O_WRONLY | O_APPEND | O_CREAT, 0600);
 	if (tmp_fd < 0)
 		terminate(ERR_OPEN, EXIT_FAILURE);
-	write(tmp_fd, line, ft_strlen(line));
+	ft_printf_fd(tmp_fd, "%s", line);
 	if (close(tmp_fd) != 0)
 		terminate(ERR_CLOSE, EXIT_FAILURE);
 	ft_delete(line);
