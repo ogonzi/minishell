@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:10:29 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 17:01:01 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/19 20:43:23 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,18 @@ static t_bool	handle_open_file(int *fd_in, int *did_redirection,
 
 static t_bool	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
 {
-	while (42)
-		if (!aux_here_doc(limitor))
-			break ;
+	pid_t	pid;
+
+	set_sigint_action_heredoc();
+	pid = fork();
+	if (pid == -1)
+		terminate(ERR_FORK, EXIT_FAILURE);
+	else if (pid == 0)
+	{
+		while (42)
+			if (!aux_here_doc(limitor))
+				break ;
+	}
 	if (*did_redirection == 1 && close(*fd_in) != 0)
 		terminate(ERR_CLOSE, EXIT_FAILURE);
 	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);
