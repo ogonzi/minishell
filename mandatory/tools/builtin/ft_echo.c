@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:46:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/19 12:32:58 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/19 12:49:46 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,7 @@ static void	print_arguments(int ac, char **av, t_bool flag)
 		if (flag == FALSE)
 			aux_print_args(av[idx], idx, ac);
 		else
-		{
-			if (!ft_strncmp(av[idx], MS_FLGCMP, ft_strlen(MS_FLGCMP)))
-			{
-				flag = FALSE;
-				idx++;
-			}
-			else
-				aux_print_args(av[idx], idx, ac);
-		}
+			aux_print_args(av[idx], idx, ac);
 	}
 }
 
