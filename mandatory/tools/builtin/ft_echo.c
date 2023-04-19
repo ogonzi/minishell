@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:46:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/19 12:49:46 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/19 13:56:24 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,3 @@ static void	aux_print_args(char *str, int idx, int ac)
 	if (idx + 1 != ac)
 		printf(" ");
 }
-

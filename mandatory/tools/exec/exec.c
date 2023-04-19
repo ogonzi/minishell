@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/17 19:47:41 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/19 13:54:13 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,12 +170,12 @@ void	do_execve(t_list *command, t_prompt *prompt,
 	exit_value = check_ft_builtins1(prompt, command_array, envp);
 	if (exit_value == -1)
 	{
-		if (!ft_env_iter(prompt->env, "PATH") || command_array[0][0] == '/')
+		if (!ft_env_iter(prompt->env, "PATH")
+			|| (command_array[0][0] == '/' && !command_array[0][1]))
 			cmd_not_found(command_array[0]);
 		if (get_exec_path(command_array[0], &exec_path, command, prompt))
 		{
-			ft_printf_fd(STDERR_FILENO, "%s: command not found\n",
-				command_array[0]);
+			cmd_not_found(command_array[0]);
 			exit(((t_cmdline *)command->data)->exit_status);
 		}
 		set_child_sigaction();
