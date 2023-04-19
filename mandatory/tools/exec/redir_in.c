@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:10:29 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/19 20:43:23 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/19 23:38:10 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,16 @@ static t_bool	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
 {
 	pid_t	pid;
 
-	set_sigint_action_heredoc();
 	pid = fork();
 	if (pid == -1)
 		terminate(ERR_FORK, EXIT_FAILURE);
 	else if (pid == 0)
 	{
+		set_child_sigaction();
 		while (42)
 			if (!aux_here_doc(limitor))
 				break ;
+		exit(EXIT_SUCCESS);
 	}
 	if (*did_redirection == 1 && close(*fd_in) != 0)
 		terminate(ERR_CLOSE, EXIT_FAILURE);
@@ -104,11 +105,7 @@ static t_bool	aux_here_doc(char *limitor)
 	write(STDOUT_FILENO, "> ", 2);
 	line = get_next_line(STDIN_FILENO);
 	if (!line)
-	{
-		ft_printf_fd(STDERR_FILENO, "msh: warning: here-document delimited\
-			by end-of-file (wanted `%s')\n", limitor);
 		return (FALSE);
-	}
 	if (line_is_limitor(line, limitor))
 	{
 		ft_delete(line);

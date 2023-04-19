@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/19 19:55:39 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/19 23:35:42 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,8 +74,7 @@ INCLUDE = -I$(MND_DIR)$(INC_DIR) -I$(LFT_DIR)$(INC_DIR) -I$(OUT_DIR)$(INC_DIR) $
 SRC_FLS	= minishell.c \
 		enviroment.c \
 		custom_enviroment.c \
-		signals.c \
-		signals_heredoc.c
+		signals.c
 
 BLT_FLS	= builtins.c \
 		ft_pwd.c \
