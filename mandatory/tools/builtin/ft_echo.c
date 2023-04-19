@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:46:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/18 17:20:43 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/19 12:32:58 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,31 @@
 #include "mnshll_error.h"
 
 static void	print_arguments(int ac, char **av, t_bool flag);
-static int	check_only_n(char *str);
+static void	aux_print_args(char *str, int idx, int ac);
 
 int	ft_echo(int ac, char **av)
 {
 	t_bool	flag;
+	int		i;
+	int		j;
 
 	flag = TRUE;
-	if (ac > 1)
+	i = 1;
+	while (i < ac && av[i][0] == '-'
+		&& !ft_strncmp(av[i], MS_FLGCMP, strlen(MS_FLGCMP)))
 	{
-		if (check_only_n(av[1]))
+		j = 1;
+		while (av[i][j] == 'n')
+			j++;
+		if (av[i][j] == '\0')
 		{
-			if (!ft_strncmp(av[1], MS_FLGCMP, ft_strlen(MS_FLGCMP)))
-				flag = FALSE;
+			flag = FALSE;
+			i++;
 		}
-		print_arguments(ac - 1, &av[1], flag);
+		else
+			break ;
 	}
+	print_arguments(ac - i, &av[i], flag);
 	if (flag == TRUE)
 		printf("\n");
 	return (EXIT_SUCCESS);
@@ -42,10 +51,12 @@ static void	print_arguments(int ac, char **av, t_bool flag)
 {
 	ssize_t	idx;
 
-	idx = 0;
-	while (idx < ac)
+	idx = -1;
+	while (++idx < ac)
 	{
 		if (flag == FALSE)
+			aux_print_args(av[idx], idx, ac);
+		else
 		{
 			if (!ft_strncmp(av[idx], MS_FLGCMP, ft_strlen(MS_FLGCMP)))
 			{
@@ -53,27 +64,15 @@ static void	print_arguments(int ac, char **av, t_bool flag)
 				idx++;
 			}
 			else
-				flag = TRUE;
-			continue ;
+				aux_print_args(av[idx], idx, ac);
 		}
-		else
-		{
-			printf("%s", av[idx]);
-			if (idx + 1 != ac)
-				printf(" ");
-		}
-		idx++;
 	}
 }
 
-static int	check_only_n(char *str)
+static void	aux_print_args(char *str, int idx, int ac)
 {
-	ssize_t	idx;
-
-	idx = 0;
-	if (str[idx] == '-')
-		idx++;
-	while (str[idx] == 'n')
-		idx++;
-	return (str[idx] == '\0');
+	printf("%s", str);
+	if (idx + 1 != ac)
+		printf(" ");
 }
+
