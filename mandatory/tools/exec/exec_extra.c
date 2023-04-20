@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:25:43 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 12:47:52 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:07:26 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ void	check_execve_valid(char **command_array, char **exec_path,
 	size_t	idx;
 
 	idx = 0;
-	if (command_array[0][0] == '/')
+	if (command_array[0][0] == '.' && !ft_env_iter(prompt->env, "PATH"))
+		cmd_not_found(command_array[0]);
+	else if (command_array[0][0] == '/' || command_array[0][0] == '.')
 		aux_check_execve_valid(command_array, &idx, exec_path);
 	else if (!ft_env_iter(prompt->env, "PATH")
 		&& !access(command_array[0], X_OK))
@@ -44,14 +46,15 @@ void	check_execve_valid(char **command_array, char **exec_path,
 static void	aux_check_execve_valid(char **command_array,
 	size_t *idx, char **exec_path)
 {
-	if (!isalnum(command_array[0][strlen(command_array[0]) - 1]))
+	if (!ft_isalnum(command_array[0][ft_strlen(command_array[0]) - 1]))
 		cmd_not_found(command_array[0]);
 	else if (access(command_array[0], X_OK))
 	{
-		while (command_array[0][*idx] == '/')
+		while (command_array[0][*idx] == '/' || command_array[0][*idx] == '.')
 		{
 			if (!command_array[0][*idx + 1]
-				|| command_array[0][*idx + 1] != '/')
+				|| (command_array[0][*idx + 1] != '/'
+					|| command_array[0][*idx] != '.'))
 				cmd_not_found(command_array[0]);
 			(*idx)++;
 		}
