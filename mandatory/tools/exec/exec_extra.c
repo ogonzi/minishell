@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:25:43 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 14:32:13 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 17:15:50 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,12 @@ static void	aux_check_execve_valid(char **command_array,
 	}
 	else
 		*exec_path = command_array[0];
+}
+
+void	aux_redir(t_list *command_cpy, t_pipe *pipe_helper, int exit_status)
+{
+	if (exit_status == 0 && command_cpy->next)
+		pipe_helper->is_last = FALSE;
+	else if (exit_status == 0)
+		pipe_helper->is_last = TRUE;
 }

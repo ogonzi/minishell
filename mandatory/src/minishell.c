@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/19 20:31:26 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 17:30:01 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
+
+int	g_exit_status = 0;
 
 static int	handler_input(t_prompt *prompt);
 static int	handler_pipeline(t_prompt *prompt);
@@ -33,11 +35,13 @@ int	main(int ac, char **av, char **ev)
 	{
 		set_sigint_action();
 		do_sigign(SIGQUIT);
-		prompt.exit_status = handler_input(&prompt);
-		if (prompt.exit_status == -2)
+		g_exit_status = handler_input(&prompt);
+		if (g_exit_status == -2)
 			break ;
-		if (prompt.exit_status == 0)
-			prompt.exit_status = handler_pipeline(&prompt);
+		if (g_exit_status == 0)
+			g_exit_status = handler_pipeline(&prompt);
+		if (g_exit_status == 42)
+			g_exit_status = 0;
 		if (prompt.cmdline)
 			ft_cmdline_clear(&prompt.cmdline, (void *)ft_delete);
 	}
@@ -52,7 +56,6 @@ void	init_prompt(t_prompt *prompt, char **av, char **ev)
 	prompt->cmdline = NULL;
 	prompt->env = NULL;
 	prompt->error_status = 0;
-	prompt->exit_status = 0;
 	custom_getpid(prompt);
 	if (!(*ev))
 	{
@@ -101,12 +104,14 @@ static int	handler_input(t_prompt *prompt)
 		add_history(buf);
 		prompt->error_status = split_cmd_line(prompt, buf);
 		if (prompt->error_status != FALSE)
-			return (ERRNUM);
+			return (258);
 		prompt->error_status = split_words(prompt);
 		if (prompt->error_status != FALSE)
-			return (ERRNUM);
+			return (258);
 		expand_words(prompt);
 	}
+	else
+		return (42);
 	ft_delete(buf);
 	return (0);
 }

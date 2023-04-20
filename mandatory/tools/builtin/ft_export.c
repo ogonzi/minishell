@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 12:31:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/17 20:10:42 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 19:36:31 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "mnshll_data.h"
 #include "mnshll_error.h"
 
+static void	aux_ft_export(t_prompt *prompt, char **av, int cnt, int idx);
 static int	print_declare_env(ssize_t size, t_prompt *prompt);
 static void	aux_print_declare_env(char **cpy_env, ssize_t size);
 static int	error_export(char *str);
@@ -33,17 +34,14 @@ int	ft_export(int ac, char **av, t_prompt *prompt)
 		while (av[++cnt])
 		{
 			idx = 0;
-			if (av[cnt][idx] == '=')
+			if (av[cnt][idx] == '#')
+				return (print_declare_env(ft_env_size(prompt->export), prompt));
+			if (av[cnt][idx] == '='
+				|| (!ft_isalpha(av[cnt][idx]) || av[cnt][idx] == '_'))
 				return (error_export(av[cnt]));
 			while (av[cnt][idx] && ft_strncmp(&av[cnt][idx], "=", 1))
 				++idx;
-			if (av[cnt][idx])
-			{
-				before_export(&prompt->export, av[cnt], TRUE);
-				before_export(&prompt->env, av[cnt], TRUE);
-			}
-			else
-				before_export(&prompt->export, av[cnt], FALSE);
+			aux_ft_export(prompt, av, cnt, idx);
 		}
 	}
 	return (0);
@@ -94,4 +92,15 @@ static int	error_export(char *str)
 {
 	ft_printf_fd(STDERR_FILENO, "mns: export: \'%s\': %s", str, ERR_EXP);
 	return (EXIT_FAILURE);
+}
+
+static void	aux_ft_export(t_prompt *prompt, char **av, int cnt, int idx)
+{
+	if (av[cnt][idx])
+	{
+		before_export(&prompt->export, av[cnt], TRUE);
+		before_export(&prompt->env, av[cnt], TRUE);
+	}
+	else
+		before_export(&prompt->export, av[cnt], FALSE);
 }

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:39:23 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/18 17:35:06 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 16:44:19 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
+
+extern int	g_exit_status;
 
 void	expand_words(t_prompt *prompt)
 {
@@ -36,7 +38,7 @@ void	expand_words(t_prompt *prompt)
 			handle_word_expansion(word, &single_quoted);
 			if (ft_strchr(word, '$') && single_quoted == FALSE)
 				((t_token *)l_word_cpy->data)->word
-					= expand_env(word, prompt->exit_status, prompt->env);
+					= expand_env(word, g_exit_status, prompt->env);
 			l_word_cpy = l_word_cpy->next;
 		}
 		l_cmd_line_cpy = l_cmd_line_cpy->next;

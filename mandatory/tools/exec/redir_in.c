@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:10:29 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 14:35:20 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 17:30:57 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
+
+extern int	g_exit_status;
 
 static t_bool	handle_open_file(int *fd_in, int *did_redirection,
 					char *filename);
@@ -80,11 +82,11 @@ static t_bool	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
 		do_sigign(SIGQUIT);
 		while (42)
 			if (!aux_here_doc(limitor))
-				exit(EXIT_SUCCESS);
+				exit(g_exit_status);
 	}
 	do_sigign(SIGINT);
-	do_sigign(SIGQUIT);
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &g_exit_status, 0);
+	g_exit_status = handle_child_exit(g_exit_status, 0, 1);
 	if (*did_redirection == 1 && close(*fd_in) != 0)
 		terminate(ERR_CLOSE, EXIT_FAILURE);
 	*fd_in = open(TMP_FILE_HEREDOC, O_RDONLY | O_CREAT);

@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 19:42:24 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 00:30:13 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 17:21:12 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
+
+extern int	g_exit_status;
 
 static void	handle_sig(int sig);
 static void	handle_child_sig(int signum);
@@ -61,6 +63,7 @@ static void	handle_sig(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_exit_status = 1;
 	}
 }
 
@@ -107,6 +110,7 @@ static void	handle_child_sig(int signum)
 		ft_printf_fd(STDOUT_FILENO, "\n");
 		rl_on_new_line();
 		unlink(TMP_FILE_HEREDOC);
+		g_exit_status = 42;
 		exit(TERMINATE_CTRL_C);
 	}
 	if (signum == SIGQUIT)

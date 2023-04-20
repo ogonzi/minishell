@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 15:03:53 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/18 16:34:29 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 15:41:38 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	get_splits(char *line, char *sep, char ***split_line)
 	idx = 0;
 	sdata.start = 0;
 	sdata.num = 0;
-	while (line[idx] != 0)
+	while (line[idx] != '\0')
 	{
 		if (idx == 0 && ft_strchr(sep, line[idx]) && sep[0] == '|')
 			return (ft_perror_syntax("`|`"));
@@ -111,12 +111,12 @@ static int	no_command_between_pipes(char *str, t_split_data sdata,
 	size_t	idx;
 
 	idx = 1;
-	while (str[idx] && ft_isspace(str[idx]))
+	while (ft_isspace(str[idx]) && str[idx] != '\0')
 		idx++;
 	if (str[idx] == '\0' || str[idx] == '|')
 	{
 		while (--sdata.num >= 0)
-			ft_delete(*split_line[sdata.num]);
+			ft_delete((*split_line)[sdata.num]);
 		return (TRUE);
 	}
 	return (FALSE);

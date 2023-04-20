@@ -6,13 +6,15 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:54:03 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/18 17:24:08 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 19:22:48 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "mnshll_builtins.h"
 #include "mnshll_error.h"
+
+extern int	g_exit_status;
 
 #define ERRCODE0	(int)0
 #define ERRCODE1	(int)1
@@ -29,7 +31,7 @@ void	ft_exit(int ac, char **av)
 
 	printf("exit\n");
 	if (ac == 1)
-		exit(0);
+		exit(g_exit_status);
 	if (!av[1][0])
 		error_exit(ERRCODE1, NULL);
 	if (ac > 2)

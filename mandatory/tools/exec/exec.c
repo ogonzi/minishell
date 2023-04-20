@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 12:33:53 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 17:36:22 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
+
+extern int	g_exit_status;
 
 static int	do_pipe(int tmp_fd[2], t_list *command,
 				t_prompt *prompt, t_pipe pipe_helper);
@@ -33,13 +35,12 @@ int	redir_pipe(t_list *command_cpy, t_prompt *prompt,
 
 	pipe_helper.is_first = is_first;
 	exit_status = dup_to_in(&tmp_fd[0], command_cpy);
+	if (g_exit_status != 0)
+		return (1);
 	if (exit_status == 0)
 		exit_status = dup_to_out(&tmp_fd[1], command_cpy,
 				&pipe_helper.did_out_redirection);
-	if (exit_status == 0 && command_cpy->next)
-		pipe_helper.is_last = FALSE;
-	else if (exit_status == 0)
-		pipe_helper.is_last = TRUE;
+	aux_redir(command_cpy, &pipe_helper, exit_status);
 	do_sigign(SIGINT);
 	do_sigign(SIGQUIT);
 	if (pipe_helper.is_first && pipe_helper.is_last)
@@ -112,11 +113,11 @@ static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid)
 	last_pipe_exit = 0;
 	while (waitpid(pid, &exit_status, 0) != ERRNUM)
 		;
-	last_pipe_exit = handle_child_exit(exit_status, last_pipe_exit, 1);
+	g_exit_status = handle_child_exit(exit_status, g_exit_status, 1);
 	exit_status = 0;
 	while (waitpid(WAIT_ANY, &exit_status, WNOHANG) != ERRNUM)
 		;
-	return (handle_child_exit(exit_status, last_pipe_exit, 0));
+	return (handle_child_exit(exit_status, g_exit_status, 0));
 }
 
 static void	do_child(int tmp_fd[2], t_list *command,
@@ -176,5 +177,7 @@ void	do_execve(t_list *command, t_prompt *prompt,
 			terminate(ERR_EXECVE, EXIT_FAILURE);
 	}
 	aux_clean_cmd_env(&command_array, &envp);
+	if (exit_value == -2)
+		exit(EXIT_SUCCESS);
 	exit(exit_value);
 }
