@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:39:23 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 16:44:19 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 20:43:26 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	expand_words(t_prompt *prompt)
 		{
 			single_quoted = FALSE;
 			word = ((t_token *)l_word_cpy->data)->word;
-			handle_word_expansion(word, &single_quoted);
+			handle_word_expansion(word, &single_quoted, prompt->env);
 			if (ft_strchr(word, '$') && single_quoted == FALSE)
 				((t_token *)l_word_cpy->data)->word
 					= expand_env(word, g_exit_status, prompt->env);
@@ -45,7 +45,7 @@ void	expand_words(t_prompt *prompt)
 	}
 }
 
-void	handle_word_expansion(char *word, int *single_quoted)
+void	handle_word_expansion(char *word, int *single_quoted, t_env *env)
 {
 	int	*remove_char;
 
@@ -53,13 +53,13 @@ void	handle_word_expansion(char *word, int *single_quoted)
 	remove_char = ft_calloc(ft_strlen(word) + 1, sizeof(int));
 	if (!remove_char)
 		terminate(ERR_MEM, EXIT_FAILURE);
-	expand(word, remove_char);
+	expand(word, remove_char, env);
 	remove_quotes(word, remove_char, single_quoted);
 	format_word(word, remove_char);
 	ft_delete(remove_char);
 }
 
-void	expand(char *word, int *remove_char)
+void	expand(char *word, int *remove_char, t_env *env)
 {
 	ssize_t		idx;
 	t_bool		single_quote_flag;
@@ -74,7 +74,7 @@ void	expand(char *word, int *remove_char)
 		if (word[idx] == '\'' && is_double_quoted == FALSE)
 			find_closing_quote(word, &idx, &single_quote_flag, '\'');
 		if (word[idx] == '$' && (idx == 0 || word[idx - 1] != '\\'))
-			handle_expand_env_var(word, &idx, remove_char);
+			handle_expand_env_var(word, &idx, remove_char, env);
 		else
 			idx++;
 	}

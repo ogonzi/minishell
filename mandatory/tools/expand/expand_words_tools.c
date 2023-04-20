@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:03:39 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 17:15:24 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:00:41 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 #include "mnshll_data.h"
 #include "mnshll_error.h"
 
-void	handle_expand_env_var(char *word, ssize_t *idx, int *remove_char)
+void	handle_expand_env_var(char *word, ssize_t *idx,
+			int *remove_char, t_env *env)
 {
 	int		start;
 	char	*env_var;
@@ -29,7 +30,7 @@ void	handle_expand_env_var(char *word, ssize_t *idx, int *remove_char)
 	env_var = ft_substr(word, start, *idx - start);
 	if (!env_var)
 		terminate(ERR_MEM, EXIT_FAILURE);
-	if (ft_strlen(env_var) > 0 && getenv(env_var) == NULL)
+	if (ft_strlen(env_var) > 0 && !ft_env_iter(env, env_var))
 	{
 		remove_char[start - 1] = 1;
 		while (start < *idx)
