@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 11:43:14 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 16:06:21 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 12:33:32 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,9 @@ t_bool	get_exec_path(char *token, char **exec_path,
 void	ft_get_full_path(char *path, char **full_path,
 			char *user_exec_path, char **exec_path);
 t_bool	ft_check_access(char **exec_path, char **paths);
+
+// Executer Extra Function
+void	check_execve_valid(char **command_array, char **exec_path,
+			t_list *command, t_prompt *prompt);
+
 #endif

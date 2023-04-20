@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/19 23:35:42 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/20 12:34:10 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,7 +93,8 @@ EXE_FLS	= exec.c \
 		redir_in.c \
 		redir_out.c \
 		exec_utils.c \
-		exec_path.c
+		exec_path.c \
+		exec_extra.c
 
 EXP_FLS	= expand_words.c \
 		expand_words_tools.c \
