@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 12:31:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 20:14:29 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:05:24 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	ft_export(int ac, char **av, t_prompt *prompt)
 		while (av[++cnt])
 		{
 			idx = 0;
-			if (av[cnt][idx] == '='
-				|| (!ft_isalpha(av[cnt][idx]) || av[cnt][idx] == '_'))
+			if (av[cnt][0] == '='
+				|| !(av[cnt][0] == '_' || ft_isalpha(av[cnt][0])))
 				return (error_export(av[cnt]));
 			while (av[cnt][idx] && ft_strncmp(&av[cnt][idx], "=", 1))
 				++idx;
