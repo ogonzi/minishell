@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:10:29 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 14:20:29 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:35:20 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,7 @@ static t_bool	do_here_doc(int *fd_in, char *limitor, int *did_redirection)
 		do_sigign(SIGQUIT);
 		while (42)
 			if (!aux_here_doc(limitor))
-				break ;
-		exit(EXIT_SUCCESS);
+				exit(EXIT_SUCCESS);
 	}
 	do_sigign(SIGINT);
 	do_sigign(SIGQUIT);

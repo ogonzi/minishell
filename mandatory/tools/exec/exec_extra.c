@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:25:43 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 14:07:26 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:32:13 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	check_execve_valid(char **command_array, char **exec_path,
 	else if (!ft_env_iter(prompt->env, "PATH"))
 		cmd_not_found(command_array[0]);
 	else if (get_exec_path(command_array[0], exec_path, command, prompt)
-		&& !*exec_path)
+		&& access(command_array[0], X_OK))
 	{
 		cmd_not_found(command_array[0]);
 		exit(((t_cmdline *)command->data)->exit_status);
