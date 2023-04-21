@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:54:03 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 19:22:48 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/21 17:28:48 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ void	ft_exit(int ac, char **av)
 		exit(g_exit_status);
 	if (!av[1][0])
 		error_exit(ERRCODE1, NULL);
+	nbr = ft_atoll_base(av[1], STR_BASE10);
+	if (ft_strncmp(av[1], ft_lltoa_base(nbr, STR_BASE10), ft_strlen(av[1])))
+		error_exit(ERRCODE1, av[1]);
 	if (ac > 2)
 	{
 		error_exit(ERRCODE0, NULL);
 		return ;
 	}
-	nbr = ft_atoll_base(av[1], STR_BASE10);
-	if (ft_strncmp(av[1], ft_lltoa_base(nbr, STR_BASE10), ft_strlen(av[1])))
-		error_exit(ERRCODE1, av[1]);
 	exit((unsigned char)nbr);
 }
 

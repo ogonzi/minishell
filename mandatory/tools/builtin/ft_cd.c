@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:10:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 15:49:58 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/21 18:00:16 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,21 @@ static int	do_oldpwd(t_prompt **prompt)
 
 int	do_pwd(t_prompt **prompt, char *pwd)
 {
+	char	*aux;
+
+	aux = NULL;
 	if (!chdir(pwd))
 	{
-		ft_env_iter((*prompt)->env, "PWD")->env_data = ft_strdup(pwd);
-		ft_env_iter((*prompt)->export, "PWD")->env_data = ft_strdup(pwd);
+		aux = get_custom_pwd();
+		if (!aux)
+			terminate(ERR_MEM, EXIT_FAILURE);
+		ft_env_iter((*prompt)->env, "PWD")->env_data = ft_strdup(aux);
+		if (!ft_env_iter((*prompt)->env, "PWD")->env_data)
+			terminate(ERR_MEM, EXIT_FAILURE);
+		ft_env_iter((*prompt)->export, "PWD")->env_data = ft_strdup(aux);
+		if (!ft_env_iter((*prompt)->export, "PWD")->env_data)
+			terminate(ERR_MEM, EXIT_FAILURE);
+		ft_delete(aux);
 		return (EXIT_SUCCESS);
 	}
 	return (EXIT_FAILURE);
