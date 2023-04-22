@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_words_env_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:57:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 20:19:31 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/22 11:33:53 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,16 @@ int	get_env_var_length(char *word, ssize_t *idx, t_env *env)
 		terminate(ERR_MEM, EXIT_FAILURE);
 	env_data = ft_env_iter(env, env_var);
 	if (!env_data)
-		return ((int)ft_delete(env_var));
+	{
+		ft_delete(env_var);
+		return (0);
+	}
 	expanded_env_var = env_data->env_data;
 	if (!expanded_env_var)
-		return ((int)ft_delete(env_var));
+	{
+		ft_delete(env_var);
+		return (0);
+	}
 	length_env_var = ft_strlen(expanded_env_var);
 	ft_delete(env_var);
 	return (length_env_var);
