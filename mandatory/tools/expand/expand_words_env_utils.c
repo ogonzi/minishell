@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:57:15 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/22 10:38:19 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/04/22 11:33:53 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,14 @@ int	get_env_var_length(char *word, ssize_t *idx, t_env *env)
 	if (!env_var)
 		terminate(ERR_MEM, EXIT_FAILURE);
 	env_data = ft_env_iter(env, env_var);
-	if (!env_data) {
+	if (!env_data)
+	{
 		ft_delete(env_var);
 		return (0);
 	}
 	expanded_env_var = env_data->env_data;
-	if (!expanded_env_var) {
+	if (!expanded_env_var)
+	{
 		ft_delete(env_var);
 		return (0);
 	}

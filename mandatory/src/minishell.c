@@ -6,7 +6,7 @@
 /*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/22 10:51:58 by ogonzale         ###   ########.fr       */
+/*   Updated: 2023/04/22 11:33:11 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ static t_bool	str_all_space(char *buf)
 	while (++i < buf_len)
 	{
 		if (!ft_isspace(buf[i]))
-			return FALSE;
+			return (FALSE);
 	}
-	return TRUE;
+	return (TRUE);
 }
 
 static int	handler_input(t_prompt *prompt)
@@ -125,8 +125,9 @@ static int	handler_input(t_prompt *prompt)
 			return (258);
 		expand_words(prompt);
 	}
-	else {
-		ft_delete(buf); 
+	else
+	{
+		ft_delete(buf);
 		return (42);
 	}
 	ft_delete(buf);
