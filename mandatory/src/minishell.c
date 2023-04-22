@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ogonzale <ogonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 17:30:01 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/22 10:51:58 by ogonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,21 @@ void	init_prompt(t_prompt *prompt, char **av, char **ev)
 	}
 }
 
+static t_bool	str_all_space(char *buf)
+{
+	int	i;
+	int	buf_len;
+
+	buf_len = ft_strlen(buf);
+	i = -1;
+	while (++i < buf_len)
+	{
+		if (!ft_isspace(buf[i]))
+			return FALSE;
+	}
+	return TRUE;
+}
+
 static int	handler_input(t_prompt *prompt)
 /*
  * If the user enters nothing, readline returns NULL, and the function prints
@@ -99,7 +114,7 @@ static int	handler_input(t_prompt *prompt)
 		write(STDOUT_FILENO, "exit\n", 5);
 		return (-2);
 	}
-	if (ft_strlen(buf) != 0)
+	if (ft_strlen(buf) != 0 && str_all_space(buf) == FALSE)
 	{
 		add_history(buf);
 		prompt->error_status = split_cmd_line(prompt, buf);
@@ -110,8 +125,10 @@ static int	handler_input(t_prompt *prompt)
 			return (258);
 		expand_words(prompt);
 	}
-	else
+	else {
+		ft_delete(buf); 
 		return (42);
+	}
 	ft_delete(buf);
 	return (0);
 }
