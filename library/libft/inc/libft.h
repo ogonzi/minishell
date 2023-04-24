@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:08:37 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 01:43:55 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/24 20:49:37 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # include <sys/uio.h>
 # include <sys/errno.h>
 # include <sys/wait.h>
+
+# ifdef __linux__
+#  define OPEN_MAX		FOPEN_MAX
+# endif
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE	(int)1

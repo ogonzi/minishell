@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoll_base.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpeset-c <cpeset-c@student.42barce>        +#+  +:+       +#+        */
+/*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 18:58:22 by cpeset-c          #+#    #+#             */
-/*   Updated: 2022/12/06 21:01:21 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:25:11 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,3 +40,48 @@ t_ll
 	}
 	return (res * neg);
 }
+
+// static int	ft_get_digit(char c, char *str_base, int base);
+
+// t_ll	ft_atoll_base(const char *str, char *str_base)
+// {
+//     t_ll res = 0;
+//     int neg = 1;
+//     int base = (int)ft_strlen(str_base);
+
+//     if (!str || !str_base || base < 2 || base > 16)
+//         return 0;
+
+//     while (ft_isspace(*str))
+//         str++;
+
+//     if (*str == '-' || *str == '+')
+//     {
+//         neg = (*str == '-') ? -1 : 1;
+//         str++;
+//     }
+
+//     while (*str)
+//     {
+//         int digit = ft_get_digit(*str, str_base, base);
+
+//         if (digit < 0)
+//             break;
+
+//         res = res * base + digit;
+//         str++;
+//     }
+
+//     return res * neg;
+// }
+
+// static int ft_get_digit(char c, char *str_base, int base)
+// {
+//     int i;
+//     for (i = 0; i < base; i++)
+//     {
+//         if (str_base[i] == c)
+//             return i;
+//     }
+//     return -1;
+// }
