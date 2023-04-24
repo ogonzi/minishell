@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 18:03:39 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 21:00:41 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/24 11:38:54 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 #include "mnshll_utils.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
+
+static void	aux_remove_quotes(char *word, ssize_t *idx,
+				int *remove_char, t_bool *f_single_quote);
 
 void	handle_expand_env_var(char *word, ssize_t *idx,
 			int *remove_char, t_env *env)
@@ -50,6 +53,14 @@ void	remove_quotes(char *word, int *remove_char, int *single_quoted)
 	idx = -1;
 	while (word[++idx])
 	{
+		if ((word[idx] == '\'' && word[idx + 1] == '\'')
+			|| (word[idx] == '\"' && word[idx + 1] == '\"'))
+			remove_char[idx] = 1;
+		if (ft_strchr("\"\'", word[idx]) && word[idx + 1] == '\0')
+		{
+			remove_char[idx] = 1;
+			return ;
+		}
 		if (word[idx] == '\'' && word[idx + 1] != '\'')
 		{
 			*single_quoted = 1;
@@ -58,12 +69,16 @@ void	remove_quotes(char *word, int *remove_char, int *single_quoted)
 			remove_char[idx] = 1;
 		}
 		if (word[idx] == '\"' && word[idx + 1] != '\"')
-		{
-			remove_char[idx] = 1;
-			find_closing_quote(word, &idx, &f_single_quote, '\"');
-			remove_char[idx] = 1;
-		}
+			aux_remove_quotes(word, &idx, remove_char, &f_single_quote);
 	}
+}
+
+static void	aux_remove_quotes(char *word, ssize_t *idx,
+		int *remove_char, t_bool *f_single_quote)
+{
+	remove_char[*idx] = 1;
+	find_closing_quote(word, idx, f_single_quote, '\"');
+	remove_char[*idx] = 1;
 }
 
 void	format_word(char *word, int *remove_char)

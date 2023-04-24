@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 17:30:01 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/24 11:07:36 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@
 
 int	g_exit_status = 0;
 
-static int	handler_input(t_prompt *prompt);
-static int	handler_pipeline(t_prompt *prompt);
+static int		handler_input(t_prompt *prompt);
+static int		handler_pipeline(t_prompt *prompt);
+static t_bool	ft_isall_space(char *buf);
 
 int	main(int ac, char **av, char **ev)
 {
@@ -92,28 +93,30 @@ static int	handler_input(t_prompt *prompt)
 */
 {
 	char	*buf;
+	int		val;
 
+	val = 0;
 	buf = readline("msh> ");
 	if (!buf)
 	{
 		write(STDOUT_FILENO, "exit\n", 5);
 		return (-2);
 	}
-	if (ft_strlen(buf) != 0)
+	if (ft_strlen(buf) != 0 && !ft_isall_space(buf))
 	{
 		add_history(buf);
 		prompt->error_status = split_cmd_line(prompt, buf);
 		if (prompt->error_status != FALSE)
-			return (258);
+			val = 258;
 		prompt->error_status = split_words(prompt);
 		if (prompt->error_status != FALSE)
-			return (258);
+			val = 258;
 		expand_words(prompt);
 	}
 	else
-		return (42);
+		val = 42;
 	ft_delete(buf);
-	return (0);
+	return (val);
 }
 
 static int	handler_pipeline(t_prompt *prompt)
@@ -164,4 +167,19 @@ static int	handler_pipeline(t_prompt *prompt)
 	if (close(tmp_fd[1]))
 		ft_prompt_clear(prompt, ERR_CLOSE, EXIT_FAILURE);
 	return (exit_status);
+}
+
+static t_bool	ft_isall_space(char *buf)
+{
+	int	i;
+	int	buf_len;
+
+	buf_len = ft_strlen(buf);
+	i = -1;
+	while (++i < buf_len)
+	{
+		if (!ft_isspace(buf[i]))
+			return (FALSE);
+	}
+	return (TRUE);
 }

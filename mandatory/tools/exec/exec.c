@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 17:36:22 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/24 11:08:34 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ static int	do_pipe(int tmp_fd[2], t_list *command,
 
 static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid)
 {
-	int	last_pipe_exit;
 	int	exit_status;
 
 	if (close(pipe_helper.fd[1]) != 0)
@@ -110,7 +109,6 @@ static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid)
 		terminate(ERR_DUP, 1);
 	if (close(pipe_helper.fd[0]) != 0)
 		terminate(ERR_CLOSE, 1);
-	last_pipe_exit = 0;
 	while (waitpid(pid, &exit_status, 0) != ERRNUM)
 		;
 	g_exit_status = handle_child_exit(exit_status, g_exit_status, 1);
