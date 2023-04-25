@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:20:03 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 16:38:47 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:09:56 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ int	ft_env(int ac, char **av, char **ev)
 static void	error_env(char *str)
 {
 	ft_printf_fd(STDERR_FILENO, "env: %s: %s", str, ERR_ENV);
-	exit(EXIT_FAILURE);
+	exit(127);
 }

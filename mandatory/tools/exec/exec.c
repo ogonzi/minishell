@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:49 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/24 11:08:34 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:51:50 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ static int	do_pipe(int tmp_fd[2], t_list *command,
 static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid)
 {
 	int	exit_status;
+	int	last_pipe_status;
 
 	if (close(pipe_helper.fd[1]) != 0)
 		terminate(ERR_CLOSE, 1);
@@ -111,11 +112,12 @@ static int	do_last_pipe_parent(int tmp_fd[2], t_pipe pipe_helper, pid_t pid)
 		terminate(ERR_CLOSE, 1);
 	while (waitpid(pid, &exit_status, 0) != ERRNUM)
 		;
-	g_exit_status = handle_child_exit(exit_status, g_exit_status, 1);
+	last_pipe_status = 0;
+	last_pipe_status = handle_child_exit(exit_status, last_pipe_status, 1);
 	exit_status = 0;
 	while (waitpid(WAIT_ANY, &exit_status, WNOHANG) != ERRNUM)
 		;
-	return (handle_child_exit(exit_status, g_exit_status, 0));
+	return (handle_child_exit(exit_status, last_pipe_status, 0));
 }
 
 static void	do_child(int tmp_fd[2], t_list *command,

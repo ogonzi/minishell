@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:38:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/24 17:33:44 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:42:43 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	g_exit_status = 0;
 
 static int		handler_input(t_prompt *prompt);
 static int		handler_pipeline(t_prompt *prompt);
-static t_bool	ft_isall_space(char *buf);
 
 int	main(int ac, char **av, char **ev)
 {
@@ -162,24 +161,8 @@ static int	handler_pipeline(t_prompt *prompt)
 		command_cpy = command_cpy->next;
 		is_first = FALSE;
 	}
-	if (close(tmp_fd[0]))
-		ft_prompt_clear(prompt, ERR_CLOSE, EXIT_FAILURE);
-	if (close(tmp_fd[1]))
-		ft_prompt_clear(prompt, ERR_CLOSE, EXIT_FAILURE);
+	aux_handler_pipeline(prompt, tmp_fd);
+	if (g_exit_status)
+		exit_status = g_exit_status;
 	return (exit_status);
-}
-
-static t_bool	ft_isall_space(char *buf)
-{
-	int	i;
-	int	buf_len;
-
-	buf_len = ft_strlen(buf);
-	i = -1;
-	while (++i < buf_len)
-	{
-		if (!ft_isspace(buf[i]))
-			return (FALSE);
-	}
-	return (TRUE);
 }

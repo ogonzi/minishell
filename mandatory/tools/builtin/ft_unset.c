@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 18:47:08 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/11 19:59:18 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:13:34 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "mnshll_builtins.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
+
+extern int	g_exit_status;
 
 static int	error_export(char *str);
 void		ft_env_delete(t_env **env, char *ref);
@@ -28,7 +30,8 @@ int	ft_unset(int ac, char **av, t_prompt *prompt)
 	cnt = 0;
 	while (av[++cnt])
 	{
-		if (av[cnt][0] == '=')
+		if (av[cnt][0] == '='
+			|| !(av[cnt][0] == '_' || ft_isalpha(av[cnt][0])))
 			error_export(av[cnt]);
 		ft_env_delete(&prompt->env, av[cnt]);
 		ft_env_delete(&prompt->export, av[cnt]);
@@ -39,6 +42,7 @@ int	ft_unset(int ac, char **av, t_prompt *prompt)
 static int	error_export(char *str)
 {
 	ft_printf_fd(STDERR_FILENO, "mns: unset: \'%s\': %s", str, ERR_EXP);
+	g_exit_status = 1;
 	return (EXIT_FAILURE);
 }
 

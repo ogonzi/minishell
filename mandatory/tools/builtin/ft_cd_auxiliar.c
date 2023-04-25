@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:58:46 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/13 15:05:33 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:17:05 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "mnshll_builtins.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
+
+extern int	g_exit_status;
 
 int	check_valid_path(char *path, char *str)
 {
@@ -31,6 +33,7 @@ int	check_valid_path(char *path, char *str)
 	{
 		ft_delete(aux);
 		ft_delete(tmp);
+		g_exit_status = 1;
 		return (EXIT_FAILURE);
 	}
 	ft_delete(aux);

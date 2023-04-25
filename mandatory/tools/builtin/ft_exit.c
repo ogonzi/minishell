@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 18:54:03 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/21 17:28:48 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:49:46 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ extern int	g_exit_status;
 #define ERRMSG0	(char *)"too many arguments\n"
 #define ERRMSG1	(char *)"numeric argument required\n"
 
-// static int	ft_while_isdigit(char *str);
 static void	error_exit(int err, char *str);
 
 void	ft_exit(int ac, char **av)
@@ -40,6 +39,7 @@ void	ft_exit(int ac, char **av)
 	if (ac > 2)
 	{
 		error_exit(ERRCODE0, NULL);
+		g_exit_status = 1;
 		return ;
 	}
 	exit((unsigned char)nbr);

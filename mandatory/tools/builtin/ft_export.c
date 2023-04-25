@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 12:31:21 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/20 21:05:24 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:07:30 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "mnshll_builtins.h"
 #include "mnshll_data.h"
 #include "mnshll_error.h"
+
+extern int	g_exit_status;
 
 static void	aux_ft_export(t_prompt *prompt, char **av, int cnt, int idx);
 static int	print_declare_env(ssize_t size, t_prompt *prompt);
@@ -89,6 +91,7 @@ static void	aux_print_declare_env(char **cpy_env, ssize_t size)
 static int	error_export(char *str)
 {
 	ft_printf_fd(STDERR_FILENO, "mns: export: \'%s\': %s", str, ERR_EXP);
+	g_exit_status = 1;
 	return (EXIT_FAILURE);
 }
 

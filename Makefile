@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/24 20:48:44 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/04/25 16:33:05 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -112,6 +112,7 @@ WRD_FLS	= split_words.c \
 		split_words_utils.c
 
 UTL_FLS = mnshll_utils.c \
+		mnshll_extra.c \
 		env_lst.c \
 		error.c \
 		banner.c
