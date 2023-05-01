@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 11:35:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/16 01:43:59 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/05/01 17:25:05 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,20 @@ static void	*clean_buffer(void **dlt);
 char
 	*get_next_line(int fd)
 {
-	static t_gnldata	data;
+	static char	*buffer[OPEN_MAX];
 
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!data.buffer[fd])
+	if (!buffer[fd])
 	{
-		data.buffer[fd] = ft_strdup("");
-		if (!data.buffer[fd])
-			return (clean_buffer((void **)&data.buffer[fd]));
+		buffer[fd] = ft_strdup("");
+		if (!buffer[fd])
+			return (clean_buffer((void **)&buffer[fd]));
 	}
-	data.buffer[fd] = read_and_save(fd, data.buffer[fd]);
-	if (!data.buffer[fd] || data.buffer[fd][0] == '\0')
-		return (clean_buffer((void **)&data.buffer[fd]));
-	return (get_line(&data.buffer[fd]));
+	buffer[fd] = read_and_save(fd, buffer[fd]);
+	if (!buffer[fd] || buffer[fd][0] == '\0')
+		return (clean_buffer((void **)&buffer[fd]));
+	return (get_line(&buffer[fd]));
 }
 
 static char

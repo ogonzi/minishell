@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:10:30 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/21 18:00:16 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/05/01 17:47:15 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,13 @@ static int	before_ft_cd(t_prompt *prompt, char **av)
 {
 	t_cd_vals	data;
 
-	get_pwd(&data.pwd, &prompt);
-	check_valid_path(data.pwd, av[1]);
+	if (av[1][0] == '/' && !access(av[1], X_OK))
+		get_pwd(&data.pwd, &prompt, TRUE);
+	else
+	{
+		get_pwd(&data.pwd, &prompt, FALSE);
+		check_valid_path(data.pwd, av[1]);
+	}
 	data.segments = ft_split(av[1], '/');
 	if (!data.segments)
 		terminate(ERR_MEM, EXIT_FAILURE);
@@ -54,12 +59,12 @@ static int	before_ft_cd(t_prompt *prompt, char **av)
 		data.dp = opendir(data.pwd);
 		if (!data.dp)
 			return (EXIT_FAILURE);
-		data.dirpwd = readdir(data.dp);
+			data.dirpwd = readdir(data.dp);
 		aux_ft_cd(&data, prompt);
 		closedir(data.dp);
 	}
-	ft_delete(data.pwd);
 	ft_memfree(data.segments);
+	ft_delete(data.pwd);
 	return (EXIT_SUCCESS);
 }
 

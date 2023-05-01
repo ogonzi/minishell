@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:32:13 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/19 14:51:54 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/05/01 17:47:03 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@
 #include "mnshll_data.h"
 #include "mnshll_error.h"
 
-void	get_pwd(char **pwd, t_prompt **prompt)
+void	get_pwd(char **pwd, t_prompt **prompt, t_bool flag)
 {
 	if (!ft_env_iter((*prompt)->env, "PWD"))
 		before_export_pwd(prompt);
-	*pwd = get_custom_pwd();
+	if (flag == TRUE)
+		*pwd = ft_strdup("/");
+	else if (flag == FALSE)
+		*pwd = get_custom_pwd();
 	if (!(*pwd))
 		terminate(ERR_MEM, 1);
 	if (ft_env_iter((*prompt)->env, "OLDPWD"))

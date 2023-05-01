@@ -6,7 +6,7 @@
 /*   By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:02:34 by cpeset-c          #+#    #+#             */
-/*   Updated: 2023/04/25 16:22:31 by cpeset-c         ###   ########.fr       */
+/*   Updated: 2023/05/01 17:47:26 by cpeset-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int		ft_cd(int ac, char **av, t_prompt *prompt);
 int		do_pwd(t_prompt **prompt, char *pwd);
 
 // CD Utils Built-In Functions
-void	get_pwd(char **pwd, t_prompt **prompt);
+void	get_pwd(char **pwd, t_prompt **prompt, t_bool flag);
 void	get_homepwd(char **pwd, t_prompt **prompt);
 void	get_oldpwd(char **pwd, t_prompt **prompt);
 int		get_rootpwd(t_prompt **prompt);

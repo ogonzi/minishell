@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/04/25 16:33:05 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/05/01 17:22:02 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,6 @@ MK      = mkdir -p
 CP      = cp -f
 
 # -=-=-=-=- PATH -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
-
-BIN_DIR	= bin/
 
 MND_DIR	= mandatory/
 
@@ -137,8 +135,6 @@ makelib:
 
 $(NAME):: $(OBJS)
 	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJS) $(LIBFT) $(PRINT) $(LDFLAGS) -lreadline -o $(NAME)
-	@$(MK) $(BIN_DIR)
-	@mv $(NAME) $(BIN_DIR)$(NAME)
 	@printf "\n\t$(WHITE)Program \033[1;31mMinishell $(WHITE)has been compiled!$(DEF_COLOR)\n"
 
 $(NAME)::
