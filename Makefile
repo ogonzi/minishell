@@ -6,7 +6,7 @@
 #    By: cpeset-c <cpeset-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 11:54:08 by cpeset-c          #+#    #+#              #
-#    Updated: 2023/05/01 17:22:02 by cpeset-c         ###   ########.fr        #
+#    Updated: 2023/05/01 17:49:19 by cpeset-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -149,8 +149,7 @@ clean:
 	@echo "$(BLUE)	Minishell object and dependencies files cleaned.$(DEF_COLOR)"
 
 fclean:
-	@$(RM) -r $(OBJ_DIR) $(DEP_DIR)
-	@$(RM) -r $(BIN_DIR)
+	@$(RM) -r $(OBJ_DIR) $(DEP_DIR) $(NAME)
 	@$(MAKE) fclean -sC $(LIB_DIR)
 	@find . -name ".DS_Store" -delete
 	@echo "$(WHITE)	All objects, dependencies and executables removed.$(DEF_COLOR)"
